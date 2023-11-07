@@ -13,7 +13,7 @@ with lib.arclight;
 
   };
 
-  networking.hostName = "pc-nixos";
+  networking.hostName = "pc";
   system.stateVersion = "23.05";
 }
 
