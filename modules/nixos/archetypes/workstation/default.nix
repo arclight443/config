@@ -1,29 +1,24 @@
 { options, config, lib, pkgs, ... }:
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.archetypes.workstation;
+with lib.arclight;
+let cfg = config.arclight.archetypes.workstation;
 in
 {
-  options.plusultra.archetypes.workstation = with types; {
+  options.arclight.archetypes.workstation = with types; {
     enable =
       mkBoolOpt false "Whether or not to enable the workstation archetype.";
   };
 
   config = mkIf cfg.enable {
-    plusultra = {
+    arclight = {
       suites = {
         common = enabled;
         desktop = enabled;
+        graphics = enabled;
         development = enabled;
-        art = enabled;
-        video = enabled;
-        social = enabled;
-        media = enabled;
+        work = enabled;
       };
 
-      tools = {
-        appimage-run = enabled;
-      };
     };
   };
 }

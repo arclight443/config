@@ -1,18 +1,20 @@
 { options, config, pkgs, lib, ... }:
 
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.hardware.networking;
+with lib.arclight;
+let 
+  cfg = config.arclight.hardware.networking;
+
 in
 {
-  options.plusultra.hardware.networking = with types; {
+  options.arclight.hardware.networking = with types; {
     enable = mkBoolOpt false "Whether or not to enable networking support";
     hosts = mkOpt attrs { }
-      (mdDoc "An attribute set to merge with `networking.hosts`");
+      "An attribute set to merge with <option>networking.hosts</option>";
   };
 
   config = mkIf cfg.enable {
-    plusultra.user.extraGroups = [ "networkmanager" ];
+    arclight.user.extraGroups = [ "networkmanager" ];
 
     networking = {
       hosts = {
@@ -23,6 +25,14 @@ in
         enable = true;
         dhcp = "internal";
       };
+
+      firewall = {
+        enable = true;
+      };
+      
+      #extraHosts = ''
+      #'';
+
     };
 
     # Fixes an issue that normally causes nixos-rebuild to fail.

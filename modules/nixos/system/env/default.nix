@@ -1,11 +1,11 @@
 { options, config, pkgs, lib, ... }:
 
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.system.env;
+with lib.arclight;
+let cfg = config.arclight.system.env;
 in
 {
-  options.plusultra.system.env = with types;
+  options.arclight.system.env = with types;
     mkOption {
       type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
       apply = mapAttrs (n: v:
@@ -20,6 +20,7 @@ in
   config = {
     environment = {
       sessionVariables = {
+        HOSTNAME = "${config.networking.hostName}";
         XDG_CACHE_HOME = "$HOME/.cache";
         XDG_CONFIG_HOME = "$HOME/.config";
         XDG_DATA_HOME = "$HOME/.local/share";
@@ -30,6 +31,7 @@ in
       variables = {
         # Make some programs "XDG" compliant.
         LESSHISTFILE = "$XDG_CACHE_HOME/less.history";
+        GLFW_IM_MODULE = "ibus";
         WGETRC = "$XDG_CONFIG_HOME/wgetrc";
       };
       extraInit = concatStringsSep "\n"

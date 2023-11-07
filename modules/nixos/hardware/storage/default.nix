@@ -1,11 +1,11 @@
 { options, config, pkgs, lib, ... }:
 
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.hardware.storage;
+with lib.arclight;
+let cfg = config.arclight.hardware.storage;
 in
 {
-  options.plusultra.hardware.storage = with types; {
+  options.arclight.hardware.storage = with types; {
     enable = mkBoolOpt false
       "Whether or not to enable support for extra storage devices.";
   };

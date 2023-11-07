@@ -1,87 +1,82 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.desktop.gnome;
+  cfg = config.arclight.desktop.gnome;
   gdmHome = config.users.users.gdm.home;
+  dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   defaultExtensions = with pkgs.gnomeExtensions; [
-    appindicator
-    aylurs-widgets
-    dash-to-dock
-    emoji-selector
-    gsconnect
-    gtile
     just-perfection
-    logo-menu
-    no-overview
+    blur-my-shell
     remove-app-menu
-    space-bar
     top-bar-organizer
-    wireless-hid
-
-    # @NOTE(jakehamilton): These extensions are currently unsupported. They may also
-    # no longer be required.
-
-    # audio-output-switcher
-    # big-avatar
-    # clear-top-bar
-  ];
+    run-or-raise
+    logo-menu
+    screen-rotate
+    kimpanel
+    #vitals     broken for now, would probably be fixed in 23.11 with Gnome 45
+    dash-to-dock
+    quick-settings-tweaker
+    wallpaper-slideshow
+    gsconnect
+    pkgs.arclight.paperwm
+  ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x;
 
   default-attrs = mapAttrs (key: mkDefault);
   nested-default-attrs = mapAttrs (key: default-attrs);
 in
 {
-  options.plusultra.desktop.gnome = with types; {
+  options.arclight.desktop.gnome = with types; {
     enable =
       mkBoolOpt false "Whether or not to use Gnome as the desktop environment.";
-    wallpaper = {
-      light = mkOpt (oneOf [ str package ]) pkgs.plusultra.wallpapers.nord-rainbow-light-nix "The light wallpaper to use.";
-      dark = mkOpt (oneOf [ str package ]) pkgs.plusultra.wallpapers.nord-rainbow-dark-nix "The dark wallpaper to use.";
-    };
-    color-scheme = mkOpt (enum [ "light" "dark" ]) "dark" "The color scheme to use.";
     wayland = mkBoolOpt true "Whether or not to use Wayland.";
-    suspend =
-      mkBoolOpt true "Whether or not to suspend the machine after inactivity.";
-    monitors = mkOpt (nullOr path) null "The monitors.xml file to create.";
+    suspend = mkBoolOpt true "Whether or not to suspend the machine after inactivity.";
     extensions = mkOpt (listOf package) [ ] "Extra Gnome extensions to install.";
   };
 
   config = mkIf cfg.enable {
-    plusultra.system.xkb.enable = true;
-    plusultra.desktop.addons = {
+    arclight.system.xkb.enable = true;
+    arclight.desktop.utils = {
       gtk = enabled;
-      wallpapers = enabled;
+      qt = enabled;
+      dconf = enabled;
       electron-support = enabled;
-      foot = enabled;
+      kitty = enabled;
+      ibus = enabled;
     };
 
     environment.systemPackages = with pkgs; [
-      (hiPrio plusultra.xdg-open-with-portal)
       wl-clipboard
+      gtk-engine-murrine
+      nautilus-open-any-terminal
+      qgnomeplatform
+      gruvbox-gtk-theme
+      gnome.gnome-themes-extra
       gnome.gnome-tweaks
       gnome.nautilus-python
-    ] ++ defaultExtensions ++ cfg.extensions;
+      gnome.zenity
+      mission-center
+    ] ++ defaultExtensions ++ cfg.extensions
+      ++ optional config.arclight.security.yubikey.enable pkgs.arclight.gnome-lock-all-sessions;
 
     environment.gnome.excludePackages = with pkgs.gnome; [
       pkgs.gnome-tour
+      pkgs.gnome-photos
+      totem
+      yelp
+      gnome-music
       epiphany
       geary
+      gnome-contacts
+      gnome-characters
       gnome-font-viewer
-      gnome-system-monitor
       gnome-maps
+      gnome-system-monitor
     ];
 
-    systemd.tmpfiles.rules = [
-      "d ${gdmHome}/.config 0711 gdm gdm"
-    ] ++ (
-      # "./monitors.xml" comes from ~/.config/monitors.xml when GNOME
-      # display information is updated.
-      lib.optional (cfg.monitors != null) "L+ ${gdmHome}/.config/monitors.xml - - - - ${cfg.monitors}"
-    );
-
-    systemd.services.plusultra-user-icon = {
+    systemd.services.arclight-user-icon = {
       before = [ "display-manager.service" ];
       wantedBy = [ "display-manager.service" ];
 
@@ -92,8 +87,8 @@ in
       };
 
       script = ''
-        config_file=/var/lib/AccountsService/users/${config.plusultra.user.name}
-        icon_file=/run/current-system/sw/share/plusultra-icons/user/${config.plusultra.user.name}/${config.plusultra.user.icon.fileName}
+        config_file=/var/lib/AccountsService/users/${config.arclight.user.name}
+        icon_file=/run/current-system/sw/share/arclight-icons/user/${config.arclight.user.name}/${config.arclight.user.icon.fileName}
 
         if ! [ -d "$(dirname "$config_file")"]; then
           mkdir -p "$(dirname "$config_file")"
@@ -118,69 +113,116 @@ in
 
     # Required for app indicators
     services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+    
+    # TODO Lock screen on Yubikey removal. Sometimes don't work. Maybe udev priority issue?
+    #services.udev.extraRules = if config.arclight.security.yubikey.enable then ''
+    #      ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_MODEL_FROM_DATABASE}=="Yubikey 4/5 OTP+U2F+CCID", RUN+="${pkgs.arclight.gnome-lock-all-sessions}/bin/gnome-lock-all-sessions"
+    #  '' else "";
 
     services.xserver = {
       enable = true;
 
       libinput.enable = true;
-      displayManager.gdm = {
-        enable = true;
-        wayland = cfg.wayland;
-        autoSuspend = cfg.suspend;
+
+      displayManager = {
+
+        gdm = {
+          enable = true;
+          wayland = cfg.wayland;
+          autoSuspend = cfg.suspend;
+          settings = {
+            greeter = {
+              IncludeAll = false;
+              Exclude = "root";
+            };
+          };
+        };
       };
+
       desktopManager.gnome.enable = true;
     };
+    
+    home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
+      xdg.configFile."run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";
+    };
 
-    plusultra.home.extraOptions = {
+    arclight.home.extraOptions = { lib, ... }: {
+
       dconf.settings =
         let
-          user = config.users.users.${config.plusultra.user.name};
-          get-wallpaper = wallpaper:
-            if lib.isDerivation wallpaper then
-              builtins.toString wallpaper
-            else
-              wallpaper;
+          user = config.users.users.${config.arclight.user.name};
+          mkTuple = lib.hm.gvariant.mkTuple;
         in
         nested-default-attrs {
           "org/gnome/shell" = {
             disable-user-extensions = false;
             enabled-extensions = (builtins.map (extension: extension.extensionUuid) (cfg.extensions ++ defaultExtensions))
               ++ [
-              "native-window-placement@gnome-shell-extensions.gcampax.github.com"
               "drive-menu@gnome-shell-extensions.gcampax.github.com"
               "user-theme@gnome-shell-extensions.gcampax.github.com"
+              "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
             ];
             favorite-apps =
               [ "org.gnome.Nautilus.desktop" ]
-              ++ optional config.plusultra.apps.firefox.enable "firefox.desktop"
-              ++ optional config.plusultra.apps.vscode.enable "code.desktop"
-              ++ optional config.plusultra.desktop.addons.foot.enable "foot.desktop"
-              ++ optional config.plusultra.apps.logseq.enable "logseq.desktop"
-              ++ optional config.plusultra.apps.discord.enable "discord.desktop"
-              ++ optional config.plusultra.apps.element.enable "element-desktop.desktop"
-              ++ optional config.plusultra.apps.steam.enable "steam.desktop";
+              ++ optional config.arclight.apps.evolution.enable "evolution.desktop"
+              ++ optional config.arclight.desktop.utils.kitty.enable "kitty.desktop"
+              ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox-personal.desktop"
+              ++ optional config.arclight.browsers.firefox.profiles.services.enable "firefox-services.desktop"
+              ++ optional config.arclight.apps.telegram.enable "telegram.desktop"
+              ++ optional config.arclight.apps.element.enable "element.desktop"
+              ++ optional config.arclight.apps.steam.enable "steam.desktop";
           };
 
-          "org/gnome/desktop/background" = {
-            picture-uri = get-wallpaper cfg.wallpaper.light;
-            picture-uri-dark = get-wallpaper cfg.wallpaper.dark;
+          "org/gnome/settings-daemon/plugins/media-keys" = {
+            screensaver = [ "<Shift><Control>l" ];
           };
-          "org/gnome/desktop/screensaver" = {
-            picture-uri = get-wallpaper cfg.wallpaper.light;
-            picture-uri-dark = get-wallpaper cfg.wallpaper.dark;
+
+          "org/gnome/desktop/sound" = {
+            allow-volume-above-100-percent = true;
           };
+
+          "org/gnome/desktop/input-sources" = {
+            sources = [ (mkTuple [ "xkb" "us" ]) (mkTuple [ "xkb" "th" ]) (mkTuple [ "ibus" "mozc-jp" ]) ];
+          };
+
           "org/gnome/desktop/interface" = {
-            color-scheme = if cfg.color-scheme == "light" then "default" else "prefer-dark";
-            enable-hot-corners = false;
+            color-scheme = "prefer-dark";
+            enable-hot-corners = true;
+            clock-show-weekday = true;
+            text-scaling-factor = 1;
+            cursor-size = 30;
+            font-name = "Cantarell 14";
+            monospace-font-name = "MesloLGS NF 10";
+            document-font-name = "Kanit 12";
+            show-battery-percentage = false;
           };
+
           "org/gnome/desktop/peripherals/touchpad" = {
+            edge-scrolling-enabled = false;
+            tap-to-click = true;
+            two-finger-scrolling-enabled = true;
             disable-while-typing = false;
           };
+
           "org/gnome/desktop/wm/preferences" = {
             num-workspaces = 10;
-            resize-with-right-button = true;
+            focus-mode = "click";
+            button-layout = "appmenu:close";
           };
+
           "org/gnome/desktop/wm/keybindings" = {
+            #close = [ "<Super>q" ];
+            maximize = [ ];
+            minimize = [ ];
+            #toggle-maximized = [ "<Super>f" ];
+
+            switch-group = [ "" ];
+            switch-group-backward = [ "" ];
+            #switch-applications = [ "<Super>Tab" ];
+            #switch-applications-backward = [ "<Super><Shift>Tab" ];
+            switch-panels = [ ];
+            switch-panels-backward = [ ];
+
             switch-to-workspace-1 = [ "<Super>1" ];
             switch-to-workspace-2 = [ "<Super>2" ];
             switch-to-workspace-3 = [ "<Super>3" ];
@@ -191,6 +233,8 @@ in
             switch-to-workspace-8 = [ "<Super>8" ];
             switch-to-workspace-9 = [ "<Super>9" ];
             switch-to-workspace-10 = [ "<Super>0" ];
+            #switch-to-workspace-left = [ "<Super>braceleft" ];
+            #switch-to-workspace-right = [ "<Super>braceright" ];
 
             move-to-workspace-1 = [ "<Shift><Super>1" ];
             move-to-workspace-2 = [ "<Shift><Super>2" ];
@@ -202,9 +246,19 @@ in
             move-to-workspace-8 = [ "<Shift><Super>8" ];
             move-to-workspace-9 = [ "<Shift><Super>9" ];
             move-to-workspace-10 = [ "<Shift><Super>0" ];
+            #move-to-workspace-left = [ "<Shift><Super>braceleft" ];
+            #move-to-workspace-right = [ "<Shift><Super>braceright" ];
+
+            #move-to-monitor-down = [ "<Super><Alt>j" ];
+            #move-to-monitor-left = [ "<Super><Alt>h" ];
+            #move-to-monitor-right = [ "<Super><Alt>l" ];
+            #move-to-monitor-up = [ "<Super><Alt>k" ];
+
+            switch-input-source = [ "<Super>space" ];
+            switch-input-source-backward = [ "<Shift><Super>space" ];
           };
+
           "org/gnome/shell/keybindings" = {
-            # Remove the default hotkeys for opening favorited applications.
             switch-to-application-1 = [ ];
             switch-to-application-2 = [ ];
             switch-to-application-3 = [ ];
@@ -215,110 +269,281 @@ in
             switch-to-application-8 = [ ];
             switch-to-application-9 = [ ];
             switch-to-application-10 = [ ];
+
+            shift-overview-down = [ ];
+            shift-overview-up = [ ];
+            open-application-menu = [ ];
+
+            toggle-overview = [ "<Super>d" ];
+            toggle-application-view = [ "<Super>a" ];
+            toggle-message-tray = [ "<Super>n" ];
+            focus-active-notification = [ "<Super><Shift>n" ];
+
+            show-screenshot-ui = [ "Print" ];
+            show-screen-recording-ui = [ "<Ctrl><Shift><Super>R" ];
+            screenshot = [ "<Shift>Print" ];
+            screenshot-window = [ "<Super>Print" ];
           };
+
+
           "org/gnome/mutter" = {
             edge-tiling = false;
             dynamic-workspaces = false;
+            workspaces-only-on-primary = true;
+            overlay-key = "";
+            center-new-windows = true;
           };
 
+          "org/gnome/wayland/keybindings" = {
+            restore-shortcuts = [ ];
+          };
+
+          "org/gnome/shell/extensions/user-theme" = {
+            name = "Gruvbox-Dark-BL-LB";
+          };
+          
           "org/gnome/shell/extensions/dash-to-dock" = {
-            autohide = true;
-            dock-fixed = false;
+            apply-custom-theme = false;
+            background-color = "rgb(124,111,100)";
+            background-opacity = 0.8;
+            custom-background-color = true;
+            custom-theme-shrink = true;
+            customize-alphas = true;
+            dash-max-icon-size = 64;
             dock-position = "BOTTOM";
-            pressure-threshold = 200.0;
-            require-pressure-to-show = true;
-            show-favorites = true;
+            height-fraction = 0.9;
             hot-keys = false;
+            intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
+            max-alpha = 0.6;
+            multi-monitor = true;
+            running-indicator-style = "DEFAULT";
+            transparency-mode = "DYNAMIC";
+          };
+
+          "org/gnome/shell/extensions/quick-settings-tweaks" = {
+            add-dnd-quick-toggle-enabled = true;
+            add-unsafe-quick-toggle-enabled = false;
+            input-always-show = false;
+            input-show-selected = true;
+            last-unsafe-state = false;
+            media-control-compact-mode = false;
+            media-control-enabled = true;
+            output-show-selected = true;
+            user-removed-buttons = [ "DarkModeToggle" ];
+            volume-mixer-enabled = true;
+            volume-mixer-position = "bottom";
+            volume-mixer-show-description = true;
           };
 
           "org/gnome/shell/extensions/just-perfection" = {
-            panel-size = 48;
+            startup-status = 0;
+            app-menu = false;
+            panel-in-overview = true;
             activities-button = false;
+            calendar = true;
+            clock-menu = true;
+            events-button = true;
+            weather = true;
+            world-clock = false;
+            workspace = true;
+            workspace-popup = false;
+            workspaces-in-app-grid = true;
+            window-demands-attention-focus = true;
+            ripple-box = true;
+            quick-settings = true;
+            power-icon = true;
+
+            panel-button-padding-size = 6;
+            panel-corner-size = 0;
+            panel-icon-size = 15;
+            panel-indicator-padding-size = 1;
+            panel-size = 0;
           };
 
-          "org/gnome/shell/extensions/Logo-menu" = {
-            hide-softwarecentre = true;
-
-            # Use right click to open Activities.
-            menu-button-icon-click-type = 3;
-
-            # Use the NixOS logo.
-            menu-button-icon-image = 23;
-
-            menu-button-terminal =
-              if config.plusultra.desktop.addons.term.enable then
-                lib.getExe config.plusultra.desktop.addons.term.pkg
-              else
-                lib.getExe pkgs.gnome.gnome-terminal;
+          "org/gnome/shell/extensions/azwallpaper" = {
+            slideshow-directory = "/home/${config.arclight.user.name}/Arclight/dotfiles/wallpaper";
+            slideshow-image-duration = 600;
+            #slideshow-slide-duration = mkTuple [ 1 0 0 ];
           };
 
-          "org/gnome/shell/extensions/aylurs-widgets" = {
-            background-clock = false;
-            battery-bar = false;
-            dash-board = false;
-            date-menu-date-format = "%H:%M  %B %d";
-            date-menu-hide-clocks = true;
-            date-menu-hide-system-levels = true;
-            date-menu-hide-user = true;
+          "org/gnome/shell/extensions/blur-my-shell" = {
+            brightness = 0.70;
+          };
 
-            # Hide the indincator
-            date-menu-indicator-position = 2;
+          "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+            blur = true;
+          };
 
-            media-player = false;
-            media-player-prefer = "firefox";
-            notification-indicator = false;
-            power-menu = false;
-            quick-toggles = false;
-            workspace-indicator = false;
+          "org/gnome/shell/extensions/blur-my-shell/applications" = {
+            brightness = 0.9;
+            customize = true;
+            opacity = 250;
+            sigma = 80;
+            whitelist = [ "kitty" ];
+          };
+
+          "org/gnome/shell/extensions/blur-my-shell/overview" = {
+            blur = true;
+          };
+
+          "org/gnome/shell/extensions/blur-my-shell/panel" = {
+            blur = false;
+          };
+
+          "org/gnome/shell/extensions/paperwm" = {
+            vertical-margin = 10;
+            vertical-margin-bottom = 0;
+            window-gap = 20;
+            minimap-scale = 0.15;
+
+            animation-time = 0.15;
+            cycle-width-steps = [ 750.0 1130.0 ];
+            horizontal-margin = 15;
+
+            disable-scratch-in-overview = false;
+            gesture-enabled = true;
+            only-scratch-in-overview = false;
+            restore-attach-modal-dialogs = false;
+            restore-edge-tiling = false;
+            restore-workspaces-only-on-primary = false;
+            show-focus-mode-icon = true;
+            show-window-position-bar = true;
+            show-workspace-indicator = true;
+            use-default-background = true;
+
+            winprops = [
+              "{\"wm_class\":\"org.gnome.Calculator\", \"title\":\"\", \"scratch_layer\":true}"
+              "{\"wm_class\":\"evolution\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"KeePassXC\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Ncmpcpp\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Neovim\", \"preferredWidth\":\"40%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Pulsemixer\", \"preferredWidth\":\"60%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Bottom\", \"preferredWidth\":\"80%\"}"
+            ];
+
+          };
+
+          "org/gnome/shell/extensions/paperwm/keybindings" = {
+
+            close-window = [ "<Super>q" ];
+            new-window = [ "" ];
+
+            switch-left = [ "<Super>h" ];
+            switch-down = [ "<Super>j" ];
+            switch-up = [ "<Super>k" ];
+            switch-right = [ "<Super>l" ];
+            switch-down-workspace = [ "<Super>braceright" ];
+            switch-up-workspace = [ "<Super>braceleft" ];
+            switch-next = [ "" ];
+            switch-previous = [ "" ];
+            switch-first = [ "" ];
+            switch-last = [ "" ];
+
+            switch-monitor-below = [ "<Control><Super>j" ];
+            switch-monitor-left = [ "<Control><Super>h" ];
+            switch-monitor-right = [ "<Control><Super>l" ];
+            switch-monitor-above = [ "<Control><Super>k" ];
+            switch-monitor-up = [ "" ];
+            switch-monitor-down = [ "" ];
+
+            move-left = [ "<Shift><Super>h" ];
+            move-down = [ "<Shift><Super>j" ];
+            move-up = [ "<Shift><Super>k" ];
+            move-right = [ "<Shift><Super>l" ];
+            move-down-workspace = [ "<Shift><Super>braceright" ];
+            move-up-workspace = [ "<Shift><Super>braceleft" ];
+
+            move-monitor-above = [ "<Shift><Control><Super>k" ];
+            move-monitor-below = [ "<Shift><Control><Super>j" ];
+            move-monitor-down = [ "<Shift><Control><Super>j" ];
+            move-monitor-left = [ "<Shift><Control><Super>h" ];
+            move-monitor-right = [ "<Shift><Control><Super>l" ];
+            move-monitor-up = [ "<Shift><Control><Super>k" ];
+            move-next = [ "" ];
+            move-previous = [ "" ];
+
+            swap-monitor-down = [ "<Alt><Super>j" ];
+            swap-monitor-left = [ "<Alt><Super>h" ];
+            swap-monitor-right = [ "<Alt><Super>l" ];
+            swap-monitor-up = [ "<Alt><Super>k" ];
+            swap-monitor-above = [ "" ];
+            swap-monitor-below = [ "" ];
+
+            toggle-scratch = [ "<Shift><Super><Ctrl>f" ];
+
+            toggle-scratch-layer = [ "" ];
+            toggle-scratch-window = [ "" ];
+
+          };
+
+          "org/gnome/shell/extensions/vitals" = {
+            fixed-widths = true;
+            hide-icons = false;
+            hide-zeros = false;
+            include-static-info = true;
+            monitor-cmd = "missioncenter";
+            position-in-panel = 0;
+            show-battery = true;
+            show-fan = false;
+            use-higher-precision = false;
+          };
+
+          "org/gnome/shell/extensions/touchx" = {
+            ripple = false;
+            bgcolor = ["0.9215686321258545" "0.8588235378265381" "0.6980392336845398"];
+            oskbtn = true;
+            radius = 30;
+            time = 3;
           };
 
           "org/gnome/shell/extensions/top-bar-organizer" = {
             left-box-order = [
               "menuButton"
               "activities"
-              "dateMenu"
               "appMenu"
+              "vitalsMenu"
             ];
 
-            center-box-order = [
-              "Space Bar"
+            center-box-order = [ 
+              "FocusButton"
+              "WorkspaceMenu"
             ];
 
             right-box-order = [
+              "kimpanel"
+              "a11y"
               "keyboard"
-              "EmojisMenu"
-              "wireless-hid"
               "drive-menu"
-              "vitalsMenu"
               "screenRecording"
               "screenSharing"
               "dwellClick"
-              "a11y"
               "quickSettings"
+              "dateMenu"
             ];
           };
 
-          "org/gnome/shell/extensions/space-bar/shortcuts" = {
-            enable-activate-workspace-shortcuts = false;
-          };
-          "org/gnome/shell/extensions/space-bar/behavior" = {
-            show-empty-workspaces = false;
+          "org/gnome/shell/extensions/Logo-menu" = {
+            hide-softwarecentre = true;
+            hide-forcequit = true;
+            menu-button-extensions-app = "org.gnome.Extensions.desktop";
+            menu-button-icon-click-type = "3";
+            menu-button-icon-image = 23;
+            menu-button-icon-size = 25;
+            menu-button-terminal = "kitty";
           };
 
-          "org/gnome/shell/extensions/gtile" = {
-            show-icon = false;
-            grid-sizes = "8x2,4x2,2x2";
+          "ca/desrt/dconf-editor" = {
+            show-warning = false;
           };
+
+          "com/github/stunkymonkey/nautilus-open-any-terminal" = {
+            terminal = "kitty";
+            new-tab = true;
+          };
+
         };
     };
 
-    programs.kdeconnect = {
-      enable = true;
-      package = pkgs.gnomeExtensions.gsconnect;
-    };
-
-    # Open firewall for samba connections to work.
-    networking.firewall.extraCommands =
-      "iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns";
   };
 }
+

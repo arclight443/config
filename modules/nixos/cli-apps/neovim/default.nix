@@ -1,22 +1,47 @@
-inputs@{ options, config, lib, pkgs, ... }:
+{ inputs, options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.cli-apps.neovim;
+  cfg = config.arclight.cli-apps.neovim;
+  dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
+
 in
 {
-  options.plusultra.cli-apps.neovim = with types; {
+  options.arclight.cli-apps.neovim = with types; {
     enable = mkBoolOpt false "Whether or not to enable neovim.";
   };
 
   config = mkIf cfg.enable {
+
     environment.systemPackages = with pkgs; [
-      # @FIXME(jakehamilton): As of today (2022-12-09), `page` no longer works with my Neovim
-      # configuration. Either something in my configuration is breaking it or `page` is busted.
-      # page
-      plusultra.neovim
+      # Formatter
+      stylua
+      shfmt
+      alejandra
+      black
+      nodePackages.prettier
+
+      # LSP
+      vscode-langservers-extracted
+      lua-language-server
+      ruff-lsp
+      nodePackages.pyright
+      nodePackages.typescript-language-server
+      nodePackages.bash-language-server
+      
+      terraform
+      terraform-ls
+      dockerfile-language-server-nodejs
+      docker-compose-language-service
+      yaml-language-server
+      nixd
+      
+      # Other dependencies
+      gcc
+      gnumake
     ];
+
 
     environment.variables = {
       # PAGER = "page";
@@ -28,17 +53,17 @@ in
       EDITOR = "nvim";
     };
 
-    plusultra.home = {
-      configFile = {
-        "dashboard-nvim/.keep".text = "";
-      };
+    arclight.home.extraOptions = { config, pkgs, ... }: {
+      
+      programs.neovim.enable = true;
 
-      extraOptions = {
-        # Use Neovim for Git diffs.
-        programs.zsh.shellAliases.vimdiff = "nvim -d";
-        programs.bash.shellAliases.vimdiff = "nvim -d";
-        programs.fish.shellAliases.vimdiff = "nvim -d";
-      };
+      xdg.configFile.nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
+
+      programs.zsh.shellAliases.vimdiff = "nvim -d";
+      programs.bash.shellAliases.vimdiff = "nvim -d";
+      programs.fish.shellAliases.vimdiff = "nvim -d";
+
     };
+
   };
 }

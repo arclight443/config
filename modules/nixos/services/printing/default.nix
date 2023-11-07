@@ -1,13 +1,27 @@
-{ options, config, pkgs, lib, ... }:
+{ options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.services.printing;
+with lib.arclight;
+let
+  cfg = config.arclight.services.printing;
+
 in
 {
-  options.plusultra.services.printing = with types; {
-    enable = mkBoolOpt false "Whether or not to configure printing support.";
+  options.arclight.services.printing = with types; {
+    enable = mkBoolOpt false "Whether or not to enable printing (IPP everywhere for Apple-compatible printers).";
   };
 
-  config = mkIf cfg.enable { services.printing.enable = true; };
+  config = mkIf cfg.enable {
+    services.printing = {
+      enable = true;
+      drivers = with pkgs; [
+        brlaser
+      ];
+    };
+
+    services.avahi.enable = true;
+    services.avahi.nssmdns = true;
+    services.avahi.openFirewall = true;
+
+  };
 }

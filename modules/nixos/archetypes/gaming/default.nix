@@ -1,22 +1,20 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.archetypes.gaming;
+  cfg = config.arclight.archetypes.gaming;
 in
 {
-  options.plusultra.archetypes.gaming = with types; {
-    enable = mkBoolOpt false "Whether or not to enable the gaming archetype.";
+  options.arclight.archetypes.gaming = with types; {
+    enable = mkBoolOpt false "Whether or not to enable corporate archetype.";
   };
 
   config = mkIf cfg.enable {
-    plusultra.suites = {
-      common = enabled;
-      desktop = enabled;
+    arclight.suites = {
       games = enabled;
-      social = enabled;
-      media = enabled;
     };
   };
 }
+
+

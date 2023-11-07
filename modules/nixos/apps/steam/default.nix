@@ -1,30 +1,27 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.apps.steam;
+  cfg = config.arclight.apps.steam;
 in
 {
-  options.plusultra.apps.steam = with types; {
+  options.arclight.apps.steam = with types; {
     enable = mkBoolOpt false "Whether or not to enable support for Steam.";
   };
 
   config = mkIf cfg.enable {
     programs.steam.enable = true;
-    programs.steam.remotePlay.openFirewall = true;
-
     hardware.steam-hardware.enable = true;
 
-    # Enable GameCube controller support.
-    services.udev.packages = [ pkgs.dolphinEmu ];
-
-    environment.systemPackages = with pkgs.plusultra; [
+    environment.systemPackages = with pkgs; [
       steam
+      pkgs.plusultra.nix-get-protonup
     ];
 
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
     };
+
   };
 }

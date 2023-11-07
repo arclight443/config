@@ -1,12 +1,11 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
-let
-  cfg = config.plusultra.security.keyring;
+with lib.arclight;
+let cfg = config.arclight.security.keyring;
 in
 {
-  options.plusultra.security.keyring = with types; {
+  options.arclight.security.keyring = with types; {
     enable = mkBoolOpt false "Whether to enable gnome keyring.";
   };
 

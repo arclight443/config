@@ -1,20 +1,21 @@
 { options, config, pkgs, lib, inputs, ... }:
 
 with lib;
-with lib.plusultra;
-let
-  cfg = config.plusultra.nix;
+with lib.arclight;
+let 
+  cfg = config.arclight.nix;
 
   substituters-submodule = types.submodule ({ name, ... }: {
     options = with types; {
       key = mkOpt (nullOr str) null "The trusted public key for this substituter.";
     };
   });
+
 in
 {
-  options.plusultra.nix = with types; {
+  options.arclight.nix = with types; {
     enable = mkBoolOpt true "Whether or not to manage nix configuration.";
-    package = mkOpt package pkgs.nixUnstable "Which nix package to use.";
+    package = mkOpt package pkgs.nix "Which nix package to use.";
 
     default-substituter = {
       url = mkOpt str "https://cache.nixos.org" "The url for the substituter.";
@@ -25,29 +26,29 @@ in
   };
 
   config = mkIf cfg.enable {
+
     assertions = mapAttrsToList
       (name: value: {
         assertion = value.key != null;
-        message = "plusultra.nix.extra-substituters.${name}.key must be set";
+        message = "arclight.nix.extra-substituters.${name}.key must be set";
       })
       cfg.extra-substituters;
 
     environment.systemPackages = with pkgs; [
-      plusultra.nixos-revision
-      (plusultra.nixos-hosts.override {
-        hosts = inputs.self.nixosConfigurations;
-      })
-      deploy-rs
       nixfmt
       nix-index
       nix-prefetch-git
+      update-nix-fetchgit
       nix-output-monitor
-      flake-checker
+      comma
+      nvd
+      pkgs.plusultra.nix-update-index
+      pkgs.plusultra.nixos-option
+      pkgs.plusultra.nixos-revision
     ];
 
     nix =
-      let users = [ "root" config.plusultra.user.name ] ++
-        optional config.services.hydra.enable "hydra";
+      let users = [ "root" config.arclight.user.name ];
       in
       {
         package = cfg.package;
@@ -71,7 +72,7 @@ in
               ++
               (mapAttrsToList (name: value: value.key) cfg.extra-substituters);
 
-        } // (lib.optionalAttrs config.plusultra.tools.direnv.enable {
+        } // (lib.optionalAttrs config.arclight.tools.direnv.enable {
           keep-outputs = true;
           keep-derivations = true;
         });
@@ -81,11 +82,24 @@ in
           dates = "weekly";
           options = "--delete-older-than 30d";
         };
-
         # flake-utils-plus
         generateRegistryFromInputs = true;
         generateNixPathFromInputs = true;
         linkInputs = true;
+
       };
+
+    arclight.home = {
+      configFile = {
+        "wgetrc".text = "";
+      };
+
+      extraOptions = {
+        programs.nix-index.enable = true;
+      };
+
+    };
   };
+
+
 }

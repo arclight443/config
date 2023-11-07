@@ -1,55 +1,45 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.suites.common;
+  cfg = config.arclight.suites.common;
 in
 {
-  options.plusultra.suites.common = with types; {
+  options.arclight.suites.common = with types; {
     enable = mkBoolOpt false "Whether or not to enable common configuration.";
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [
-      pkgs.plusultra.list-iommu
-    ];
 
-    plusultra = {
+    arclight = {
       nix = enabled;
 
-      # @TODO(jakehamilton): Enable this once Attic is configured again.
-      # cache.public = enabled;
-
-      cli-apps = {
-        flake = enabled;
-      };
+      cli-apps = { };
 
       tools = {
+        uutils = enabled;
+        networking = enabled;
+        event = enabled;
         git = enabled;
+        cloud = enabled;
         misc = enabled;
-        fup-repl = enabled;
-        comma = enabled;
-        nix-ld = enabled;
-        bottom = enabled;
       };
 
       hardware = {
         audio = enabled;
         storage = enabled;
         networking = enabled;
-      };
-
-      services = {
-        printing = enabled;
-        openssh = enabled;
-        tailscale = enabled;
+        thermal = enabled;
       };
 
       security = {
-        gpg = enabled;
         doas = enabled;
         keyring = enabled;
+      };
+
+      services = {
+        openssh = enabled;
       };
 
       system = {
@@ -60,5 +50,11 @@ in
         xkb = enabled;
       };
     };
+
+    services.xserver.excludePackages = with pkgs; [
+      xterm
+      nano
+    ];
+
   };
 }

@@ -1,6 +1,3 @@
-# macOS adds a file when opening a directory with Finder.
-.DS_Store
-
 # Running `nixos-rebuild build` or `nix build` generates a result directory.
 result
 

@@ -1,35 +1,60 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-with lib.plusultra;
+with lib.arclight;
 let
-  cfg = config.plusultra.suites.desktop;
+  cfg = config.arclight.suites.desktop;
 in
 {
-  options.plusultra.suites.desktop = with types; {
+  options.arclight.suites.desktop = with types; {
     enable =
       mkBoolOpt false "Whether or not to enable common desktop configuration.";
   };
 
   config = mkIf cfg.enable {
-    plusultra = {
+    arclight = {
       desktop = {
         gnome = enabled;
+      };
 
-        addons = { wallpapers = enabled; };
+      cli-apps = {
+        ddcutil = enabled;
+        ncmpcpp = enabled;
+        ytdlp = enabled;
+        chatblade = enabled;
+      };
+
+      browsers = {
+        firefox.enable = true;
+        firefox.profiles = {
+          personal = enabled;
+          services = enabled;
+          private = enabled;
+        };
       };
 
       apps = {
-        _1password = enabled;
-        firefox = enabled;
-        vlc = enabled;
-        logseq = enabled;
-        hey = enabled;
-        pocketcasts = enabled;
-        yt-music = enabled;
-        twitter = enabled;
-        gparted = enabled;
+        junction = enabled;
+        keepassxc = enabled;
+        evolution = enabled;
+        telegram = enabled;
+        whatsapp = enabled;
+        element = enabled;
+        tor-browser = enabled;
+        imv = enabled;
+        mpv = enabled;
+        mpdevil = enabled;
+        mullvad = enabled;
+        nautilus = enabled;
+        onlyoffice = enabled;
       };
+
+      services = {
+        bluetooth = enabled;
+        flatpak = enabled;
+        printing = enabled;
+      };
+
     };
   };
 }

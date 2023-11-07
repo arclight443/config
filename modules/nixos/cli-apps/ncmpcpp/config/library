@@ -1,0 +1,17 @@
+# Library Pane
+
+#### Pre-config
+system_encoding = "UTF-8"
+
+#### Path
+ncmpcpp_directory = ~/.config/ncmpcpp
+mpd_music_dir = ~/Music
+
+#### Disable clutter
+header_visibility = "no"
+statusbar_visibility = "no"
+progressbar_look= "  "
+message_delay_time = 2
+
+#### Media Library page
+media_library_hide_album_dates = "yes"

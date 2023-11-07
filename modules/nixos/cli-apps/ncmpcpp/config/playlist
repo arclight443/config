@@ -1,0 +1,60 @@
+# Main Pane
+
+#### Pre-config
+system_encoding = "UTF-8"
+mouse_support = "yes"
+
+#### Path
+ncmpcpp_directory = ~/.config/ncmpcpp
+mpd_music_dir = ~/Music
+
+#### Highlight timeout
+message_delay_time = 0
+playlist_disable_highlight_delay = 1
+
+#### Cover art
+execute_on_song_change="ncmpcpp_cover_art"
+
+#### Disable clutter
+header_visibility = "no"
+statusbar_visibility = "no"
+titles_visibility = "no"
+display_bitrate = "no"
+
+#### Header
+user_interface= alternative
+alternative_header_first_line_format = $6$b» {%t} «$/b
+alternative_header_second_line_format = $4{%b}|{/%D/}
+alternative_ui_separator_color = white
+
+#### Status bar
+statusbar_color = "white"
+
+#### Song format
+song_list_format = "                                         $4%t $R$5%a "
+song_status_format = "$b$7♫ $2%a $4⟫$3⟫ $8%t $4⟫$3⟫ $5%b "
+song_window_title_format = " {%a} - {%t}"
+
+#### Progress bar
+progressbar_elapsed_color = "7"
+progressbar_color = "white"
+progressbar_look = "▃▃▃"
+
+#### Playlist 
+playlist_shorten_total_times = "yes"
+playlist_display_mode = "classic"
+playlist_editor_display_mode = "columns"
+
+#### Other pages
+browser_display_mode = "columns"
+search_engine_display_mode = "columns"
+
+autocenter_mode = "yes"
+centered_cursor = "yes"
+locked_screen_width_part = "60"
+enable_window_title = "yes"
+cyclic_scrolling = "yes"
+
+#### Misc
+external_editor = "nvim"
+

@@ -1,27 +1,26 @@
-{
-  options,
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ options, config, lib, pkgs, ... }:
+
 with lib;
-with lib.plusultra; let
-  cfg = config.plusultra.suites.development;
+with lib.arclight;
+let
+  cfg = config.arclight.suites.development;
   apps = {
-    vscode = enabled;
-    yubikey = enabled;
+    insomnia = enabled;
+    dbeaver = enabled;
   };
   cli-apps = {
     tmux = enabled;
+    lazygit = enabled;
     neovim = enabled;
-    yubikey = enabled;
-    prisma = enabled;
+    pandoc = enabled;
   };
-in {
-  options.plusultra.suites.development = with types; {
-    enable =
-      mkBoolOpt false
+  virtualisation = {
+    podman = enabled;
+  };
+in
+{
+  options.arclight.suites.development = with types; {
+    enable = mkBoolOpt false
       "Whether or not to enable common development configuration.";
   };
 
@@ -34,22 +33,14 @@ in {
       8081
     ];
 
-    plusultra = {
-      inherit apps cli-apps;
+    arclight = {
+      inherit apps cli-apps virtualisation;
 
       tools = {
-        # attic = enabled;
-        at = enabled;
         direnv = enabled;
-        go = enabled;
-        http = enabled;
-        k8s = enabled;
-        node = enabled;
-        titan = enabled;
-        qmk = enabled;
+        kubernetes = enabled;
       };
 
-      virtualisation = {podman = enabled;};
     };
   };
 }

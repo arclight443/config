@@ -1,15 +1,12 @@
 { options, config, pkgs, lib, inputs, ... }:
 
 with lib;
-with lib.plusultra;
-let cfg = config.plusultra.home;
+with lib.arclight;
+let cfg = config.arclight.home;
 in
 {
-  # imports = with inputs; [
-  #   home-manager.nixosModules.home-manager
-  # ];
 
-  options.plusultra.home = with types; {
+  options.arclight.home = with types; {
     file = mkOpt attrs { }
       (mdDoc "A set of files to be managed by home-manager's `home.file`.");
     configFile = mkOpt attrs { }
@@ -18,19 +15,33 @@ in
   };
 
   config = {
-    plusultra.home.extraOptions = {
+    
+    arclight.home.mutableFile = {
+      "/home/${config.arclight.user.name}/Arclight/dotfiles" = {
+        url = "https://github.com/arclight443/dotfiles.git";
+        type = "git";
+      };
+    };
+
+    arclight.home.extraOptions = {
+
+      imports = [
+        inputs.arkenfox.hmModules.default
+      ];
+
       home.stateVersion = config.system.stateVersion;
-      home.file = mkAliasDefinitions options.plusultra.home.file;
+      home.file = mkAliasDefinitions options.arclight.home.file;
       xdg.enable = true;
-      xdg.configFile = mkAliasDefinitions options.plusultra.home.configFile;
+      xdg.configFile = mkAliasDefinitions options.arclight.home.configFile;
     };
 
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
 
-      users.${config.plusultra.user.name} =
-        mkAliasDefinitions options.plusultra.home.extraOptions;
+      users.${config.arclight.user.name} =
+        mkAliasDefinitions options.arclight.home.extraOptions;
     };
+
   };
 }
