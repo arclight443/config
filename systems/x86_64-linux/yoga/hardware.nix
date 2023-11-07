@@ -53,6 +53,5 @@ in
     { device = "/dev/disk/by-label/SWAP"; }
   ];
 
-  networking.hostName = "yoga";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

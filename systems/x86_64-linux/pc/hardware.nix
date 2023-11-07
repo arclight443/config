@@ -26,13 +26,28 @@ in
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-label/NIXOS";
-      fsType = "ext4";
+      device = "rpool/local/root";
+      fsType = "zfs";
     };
 
     "/boot/efi" = {
       device = "/dev/disk/by-label/BOOT";
       fsType = "vfat";
+    };
+    
+    "/nix" = {
+      device = "rpool/local/nix";
+      fsType = "zfs";
+    };
+    
+    "/home" = {
+      device = "rpool/safe/home";
+      fsType = "zfs";
+    };
+
+    "/persist" = {
+      device = "rpool/safe/persist";
+      fsType = "zfs";
     };
 
     "/mnt/data_01" = {
@@ -75,14 +90,13 @@ in
   };
 
   swapDevices = [
-    { device = "/dev/disk/by-partlabel/swap"; }
+    { device = "/dev/disk/by-label/SWAP"; }
   ];
-
+  
   #hardware.opengl.enable = true;
   #hardware.nvidia.package = config.boot.kernelPackages.nvidia.latest;
   #hardware.nvidia.modesetting.enable = true;
   #hardware.nvidia.forceFullCompositionPipeline = true;
 
-  networking.hostName = "pc-nixos";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

@@ -20,6 +20,7 @@ with lib.arclight;
 
   };
 
+  networking.hostName = "yoga";
   system.stateVersion = "23.05";
 }
 
