@@ -1,0 +1,12 @@
+keys:
+  - &admin_jump_yubi-alpha B9842FCAA85B6F05619DA3585FB66BAE18716F37
+  - &host_yoga age12tn7ykqdyf9tkrvv20hrkylcq9mudejnhyvyat7jg0zu4rlrtveszdldhv
+  - &host_pc age1kj38yfjh34rgay3t55r2nkww3j7p8mkypzdxpaqgclw3r8wmnyqqk8ryuj
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - pgp:
+        - *admin_jump_yubi-alpha
+        age:
+        - *host_yoga
+        - *host_pc

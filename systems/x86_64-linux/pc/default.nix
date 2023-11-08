@@ -11,6 +11,10 @@ with lib.arclight;
       gaming = enabled;
     };
 
+    security = {
+      yubikey = enabled;
+    };
+
   };
 
   networking.hostName = "pc";

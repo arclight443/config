@@ -13,7 +13,7 @@ in
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
 
     initrd = {
       availableKernelModules =
@@ -62,30 +62,30 @@ in
       options = [ "rw" ];
     };
 
-    "/home/${config.arclight.user.name}/Music" = {
-      device = "/mnt/data/Media/Music";
-      options = [ "bind" "rw" ];
-    };
-
-    "/home/${config.arclight.user.name}/Pictures" = {
-      device = "/mnt/data/Media/Pictures";
-      options = [ "bind" "rw" ];
-    };
-
-    "/home/${config.arclight.user.name}/Videos" = {
-      device = "/mnt/data/Media/Videos";
-      options = [ "bind" "rw" ];
-    };
-
-    "/home/${config.arclight.user.name}/Secure" = {
-      device = "/mnt/data/Secure";
-      options = [ "bind" "rw" ];
-    };
-
-    "/home/${config.arclight.user.name}/Art" = {
-      device = "/mnt/data/Art";
-      options = [ "bind" "rw" ];
-    };
+    #"/home/${config.arclight.user.name}/Music" = {
+    #  device = "/mnt/data/Media/Music";
+    #  options = [ "bind" "rw" ];
+    #};
+    #
+    #"/home/${config.arclight.user.name}/Pictures" = {
+    #  device = "/mnt/data/Media/Pictures";
+    #  options = [ "bind" "rw" ];
+    #};
+    #
+    #"/home/${config.arclight.user.name}/Videos" = {
+    #  device = "/mnt/data/Media/Videos";
+    #  options = [ "bind" "rw" ];
+    #};
+    #
+    #"/home/${config.arclight.user.name}/Secure" = {
+    #  device = "/mnt/data/Secure";
+    #  options = [ "bind" "rw" ];
+    #};
+    #
+    #"/home/${config.arclight.user.name}/Art" = {
+    #  device = "/mnt/data/Art";
+    #  options = [ "bind" "rw" ];
+    #};
 
   };
 
