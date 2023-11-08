@@ -97,6 +97,9 @@ in
   #hardware.nvidia.package = config.boot.kernelPackages.nvidia.latest;
   #hardware.nvidia.modesetting.enable = true;
   #hardware.nvidia.forceFullCompositionPipeline = true;
-
+  
+  # ZFS need this 
+  # Generate with "head -c 8 /etc/machine-id"
+  networking.hostId = "74517ea5";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
