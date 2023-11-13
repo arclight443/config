@@ -7,7 +7,7 @@ let
 in
 {
   options.arclight.archetypes.gaming = with types; {
-    enable = mkBoolOpt false "Whether or not to enable corporate archetype.";
+    enable = mkBoolOpt false "Whether or not to enable gaming archetype.";
   };
 
   config = mkIf cfg.enable {
@@ -16,5 +16,4 @@ in
     };
   };
 }
-
 

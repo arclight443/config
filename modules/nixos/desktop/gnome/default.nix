@@ -14,15 +14,15 @@ let
     top-bar-organizer
     run-or-raise
     logo-menu
-    screen-rotate
     kimpanel
-    #vitals     broken for now, would probably be fixed in 23.11 with Gnome 45
     dash-to-dock
     quick-settings-tweaker
     wallpaper-slideshow
     gsconnect
     pkgs.arclight.paperwm
-  ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x;
+    pkgs.arclight.vitals
+  ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
+    ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.screen-rotate;
 
   default-attrs = mapAttrs (key: mkDefault);
   nested-default-attrs = mapAttrs (key: default-attrs);
@@ -62,6 +62,8 @@ in
       ++ optional config.arclight.security.yubikey.enable pkgs.arclight.gnome-lock-all-sessions;
 
     environment.gnome.excludePackages = with pkgs.gnome; [
+      gnome-terminal
+      pkgs.gnome-console
       pkgs.gnome-tour
       pkgs.gnome-photos
       totem
@@ -134,6 +136,10 @@ in
             greeter = {
               IncludeAll = false;
               Exclude = "root";
+            };
+            daemon = {
+              AutomaticLoginEnable = true;
+              AutomaticLogin = config.arclight.user.name;
             };
           };
         };
@@ -303,21 +309,33 @@ in
           };
           
           "org/gnome/shell/extensions/dash-to-dock" = {
+            always-center-icons = true;
             apply-custom-theme = false;
-            background-color = "rgb(124,111,100)";
+            autohide = true;
+            autohide-in-fullscreen = false;
+            background-color = "rgb(40,40,40)";
             background-opacity = 0.8;
             custom-background-color = true;
             custom-theme-shrink = true;
             customize-alphas = true;
-            dash-max-icon-size = 64;
+            dash-max-icon-size = 40;
+            dock-fixed = false;
             dock-position = "BOTTOM";
+            extend-height = true;
             height-fraction = 0.9;
             hot-keys = false;
-            intellihide-mode = "FOCUS_APPLICATION_WINDOWS";
-            max-alpha = 0.6;
+            intellihide = true;
+            intellihide-mode = "All_WINDOWS";
+            isolate-monitors = true;
+            isolate-workspaces = false;
+            min-alpha = 0.6;
+            max-alpha = 0.9;
             multi-monitor = true;
-            running-indicator-style = "DEFAULT";
+            preview-size-scale = 0.5;
+            running-indicator-style = "DOTS";
+            show-icon-emblems = false;
             transparency-mode = "DYNAMIC";
+
           };
 
           "org/gnome/shell/extensions/quick-settings-tweaks" = {
@@ -375,10 +393,10 @@ in
           };
 
           "org/gnome/shell/extensions/blur-my-shell/applications" = {
-            brightness = 0.9;
+            brightness = 0.6;
             customize = true;
-            opacity = 250;
-            sigma = 80;
+            opacity = 255;
+            sigma = 10;
             whitelist = [ "kitty" ];
           };
 

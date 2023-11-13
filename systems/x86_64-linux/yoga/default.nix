@@ -9,6 +9,7 @@ with lib.arclight;
     archetypes = {
       workstation = enabled;
       gaming = enabled;
+      finance = enabled;
     };
 
     security = {

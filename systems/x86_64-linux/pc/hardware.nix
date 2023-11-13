@@ -18,6 +18,11 @@ in
     initrd = {
       availableKernelModules =
         [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+      systemd.enable = true;
+      luks.devices = {
+        "cryptdata01".device = "/dev/disk/by-uuid/eaa33059-78eb-46a4-b57f-0fa596b2ef21";
+        "cryptdata02".device = "/dev/disk/by-uuid/97115b04-b12e-43da-9ce0-90896dc01e98";
+      };
     };
 
     kernelModules = [ "kvm-amd" ];
@@ -25,6 +30,8 @@ in
   };
 
   fileSystems = {
+
+    # NixOS disk on ZFS
     "/" = {
       device = "rpool/local/root";
       fsType = "zfs";
@@ -49,43 +56,75 @@ in
       device = "rpool/safe/persist";
       fsType = "zfs";
     };
+    
 
-    "/mnt/data_01" = {
-      device = "/dev/disk/by-label/DATA_01";
-      fsType = "auto";
+    # Data disks
+    "/mnt/DATA_01" = {
+     device = "/dev/mapper/cryptdata01";
+      fsType = "ext4";
       options = [ "rw" ];
     };
 
-    "/mnt/data_02" = {
-      device = "dev/disk/by-label/DATA_02";
-      fsType = "auto";
+    "/mnt/DATA_02" = {
+      device = "dev/mapper/cryptdata02";
+      fsType = "ext4";
       options = [ "rw" ];
     };
+    
 
-    #"/home/${config.arclight.user.name}/Music" = {
-    #  device = "/mnt/data/Media/Music";
-    #  options = [ "bind" "rw" ];
-    #};
-    #
-    #"/home/${config.arclight.user.name}/Pictures" = {
-    #  device = "/mnt/data/Media/Pictures";
-    #  options = [ "bind" "rw" ];
-    #};
-    #
-    #"/home/${config.arclight.user.name}/Videos" = {
-    #  device = "/mnt/data/Media/Videos";
-    #  options = [ "bind" "rw" ];
-    #};
-    #
-    #"/home/${config.arclight.user.name}/Secure" = {
-    #  device = "/mnt/data/Secure";
-    #  options = [ "bind" "rw" ];
-    #};
-    #
-    #"/home/${config.arclight.user.name}/Art" = {
-    #  device = "/mnt/data/Art";
-    #  options = [ "bind" "rw" ];
-    #};
+    # Bind mounts to home
+    "/home/${config.arclight.user.name}/Arclight" = {
+      device = "/mnt/DATA_01/Arclight";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Documents" = {
+      device = "/mnt/DATA_01/Documents";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Downloads" = {
+      device = "/mnt/DATA_01/Downloads";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/GameFiles" = {
+      device = "/mnt/DATA_01/GameFiles";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Music" = {
+      depends = [ "/mnt/DATA_01" ];
+      device = "/mnt/DATA_01/Music";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Pictures" = {
+      depends = [ "/mnt/DATA_01" ];
+      device = "/mnt/DATA_01/Pictures";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Repo" = {
+      depends = [ "/mnt/DATA_01" ];
+      device = "/mnt/DATA_01/Repo";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Secure" = {
+      device = "/mnt/DATA_01/Secure";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Videos" = {
+      device = "/mnt/DATA_01/Videos";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/Work" = {
+      device = "/mnt/DATA_01/Work";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
 
   };
 
@@ -93,13 +132,7 @@ in
     { device = "/dev/disk/by-label/SWAP"; }
   ];
   
-  #hardware.opengl.enable = true;
-  #hardware.nvidia.package = config.boot.kernelPackages.nvidia.latest;
-  #hardware.nvidia.modesetting.enable = true;
-  #hardware.nvidia.forceFullCompositionPipeline = true;
-  
-  # ZFS need this 
-  # Generate with "head -c 8 /etc/machine-id"
+  # For ZFS. Generate with "head -c 8 /etc/machine-id"
   networking.hostId = "74517ea5";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

@@ -3,17 +3,17 @@
 with lib;
 with lib.arclight;
 let
-  cfg = config.arclight.apps.imv;
+  cfg = config.arclight.apps.vlc;
 
 in
 {
-  options.arclight.apps.imv = with types; {
-    enable = mkBoolOpt false "Whether or not to enable imv.";
+  options.arclight.apps.vlc = with types; {
+    enable = mkBoolOpt false "Whether or not to enable vlc.";
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      imv
+      vlc
     ];
   };
 }

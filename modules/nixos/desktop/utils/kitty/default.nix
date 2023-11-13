@@ -4,6 +4,9 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.kitty;
+  gnome-terminal-spoof = pkgs.writeShellScriptBin "gnome-terminal" ''
+    ${pkgs.kitty}/bin/kitty $@
+  '';
 in
 {
   options.arclight.desktop.utils.kitty = with types; {
@@ -11,13 +14,15 @@ in
   };
 
   config = mkIf cfg.enable {
-
+    
     arclight.home.configFile."kitty/sessions/" = {
       source = ./sessions;
       recursive = true;
     };
 
     arclight.home.extraOptions = {
+      home.packages = [ gnome-terminal-spoof ];
+
       programs.kitty = {
         enable = true;
         shellIntegration = {

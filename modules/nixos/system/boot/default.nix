@@ -11,7 +11,7 @@ in
 
   config = mkIf cfg.enable {
     boot.loader.systemd-boot.enable = true;
-    boot.loader.systemd-boot.configurationLimit = 5;
+    boot.loader.systemd-boot.configurationLimit = 20;
     boot.loader.efi.efiSysMountPoint = "/boot/efi";
     boot.loader.efi.canTouchEfiVariables = true;
 

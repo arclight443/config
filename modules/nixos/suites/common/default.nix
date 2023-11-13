@@ -50,6 +50,10 @@ in
         xkb = enabled;
       };
     };
+    
+    environment.systemPackages = [
+      pkgs.plusultra.list-iommu
+    ];
 
     services.xserver.excludePackages = with pkgs; [
       xterm

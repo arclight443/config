@@ -41,12 +41,11 @@ in
         whatsapp = enabled;
         element = enabled;
         tor-browser = enabled;
-        imv = enabled;
         mpv = enabled;
+        vlc = enabled;
         mpdevil = enabled;
         mullvad = enabled;
         nautilus = enabled;
-        onlyoffice = enabled;
       };
 
       services = {
