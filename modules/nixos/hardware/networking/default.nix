@@ -29,9 +29,6 @@ in
       firewall = {
         enable = true;
       };
-      
-      #extraHosts = ''
-      #'';
 
     };
 

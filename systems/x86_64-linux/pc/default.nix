@@ -29,8 +29,17 @@ with lib.arclight;
       # IOMMU Group 15 01:00.0 Non-Volatile memory controller [0108]: Samsung Electronics Co Ltd NVMe SSD Controller 980 [144d:a809]
       vfioIds = ["10de:2207" "10de:1aef" "144d:a809"];
     };
-
   };
+  
+  #networking.bridges.bridge0.interfaces = [ "enp6s0" ];
+  #networking.interfaces.bridge0 = {
+  #  useDHCP = false;
+  #  ipv4.addresses = [ {
+  #    "address" = "192.168.2.0";
+  #    "prefixLength" = 24;
+  #    }
+  #  ];
+  #};
 
   networking.hostName = "pc";
   system.stateVersion = "23.05";
