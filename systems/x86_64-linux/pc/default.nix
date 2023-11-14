@@ -28,6 +28,7 @@ with lib.arclight;
       # Windows drive:
       # IOMMU Group 15 01:00.0 Non-Volatile memory controller [0108]: Samsung Electronics Co Ltd NVMe SSD Controller 980 [144d:a809]
       vfioIds = ["10de:2207" "10de:1aef" "144d:a809"];
+      #machineUnits = ["machine-qemu\\x2d7\\x2dpc\\x2datlas.scope"];
     };
   };
   

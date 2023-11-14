@@ -37,6 +37,10 @@ in
       virt-manager
     ];
 
+    systemd.tmpfiles.rules = [
+      "f /dev/shm/looking-glass 0660 ${user.name} qemu-libvirtd -"
+    ];
+
     virtualisation = {
       libvirtd = {
         enable = true;
@@ -61,10 +65,15 @@ in
 
     arclight = {
       user = { extraGroups = [ "qemu-libvirtd" "libvirtd" "disk" ]; };
+      apps = { looking-glass-client = enabled; };
+
     };
     
+
+
     #TODO Not needed after 23.11
     programs.dconf.enable = true;
+
 
     arclight.home.extraOptions = {
       dconf.settings = {
