@@ -22,7 +22,7 @@ let
     pkgs.arclight.paperwm
     pkgs.arclight.vitals
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
-    ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.screen-rotate;
+    ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
 
   default-attrs = mapAttrs (key: mkDefault);
   nested-default-attrs = mapAttrs (key: default-attrs);
