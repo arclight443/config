@@ -46,6 +46,7 @@ in
         mpdevil = enabled;
         mullvad = enabled;
         nautilus = enabled;
+        webcord = enabled;
       };
 
       services = {

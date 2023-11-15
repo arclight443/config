@@ -324,8 +324,7 @@ in
             extend-height = true;
             height-fraction = 0.9;
             hot-keys = false;
-            intellihide = true;
-            intellihide-mode = "All_WINDOWS";
+            intellihide = false;
             isolate-monitors = true;
             isolate-workspaces = false;
             min-alpha = 0.6;
