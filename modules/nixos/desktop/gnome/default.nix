@@ -307,7 +307,7 @@ in
           "org/gnome/shell/extensions/user-theme" = {
             name = "Gruvbox-Dark-BL-LB";
           };
-          
+
           "org/gnome/shell/extensions/dash-to-dock" = {
             always-center-icons = true;
             apply-custom-theme = false;
@@ -331,11 +331,11 @@ in
             min-alpha = 0.6;
             max-alpha = 0.9;
             multi-monitor = true;
+            pressure-threshold = 100;
             preview-size-scale = 0.5;
             running-indicator-style = "DOTS";
             show-icon-emblems = false;
             transparency-mode = "DYNAMIC";
-
           };
 
           "org/gnome/shell/extensions/quick-settings-tweaks" = {

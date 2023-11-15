@@ -22,6 +22,7 @@ in
       luks.devices = {
         "cryptdata01".device = "/dev/disk/by-uuid/eaa33059-78eb-46a4-b57f-0fa596b2ef21";
         "cryptdata02".device = "/dev/disk/by-uuid/97115b04-b12e-43da-9ce0-90896dc01e98";
+        "cryptdatavm".device = "/dev/disk/by-uuid/4a9233ba-aeb1-4ed6-b373-51bbe794edf6";
       };
     };
 
@@ -59,14 +60,20 @@ in
     
 
     # Data disks
-    "/mnt/DATA_01" = {
+    "/data/DATA_01" = {
      device = "/dev/mapper/cryptdata01";
       fsType = "ext4";
       options = [ "rw" ];
     };
 
-    "/mnt/DATA_02" = {
+    "/data/DATA_02" = {
       device = "dev/mapper/cryptdata02";
+      fsType = "ext4";
+      options = [ "rw" ];
+    };
+
+    "/data/DATA_VM" = {
+      device = "dev/mapper/cryptdatavm";
       fsType = "ext4";
       options = [ "rw" ];
     };
@@ -74,55 +81,60 @@ in
 
     # Bind mounts to home
     "/home/${config.arclight.user.name}/Arclight" = {
-      device = "/mnt/DATA_01/Arclight";
+      device = "/data/DATA_01/Arclight";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Documents" = {
-      device = "/mnt/DATA_01/Documents";
+      device = "/data/DATA_01/Documents";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Downloads" = {
-      device = "/mnt/DATA_01/Downloads";
+      device = "/data/DATA_01/Downloads";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/GameFiles" = {
-      device = "/mnt/DATA_01/GameFiles";
+      device = "/data/DATA_01/GameFiles";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Music" = {
-      depends = [ "/mnt/DATA_01" ];
-      device = "/mnt/DATA_01/Music";
+      depends = [ "/data/DATA_01" ];
+      device = "/data/DATA_01/Music";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Pictures" = {
-      depends = [ "/mnt/DATA_01" ];
-      device = "/mnt/DATA_01/Pictures";
+      depends = [ "/data/DATA_01" ];
+      device = "/data/DATA_01/Pictures";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Repo" = {
-      depends = [ "/mnt/DATA_01" ];
-      device = "/mnt/DATA_01/Repo";
+      depends = [ "/data/DATA_01" ];
+      device = "/data/DATA_01/Repo";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Secure" = {
-      device = "/mnt/DATA_01/Secure";
+      device = "/data/DATA_01/Secure";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Videos" = {
-      device = "/mnt/DATA_01/Videos";
+      device = "/data/DATA_01/Videos";
+      options = [ "bind" "rw" "x-gvfs-hide" ];
+    };
+
+    "/home/${config.arclight.user.name}/VM" = {
+      device = "/data/DATA_VM/";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
     "/home/${config.arclight.user.name}/Work" = {
-      device = "/mnt/DATA_01/Work";
+      device = "/data/DATA_01/Work";
       options = [ "bind" "rw" "x-gvfs-hide" ];
     };
 
