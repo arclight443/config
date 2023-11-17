@@ -63,6 +63,7 @@ in
         "Pictures/.keep".text = "";
         "Videos/.keep".text = "";
         "Repo/.keep".text = "";
+        "Sync/.keep".text = "";
         ".face".source = cfg.icon;
         "Pictures/${
         cfg.icon.fileName or (builtins.baseNameOf cfg.icon)
