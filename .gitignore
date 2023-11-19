@@ -7,3 +7,5 @@ result
 
 # A useful artifact when working with configuration documentation
 options.json
+
+.direnv

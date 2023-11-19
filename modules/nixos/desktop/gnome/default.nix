@@ -346,7 +346,7 @@ in
             media-control-compact-mode = false;
             media-control-enabled = true;
             output-show-selected = true;
-            user-removed-buttons = [ "DarkModeToggle" ];
+            user-removed-buttons = [ "DarkModeToggle" "NMVpnToggle" ];
             volume-mixer-enabled = true;
             volume-mixer-position = "bottom";
             volume-mixer-show-description = true;

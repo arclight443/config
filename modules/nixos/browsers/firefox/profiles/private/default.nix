@@ -1,4 +1,4 @@
-{ options, config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with lib.arclight;
@@ -6,7 +6,7 @@ with lib.arclight;
 let
   cfg = config.arclight.browsers.firefox.profiles.services;
   arkenfox = import ../arkenfox.nix { inherit lib; };
-  extensions = import ../extensions.nix { inherit pkgs lib inputs; };
+  extensions = import ../extensions.nix { inherit pkgs; };
   userchrome = import ../userchrome.nix { inherit pkgs lib; };
   search = import ../search.nix;
   settings = import ../settings.nix { inherit config; };
@@ -25,7 +25,7 @@ in
 
     arclight.home.extraOptions = {
       programs.firefox.profiles.${lib.strings.toLower profileName} = {
-        inherit search settings;
+        inherit settings search;
         id = 2;
         extensions = extensions.browsing ++ extensions.containers;
         userChrome = userchrome.cascade;

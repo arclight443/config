@@ -30,6 +30,7 @@ in
           personal = enabled;
           services = enabled;
           private = enabled;
+          discord = enabled;
         };
       };
 

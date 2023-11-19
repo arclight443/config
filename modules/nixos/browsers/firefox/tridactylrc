@@ -1,8 +1,36 @@
-" General Settings
+" These are stolen from foodogsquaredone's
 
-set homepages [ "https://duckduckgo.com/" ]
-set newtab https://duckduckgo.com/
+" This enforces Tridactyl to only have this file as the source of truth.
+" Also the first time you open Firefox with this Tridactyl configuration, you
+" might want to restart immediately since the autocontainers are not in
+" effect.
+sanitise tridactyllocal tridactylsync
 
+" Tridactyl settings
+set viewsource default
+set auconcreatecontainer true
+
+" Strict mode causes Tridactyl and the other container
+" extensions fight for the control of the tab and infinitely reloading the tab
+set autocontainmode relaxed
+set minincsearchlen 4
+
+" Disable update checks entirely. We're going to rely on the distro's
+" packaging (or on nixpkgs entirely) to install the native messenger.
+set update.nag false
+set update.nativeinstallcmd echo
+
+" Additional and modified keybindings.
+bind yt tabduplicate
+bind gK elementunhide
+bind gR reader --tab
+
+" Make it closer to Vim, I guess since we're going to use closer functions
+" with the `d` prefix.
+unbind d
+bind dd tabclose
+
+" Personal Settings
 set configversion 2.0
 set theme midnight
 set leavegithubalone true
@@ -30,7 +58,7 @@ set searchurls.sp https://startpage.com/do/search?language=english&cat=web&query
 
 set searchurls.pip https://pypi.org/search/?q=
 set searchurls.npm https://www.npmjs.com/search?q=
-set searchurls.crates https://crates.io/search?q=
+set searchurls.crt https://crates.io/search?q=
 
 set searchurls.gh https://github.com/search?utf8=✓&q=
 
@@ -40,13 +68,10 @@ set searchurls.npu https://search.nixos.org/packages?channel=unstable&query=
 set searchurls.no https://search.nixos.org/options?&query=
 set searchurls.nou https://search.nixos.org/options?channel=unstable&query=
 
-set searchurls.ubj https://packages.ubuntu.com/search?searchon=names&suite=jammy&section=all&keywords=
 set searchurls.gw https://wiki.gentoo.org/index.php?title=Special%3ASearch&profile=default&fulltext=Search&search=
 set searchurls.aw https://wiki.archlinux.org/index.php?search=
 
 set searchurls.wk https://en.wikipedia.org/wiki/Special:Search/
-set searchurls.ms https://learn.microsoft.com/en-in/search/?terms=
-
 
 set searchurls.yt https://www.youtube.com/results?search_query=
 set searchurls.protondb https://www.protondb.com/search?q=
@@ -77,7 +102,6 @@ bind ys clipboard yankshort
 bind yc clipboard yankcanon
 bind ym clipboard yankmd
 bind yo clipboard yankorg
-bind yt clipboard yanktitle
 bind gh home
 bind gH home true
 bind p clipboard open
@@ -99,7 +123,6 @@ bind H back
 bind L forward
 bind <C-o> jumpprev
 bind <C-i> jumpnext
-bind d tabclose
 bind D composite tabprev; tabclose #
 bind gx0 tabclosealltoleft
 bind gx$ tabclosealltoright
@@ -202,5 +225,4 @@ bind zI zoom 3
 bind zO zoom 0.3
 bind . repeat
 
-" For syntax highlighting see https://github.com/tridactyl/vim-tridactyl
-" vim: set filetype=tridactyl
+" vim: ft=vim

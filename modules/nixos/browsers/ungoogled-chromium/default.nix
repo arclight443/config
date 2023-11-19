@@ -1,9 +1,45 @@
-{ options, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with lib.arclight;
 let
   cfg = config.arclight.browsers.ungoogled-chromium;
+
+  lineDesktopItem = pkgs.makeDesktopItem {
+    name = "line";
+    desktopName = "LINE";
+    genericName = "LINE as a Chromium webapp";
+    exec = if config.arclight.apps.mullvad.enable then ''
+      mullvad-exclude ${pkgs.chromium}/bin/chromium --app="chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
+    '' else ''
+      ${pkgs.chromium}/bin/chromium --app="chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
+    '';
+    
+    icon = ./icons/line.svg;
+    type = "Application";
+    categories = [ "Network" "InstantMessaging" ];
+    startupWMClass = "chrome-ophjlpahpchlmihnnnihgmmeilfjmjjc__index.html-Default";
+    terminal = false;
+    mimeTypes = [ "x-scheme-handler/line" ];
+  };
+
+  gatherDesktopItem = pkgs.makeDesktopItem {
+    name = "gather";
+    desktopName = "Gather";
+    genericName = "Gather as a Chromium webapp";
+    exec = if config.arclight.apps.mullvad.enable then ''
+      mullvad-exclude ${pkgs.chromium}/bin/chromium --app="https://app.gather.town" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
+    ''
+    else ''
+      ${pkgs.chromium}/bin/chromium --app="https://app.gather.town" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
+    '';
+    icon = ./icons/gather.svg;
+    type = "Application";
+    categories = [ "Network" "InstantMessaging" ];
+    startupWMClass = "chrome-app.gather.town__-Default";
+    terminal = false;
+    mimeTypes = [ "x-scheme-handler/gather" ];
+  };
 
 in
 {
@@ -55,7 +91,7 @@ in
     };
 
     environment.systemPackages = [ ]
-      ++ optional cfg.apps.line.enable pkgs.arclight.line
-      ++ optional cfg.apps.gather.enable pkgs.arclight.gather;
+      ++ optional cfg.apps.line.enable lineDesktopItem
+      ++ optional cfg.apps.gather.enable gatherDesktopItem;
   };
 }

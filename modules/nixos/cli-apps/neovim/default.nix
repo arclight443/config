@@ -21,6 +21,7 @@ in
       alejandra
       black
       nodePackages.prettier
+      nixpkgs-fmt
 
       # LSP
       vscode-langservers-extracted
@@ -35,7 +36,7 @@ in
       dockerfile-language-server-nodejs
       docker-compose-language-service
       yaml-language-server
-      nixd
+      nil
       
       # Other dependencies
       gcc

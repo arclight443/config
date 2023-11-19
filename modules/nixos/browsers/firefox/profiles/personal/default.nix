@@ -1,4 +1,4 @@
-{ options, config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with lib.arclight;
@@ -6,13 +6,12 @@ with lib.arclight;
 let
   cfg = config.arclight.browsers.firefox.profiles.personal;
   arkenfox = import ../arkenfox.nix { inherit lib; };
-  extensions = import ../extensions.nix { inherit pkgs lib inputs; };
+  extensions = import ../extensions.nix { inherit pkgs; };
   userchrome = import ../userchrome.nix { inherit pkgs lib; };
   search = import ../search.nix;
   settings = import ../settings.nix { inherit config; };
 
   profileName = "Personal";
-  icon = "firefox";
 
 in
 
@@ -43,22 +42,22 @@ in
         ]);
       };
 
-      xdg.desktopEntries = {
-        "firefox-${lib.strings.toLower profileName}" = {
-          inherit icon;
-          name = "Firefox - ${profileName}";
-          genericName = "Firefox (${profileName} profile)";
-          exec = ''
-            ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
-          '';
-          type = "Application";
-          terminal = false;
-          mimeType = [ "text/html" "text/xml" "application/xhtml+xml" "text/mml" "x-scheme-handler/http" "x-scheme-handler/https" "application/pdf" ];
-          settings = {
-            StartupWMClass = "Firefox - ${profileName}";
-          };
-        };
-      };
+      #xdg.desktopEntries = {
+      #  "firefox-${lib.strings.toLower profileName}" = {
+      #    inherit icon;
+      #    name = "Firefox - ${profileName}";
+      #    genericName = "Firefox (${profileName} profile)";
+      #    exec = ''
+      #      ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
+      #    '';
+      #    type = "Application";
+      #    terminal = false;
+      #    mimeType = [ "text/html" "text/xml" "application/xhtml+xml" "text/mml" "x-scheme-handler/http" "x-scheme-handler/https" "application/pdf" ];
+      #    settings = {
+      #      StartupWMClass = "Firefox - ${profileName}";
+      #    };
+      #  };
+      #};
 
     };
 

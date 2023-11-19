@@ -37,6 +37,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nur.url = "github:nix-community/NUR";
+
+    pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     };
@@ -102,10 +106,16 @@
         plusultra.overlays."package/nix-get-protonup"
         plusultra.overlays."package/list-iommu"
 
+        inputs.nur.overlay
+        (final: prev: {
+          inherit (inputs.firefox-addons.lib.${prev.system}) buildFirefoxXpiAddon;
+          firefox-addons = final.callPackage ./packages/firefox-addons { };
+        })
       ];
 
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager
+        nur.nixosModules.nur
         nix-ld.nixosModules.nix-ld
         sops-nix.nixosModules.sops
       ];

@@ -1,11 +1,10 @@
-{ options, config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 with lib.arclight;
 
 let
   cfg = config.arclight.browsers.firefox.profiles.services;
-  arkenfox = import ../arkenfox.nix { inherit lib; };
   extensions = import ../extensions.nix { inherit pkgs lib inputs; };
   userchrome = import ../userchrome.nix { inherit pkgs lib; };
   search = import ../search.nix;
@@ -37,7 +36,9 @@ in
           inherit icon;
           name = "Firefox - ${profileName}";
           genericName = "Firefox (${profileName} profile)";
-          exec = ''
+          exec = if config.arclight.apps.mullvad.enable then ''
+            ${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
+          '' else ''
             ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
           '';
           type = "Application";

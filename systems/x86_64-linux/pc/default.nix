@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 with lib.arclight;
@@ -38,7 +38,7 @@ with lib.arclight;
   services = {
     syncthing = {
       enable = true;
-      user = config.arclight.user.name;
+      user = "${config.arclight.user.name}";
       dataDir = "/home/${config.arclight.user.name}";
       configDir = "/home/${config.arclight.user.name}/.config/syncthing";
       overrideDevices = true;

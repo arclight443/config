@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 with lib.arclight;
@@ -19,6 +19,8 @@ with lib.arclight;
   # 2-in-1 laptop features
   hardware.laptop.common = enabled;
   hardware.laptop.tabletpc = enabled;
+  
+  };
 
   # Syncthing
   networking.firewall.allowedTCPPorts = [ 22000 ];
@@ -27,7 +29,7 @@ with lib.arclight;
   services = {
     syncthing = {
       enable = true;
-      user = config.arclight.user.name;
+      user = "${config.arclight.user.name}";
       dataDir = "/home/${config.arclight.user.name}";
       configDir = "/home/${config.arclight.user.name}/.config/syncthing";
       overrideDevices = true;
@@ -48,7 +50,6 @@ with lib.arclight;
         };
       };
     };
-  };
   };
 
   networking.hostName = "yoga";

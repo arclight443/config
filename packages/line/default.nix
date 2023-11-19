@@ -1,12 +1,15 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 pkgs.makeDesktopItem {
   name = "line";
   desktopName = "LINE";
   genericName = "LINE as a Chromium webapp";
-  exec = ''
+  exec = if config.arclight.apps.mullvad.enable then ''
+    ${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.chromium}/bin/chromium --app="chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
+  '' else ''
     ${pkgs.chromium}/bin/chromium --app="chrome-extension://ophjlpahpchlmihnnnihgmmeilfjmjjc/index.html" --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer --ozone-platform=wayland
   '';
+
   icon = ./line.svg;
   type = "Application";
   categories = [ "Network" "InstantMessaging" ];
