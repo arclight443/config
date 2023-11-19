@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, modulesPath, ... }:
+{ config, lib, inputs, modulesPath, ... }:
 
 let
   inherit (inputs) nixos-hardware;
@@ -11,6 +11,15 @@ in
     common-pc
     common-pc-ssd
   ];
+
+  environment.etc.crypttab = {
+    enable = true;
+    text = ''
+      cryptdata01 /dev/disk/by-uuid/eaa33059-78eb-46a4-b57f-0fa596b2ef21 - fido2-device=auto
+      cryptdata02 /dev/disk/by-uuid/97115b04-b12e-43da-9ce0-90896dc01e98 - fido2-device=auto
+      cryptdatavm /dev/disk/by-uuid/4a9233ba-aeb1-4ed6-b373-51bbe794edf6 - fido2-device=auto
+    '';
+  };
 
   boot = {
     kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages;
