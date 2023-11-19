@@ -26,9 +26,5 @@ in
     multi-account-containers
     open-url-in-container
   ];
-
-  streaming = with personal; [
-    pipewire-screenaudio
-  ];
 }
 

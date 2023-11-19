@@ -172,8 +172,9 @@ in
               [ "org.gnome.Nautilus.desktop" ]
               ++ optional config.arclight.apps.evolution.enable "evolution.desktop"
               ++ optional config.arclight.desktop.utils.kitty.enable "kitty.desktop"
-              ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox-personal.desktop"
+              ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.services.enable "firefox-services.desktop"
+              ++ optional config.arclight.browsers.firefox.profiles.discord.enable "firefox-discord.desktop"
               ++ optional config.arclight.apps.telegram.enable "telegram.desktop"
               ++ optional config.arclight.apps.element.enable "element.desktop"
               ++ optional config.arclight.apps.steam.enable "steam.desktop";

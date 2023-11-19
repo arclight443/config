@@ -5,7 +5,6 @@ with lib.arclight;
 
 let
   cfg = config.arclight.browsers.firefox.profiles.discord;
-  extensions = import ../extensions.nix { inherit pkgs; };
   userchrome = import ../userchrome.nix { inherit pkgs lib; };
   search = import ../search.nix;
   settings = import ../settings.nix { inherit config; };
@@ -27,9 +26,9 @@ in
         inherit search;
         id = 3;
         settings = settings // {
-          "browser.startup.homepage" = "discord.com";
+          "browser.startup.homepage" = "https://discord.com/channels/@me";
         };
-        extensions = extensions.streaming;
+        extensions = [];
         userChrome = userchrome.autohide;
         arkenfox.enable = false;
       };

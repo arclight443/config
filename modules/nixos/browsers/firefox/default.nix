@@ -15,9 +15,9 @@ in
 
   config = mkIf cfg.enable {
 
-    #environment.systemPackages = with pkgs;[
-    #  tridactyl-native
-    #];
+    environment.systemPackages = with pkgs;[
+      tridactyl-native
+    ];
 
     arclight.home = {
       configFile."tridactyl/tridactylrc".source = ./tridactylrc;
@@ -31,10 +31,9 @@ in
           desktopName = "Firefox - Personal";
           wmClass = "Firefox - Personal";
 
-          extraNativeMessagingHosts = with pkgs; [
-            tridactyl-native
-            inputs.pipewire-screenaudio.packages.${pkgs.system}.default
-          ];
+          #extraNativeMessagingHosts = with pkgs; [
+          #  tridactyl-native
+          #];
 
           extraPolicies = {
             AppAutoUpdate = false;
@@ -67,7 +66,7 @@ in
           };
         };
 
-        #home.file.".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
+        home.file.".mozilla/native-messaging-hosts/tridactyl.json".source = "${pkgs.tridactyl-native}/lib/mozilla/native-messaging-hosts/tridactyl.json";
 
         home.packages = with pkgs; [
           (buildEnv

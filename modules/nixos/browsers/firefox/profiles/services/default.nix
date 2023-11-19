@@ -37,7 +37,7 @@ in
           name = "Firefox - ${profileName}";
           genericName = "Firefox (${profileName} profile)";
           exec = if config.arclight.apps.mullvad.enable then ''
-            ${pkgs.mullvad}/bin/mullvad-exclude ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
+            mullvad-exclude ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
           '' else ''
             ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
           '';

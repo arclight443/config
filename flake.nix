@@ -39,8 +39,6 @@
 
     nur.url = "github:nix-community/NUR";
 
-    pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
-
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
     };
@@ -119,6 +117,7 @@
         nix-ld.nixosModules.nix-ld
         sops-nix.nixosModules.sops
       ];
+
 
     };
 }
