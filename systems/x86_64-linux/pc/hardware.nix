@@ -1,4 +1,4 @@
-{ config, lib, inputs, modulesPath, ... }:
+{ pkgs, config, lib, inputs, modulesPath, ... }:
 
 let
   inherit (inputs) nixos-hardware;

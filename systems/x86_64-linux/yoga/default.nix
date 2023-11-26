@@ -48,6 +48,10 @@ with lib.arclight;
           path = "/home/${config.arclight.user.name}/Music";
           devices = [ "pc" "pixel6pro" ];
         };
+        "Sync" = {
+          path = "/home/${config.arclight.user.name}/Sync";
+          devices = [ "yoga" "pixel6pro" ];
+        };
       };
     };
   };

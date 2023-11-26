@@ -28,7 +28,7 @@ in
         mpd = {
           enable = true;
           musicDirectory = "~/Music";
-          playlistDirectory = "/home/${config.arclight.user.name}/Music/Playlist";
+          playlistDirectory = "/home/${config.arclight.user.name}/Music/PLAYLIST";
           extraConfig = ''
             audio_output {
                type  "pipewire"
