@@ -10,7 +10,6 @@ let
   defaultExtensions = with pkgs.gnomeExtensions; [
     just-perfection
     blur-my-shell
-    remove-app-menu
     top-bar-organizer
     run-or-raise
     logo-menu
@@ -19,8 +18,10 @@ let
     quick-settings-tweaker
     wallpaper-slideshow
     gsconnect
-    pkgs.arclight.paperwm
-    pkgs.arclight.vitals
+    paperwm
+    vitals
+    #pkgs.arclight.paperwm
+    #pkgs.arclight.vitals
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
 
@@ -319,13 +320,14 @@ in
             custom-background-color = true;
             custom-theme-shrink = true;
             customize-alphas = true;
-            dash-max-icon-size = 40;
+            dash-max-icon-size = 48;
             dock-fixed = false;
             dock-position = "BOTTOM";
-            extend-height = true;
+            extend-height = false;
             height-fraction = 0.9;
             hot-keys = false;
-            intellihide = false;
+            intellihide = true;
+            intellihide-mode = "ALL_WINDOWS";
             isolate-monitors = true;
             isolate-workspaces = false;
             min-alpha = 0.6;
@@ -380,8 +382,7 @@ in
 
           "org/gnome/shell/extensions/azwallpaper" = {
             slideshow-directory = "/home/${config.arclight.user.name}/Arclight/dotfiles/wallpaper";
-            slideshow-image-duration = 600;
-            #slideshow-slide-duration = mkTuple [ 1 0 0 ];
+            slideshow-slide-duration = mkTuple [ 1 0 0 ];
           };
 
           "org/gnome/shell/extensions/blur-my-shell" = {
@@ -519,6 +520,7 @@ in
               "menuButton"
               "activities"
               "appMenu"
+              "LogoMenu"
               "vitalsMenu"
             ];
 

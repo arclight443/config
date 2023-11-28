@@ -7,6 +7,7 @@
   "extensions.pocket.enabled" = false;
   "browser.tabs.showViewButtonInToolbar" = false;
   "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+  "layers.acceleration.force-enabled" = true; 
 }
   // (
   if config.arclight.hardware.laptop.tabletpc.enable

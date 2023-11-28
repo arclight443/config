@@ -34,25 +34,28 @@ with lib.arclight;
       configDir = "/home/${config.arclight.user.name}/.config/syncthing";
       overrideDevices = true;
       overrideFolders = true;
-      devices = {
-        "pc" = { id = "TLWZQ66-6BYGTM3-UYQKSCN-R3VBMX3-SXJKHQ2-IG2MVVJ-3SFSSXR-3HBLOA5"; };
-        "pixel6pro" = { id = "FNRJSFE-NGN2MMG-WZFBZQE-PF5LATW-WBDTYD5-OVDEAQY-F6KHWNZ-Q2KNLAL"; };
+      settings = { 
+        devices = {
+          "pc" = { id = "TLWZQ66-6BYGTM3-UYQKSCN-R3VBMX3-SXJKHQ2-IG2MVVJ-3SFSSXR-3HBLOA5"; };
+          "pixel6pro" = { id = "FNRJSFE-NGN2MMG-WZFBZQE-PF5LATW-WBDTYD5-OVDEAQY-F6KHWNZ-Q2KNLAL"; };
+        };
+        folders = {
+          "Work" = {
+            path = "/home/${config.arclight.user.name}/Work";
+            devices = [ "pc" ];
+            ignorePerms = false;
+          };
+          "Music" = {
+            path = "/home/${config.arclight.user.name}/Music";
+            devices = [ "pc" "pixel6pro" ];
+          };
+          "Sync" = {
+            path = "/home/${config.arclight.user.name}/Sync";
+            devices = [ "pc" "pixel6pro" ];
+          };
+        };
       };
-      folders = {
-        "Work" = {
-          path = "/home/${config.arclight.user.name}/Work";
-          devices = [ "pc" ];
-          ignorePerms = false;
-        };
-        "Music" = {
-          path = "/home/${config.arclight.user.name}/Music";
-          devices = [ "pc" "pixel6pro" ];
-        };
-        "Sync" = {
-          path = "/home/${config.arclight.user.name}/Sync";
-          devices = [ "yoga" "pixel6pro" ];
-        };
-      };
+
     };
   };
 

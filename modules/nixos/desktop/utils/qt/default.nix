@@ -21,11 +21,15 @@ in
       qt.enable = true;
       qt.platformTheme = "gnome";
       qt.style.name = "adwaita-dark";
+      #qt.style.package = pkgs.adwaita-qt;
     };
 
     #environment.systemPackages = with pkgs; [
     #  libsForQt5.qtstyleplugin-kvantum
+    #  libsForQt5.qt5.qtquickcontrols2
+    #  libsForQt5.qt5.qtgraphicaleffects
     #];
+
     #
     #arclight.home.configFile."Kvantum/" =
     #  {

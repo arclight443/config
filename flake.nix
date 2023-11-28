@@ -2,13 +2,14 @@
   description = "Arclight's NixOS configuration. Heavily based on Jake Hamilton's snowfall-lib.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    master.url = "github:nixos/nixpkgs";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -24,11 +25,6 @@
 
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "unstable";
-    };
-
-    nix-ld = {
-      url = "github:Mic92/nix-ld";
       inputs.nixpkgs.follows = "unstable";
     };
 
@@ -114,7 +110,6 @@
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager
         nur.nixosModules.nur
-        nix-ld.nixosModules.nix-ld
         sops-nix.nixosModules.sops
       ];
 

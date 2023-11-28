@@ -3,5 +3,5 @@
 final: prev:
 
 {
-  inherit (channels.unstable) gnomeExtensions;
+  inherit (channels.master) gnomeExtensions;
 }

@@ -19,7 +19,7 @@ in
     environment.systemPackages = with pkgs; [ font-manager ];
 
     fonts = {
-      fonts = with pkgs;
+      packages = with pkgs;
         [
           roboto
           material-icons

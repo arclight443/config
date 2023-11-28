@@ -50,7 +50,7 @@ in
 
         settings = {
           include = "${pkgs.arclight.gruvbox-flat-nvim-extras}/extras/kitty_gruvbox_.conf";
-          background_opacity = "0.6";
+          background_opacity = "0.8";
 
           remember_window_size = "no";
           placement_strategy = "top-left";

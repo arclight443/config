@@ -81,7 +81,7 @@ in
             enable = true;
             enableCompletion = true;
             enableAutosuggestions = true;
-            enableSyntaxHighlighting = true;
+            syntaxHighlighting.enable = true;
 
             initExtraBeforeCompInit = ''
               # Enable PowerLevel10k instant prompt.
