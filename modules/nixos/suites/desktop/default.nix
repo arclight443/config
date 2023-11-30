@@ -38,6 +38,7 @@ in
         junction = enabled;
         keepassxc = enabled;
         evolution = enabled;
+        #thunderbird = enabled;
         telegram = enabled;
         whatsapp = enabled;
         element = enabled;
@@ -47,6 +48,8 @@ in
         mpdevil = enabled;
         mullvad = enabled;
         nautilus = enabled;
+        remmina = enabled;
+        picard = enabled;
       };
 
       services = {

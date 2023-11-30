@@ -59,10 +59,11 @@ in
   config = mkIf cfg.enable {
     services.pcscd.enable = true;
     services.udev.packages = with pkgs; [ yubikey-personalization ];
-    security.pam.services = {
-      login.u2fAuth = true;
-      sudo.u2fAuth = true;
-    };
+    #u2f login is broken for now
+    #security.pam.services = {
+    #  login.u2fAuth = true;
+    #  sudo.u2fAuth = true;
+    #};
 
     environment.shellInit = ''
       export GPG_TTY="$(tty)"

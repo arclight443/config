@@ -27,13 +27,11 @@ in
       };
 
       cli-apps = {
+        openvpn = enabled;
         openfortivpn = enabled;
       };
 
     };
 
-      environment.systemPackages = with pkgs;[
-        mongodb-compass
-      ];
   };
 }

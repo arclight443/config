@@ -30,7 +30,7 @@ with lib.arclight;
     syncthing = {
       enable = true;
       user = "${config.arclight.user.name}";
-      dataDir = "/home/${config.arclight.user.name}";
+      dataDir = "/home/${config.arclight.user.name}/.config/syncthing";
       configDir = "/home/${config.arclight.user.name}/.config/syncthing";
       overrideDevices = true;
       overrideFolders = true;

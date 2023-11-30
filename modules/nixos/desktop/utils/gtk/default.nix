@@ -32,11 +32,6 @@ in
           name = "Adwaita-dark";
         };
 
-        #theme = {
-        #  name = "adw-gtk3";
-        #  package = pkgs.adw-gtk3;
-        #};
-
         iconTheme = {
           name = "Gruvbox-Plus-Dark";
           package = pkgs.arclight.gruvbox-plus;

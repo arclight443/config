@@ -17,5 +17,9 @@ in
     ];
 
     services.mullvad-vpn.enable = true;
+
+    #DNS workaround
+    networking.resolvconf.enable = false;
+    services.resolved.enable = true;
   };
 }

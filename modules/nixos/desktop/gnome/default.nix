@@ -20,8 +20,6 @@ let
     gsconnect
     paperwm
     vitals
-    #pkgs.arclight.paperwm
-    #pkgs.arclight.vitals
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
 
@@ -67,6 +65,7 @@ in
       pkgs.gnome-console
       pkgs.gnome-tour
       pkgs.gnome-photos
+      pkgs.gnome-connections
       totem
       yelp
       gnome-music
@@ -352,7 +351,7 @@ in
             user-removed-buttons = [ "DarkModeToggle" "NMVpnToggle" ];
             volume-mixer-enabled = true;
             volume-mixer-position = "bottom";
-            volume-mixer-show-description = true;
+            volume-mixer-show-description = false;
           };
 
           "org/gnome/shell/extensions/just-perfection" = {

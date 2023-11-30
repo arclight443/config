@@ -3,5 +3,5 @@
 final: prev:
 
 {
-  inherit (channels.unstable) mullvad mullvad-vpn;
+  inherit (channels.master) mullvad mullvad-vpn;
 }

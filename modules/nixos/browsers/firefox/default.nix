@@ -38,6 +38,7 @@ in
           extraPolicies = {
             AppAutoUpdate = false;
             DisableAppUpdate = true;
+            DisablePasswordSaving = true;
             DisableMasterPasswordCreation = true;
             DisablePocket = true;
             DisableSetDesktopBackground = true;
