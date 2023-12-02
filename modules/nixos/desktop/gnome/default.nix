@@ -334,7 +334,7 @@ in
             isolate-workspaces = false;
             min-alpha = 0.6;
             max-alpha = 0.9;
-            multi-monitor = true;
+            multi-monitor = false;
             pressure-threshold = 100;
             preview-size-scale = 0.5;
             running-indicator-style = "DOTS";
@@ -396,6 +396,7 @@ in
           };
 
           "org/gnome/shell/extensions/blur-my-shell/applications" = {
+            blur = false;
             brightness = 0.6;
             customize = true;
             opacity = 255;
