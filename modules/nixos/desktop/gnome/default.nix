@@ -52,6 +52,7 @@ in
       nautilus-open-any-terminal
       qgnomeplatform
       gruvbox-gtk-theme
+      gnome.seahorse
       gnome.gnome-themes-extra
       gnome.gnome-tweaks
       gnome.nautilus-python
@@ -137,16 +138,18 @@ in
               IncludeAll = false;
               Exclude = "root";
             };
-            daemon = {
-              AutomaticLoginEnable = true;
-              AutomaticLogin = config.arclight.user.name;
-            };
+            #daemon = {
+            #  AutomaticLoginEnable = true;
+            #  AutomaticLogin = config.arclight.user.name;
+            #};
           };
         };
       };
 
       desktopManager.gnome.enable = true;
     };
+    
+    security.pam.services.login.enableGnomeKeyring = true;
     
     home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
       xdg.configFile."run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";

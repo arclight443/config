@@ -26,7 +26,9 @@ in
         inherit search;
         id = 3;
         settings = settings // {
+          "browser.startup.page" = "1";
           "browser.startup.homepage" = "https://discord.com/channels/@me";
+          "browser.sessionstore.resume_from_crash" = false;
         };
         extensions = [];
         userChrome = userchrome.autohide;
@@ -50,6 +52,7 @@ in
           settings = {
             StartupWMClass = "Discord (Firefox)";
           };
+
         };
       };
 

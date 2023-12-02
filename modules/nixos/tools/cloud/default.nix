@@ -14,6 +14,7 @@ in
     environment.systemPackages = with pkgs; [
       azure-cli
       awscli2
+      terraform
     ];
     
     arclight.home.extraOptions = {

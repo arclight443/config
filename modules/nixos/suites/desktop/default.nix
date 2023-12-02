@@ -31,6 +31,7 @@ in
           services = enabled;
           private = enabled;
           discord = enabled;
+          invidious = enabled;
         };
       };
 
