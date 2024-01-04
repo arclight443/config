@@ -17,6 +17,7 @@ let
     p.go
     p.gomod
     p.gowork
+    p.gosum
     p.hcl
     p.javascript
     p.jq
@@ -50,6 +51,12 @@ in
       black
       nodePackages.prettier
       nixpkgs-fmt
+    
+      gotools
+      gofumpt
+      gomodifytags
+      impl
+      delve
 
       # LSP
       vscode-langservers-extracted
@@ -58,6 +65,7 @@ in
       nodePackages.pyright
       nodePackages.typescript-language-server
       nodePackages.bash-language-server
+      gopls
       
       terraform
       terraform-ls

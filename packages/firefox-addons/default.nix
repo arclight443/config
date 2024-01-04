@@ -35,39 +35,18 @@
         platforms = platforms.all;
         };
       };
-    "simple-translate" = buildFirefoxXpiAddon {
-      pname = "simple-translate";
-      version = "2.8.2";
-      addonId = "simple-translate@sienori";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4165189/simple_translate-2.8.2.xpi";
-      sha256 = "8e8c3af0ffadfd3ff9928355e7be2292befe6c4f0e483f7c37c2d9a34a54f345";
+    "ultrawideo" = buildFirefoxXpiAddon {
+      pname = "ultrawideo";
+      version = "2.5.6";
+      addonId = "{2339288d-f701-45d0-a57f-a847e9adc6cc}";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4070649/ultrawideo-2.5.6.xpi";
+      sha256 = "1347ee548daeb6f8005e8bb1c65fdbf00c75a710b86db1c35bd99afe1860f384";
       meta = with lib;
       {
-        homepage = "https://simple-translate.sienori.com";
-        description = "Quickly translate selected or typed text on web pages. Supports Google Translate and DeepL API.";
-        license = licenses.mpl20;
-        mozPermissions = [
-          "<all_urls>"
-          "storage"
-          "contextMenus"
-          "http://*/*"
-          "https://*/*"
-          ];
-        platforms = platforms.all;
-        };
-      };
-    "tineye-reverse-image-search" = buildFirefoxXpiAddon {
-      pname = "tineye-reverse-image-search";
-      version = "2.0.4";
-      addonId = "tineye@ideeinc.com";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4074627/tineye_reverse_image_search-2.0.4.xpi";
-      sha256 = "cece89c89f4480c6b69336b43c0dd2970058f2658e6cfd0160d05ba3c0cfc1b0";
-      meta = with lib;
-      {
-        homepage = "https://tineye.com/";
-        description = "Click on any image on the web to search for it on TinEye. Recommended by Firefox! \nDiscover where an image came from, see how it is being used, check if modified versions exist or locate high resolution versions. Made with love by the TinEye team.";
+        homepage = "https://github.com/dvlden/ultrawideo";
+        description = "The cross-browser extension that manipulates video aspect ratio to fit your entire screen.\nNetflix | Prime Video | Disney+ | Hulu | ESPN | + Many others... 🚀";
         license = licenses.mit;
-        mozPermissions = [ "contextMenus" "storage" ];
+        mozPermissions = [ "storage" "*://*/*" ];
         platforms = platforms.all;
         };
       };

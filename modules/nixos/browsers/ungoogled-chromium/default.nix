@@ -41,6 +41,17 @@ let
     mimeTypes = [ "x-scheme-handler/gather" ];
   };
 
+  chromiumSplitTunnelDesktopItem = pkgs.makeDesktopItem {
+    name = "chromium";
+    desktopName = "Chromium (split-tunnel)";
+    genericName = "Web Browser";
+    exec = "mullvad-exclude ${pkgs.chromium}/bin/chromium";
+    icon = "chromium";
+    type = "Application";
+    terminal = false;
+    mimeTypes = [ "x-scheme-handler/http" "x-scheme-handler/https" "x-scheme-handler/webcal" "x-scheme-handler/mailto" ];
+  };
+
 in
 {
   options.arclight.browsers.ungoogled-chromium = with types; {
@@ -90,8 +101,9 @@ in
       };
     };
 
-    environment.systemPackages = [ ]
+    environment.systemPackages = with pkgs; [ ] 
       ++ optional cfg.apps.line.enable lineDesktopItem
-      ++ optional cfg.apps.gather.enable gatherDesktopItem;
+      ++ optional cfg.apps.gather.enable gatherDesktopItem
+      ++ optional config.arclight.apps.mullvad.enable chromiumSplitTunnelDesktopItem;
   };
 }

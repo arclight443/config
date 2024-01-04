@@ -24,8 +24,11 @@ in
 
     arclight.home.extraOptions = {
       programs.firefox.profiles.${lib.strings.toLower profileName} = {
-        inherit search settings;
+        inherit search;
         id = 0;
+        settings = settings // {
+          cookiebanners.service.mode = 2;
+        };
         isDefault = true;
         extensions = extensions.base ++ extensions.browsing;
         userChrome = userchrome.cascade;
@@ -38,26 +41,11 @@ in
           arkenfox.main
           {
             "0100"."0102"."browser.startup.page".value = 1;
+            "0100"."0103"."browser.startup.homepage".value = "moz-extension://60bc0884-8b9f-423f-abd0-64bef9228c4e/static/newtab.html";
           }
         ]);
       };
 
-      #xdg.desktopEntries = {
-      #  "firefox-${lib.strings.toLower profileName}" = {
-      #    inherit icon;
-      #    name = "Firefox - ${profileName}";
-      #    genericName = "Firefox (${profileName} profile)";
-      #    exec = ''
-      #      ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
-      #    '';
-      #    type = "Application";
-      #    terminal = false;
-      #    mimeType = [ "text/html" "text/xml" "application/xhtml+xml" "text/mml" "x-scheme-handler/http" "x-scheme-handler/https" "application/pdf" ];
-      #    settings = {
-      #      StartupWMClass = "Firefox - ${profileName}";
-      #    };
-      #  };
-      #};
 
     };
 

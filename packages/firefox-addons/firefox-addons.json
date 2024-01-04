@@ -3,12 +3,9 @@
     "slug": "get-rss-feed-url"
   },
   {
-    "slug": "simple-translate"
-  },
-  {
-    "slug": "tineye-reverse-image-search"
-  },
-  {
     "slug": "pipewire-screenaudio"
+  },
+  {
+    "slug": "ultrawideo"
   }
 ]

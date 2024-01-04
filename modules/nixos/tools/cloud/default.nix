@@ -15,6 +15,7 @@ in
       azure-cli
       awscli2
       terraform
+      ansible
     ];
     
     arclight.home.extraOptions = {

@@ -17,6 +17,7 @@ let
     dash-to-dock
     quick-settings-tweaker
     wallpaper-slideshow
+    no-a11y
     gsconnect
     paperwm
     vitals
@@ -51,7 +52,6 @@ in
       gtk-engine-murrine
       nautilus-open-any-terminal
       qgnomeplatform
-      gruvbox-gtk-theme
       gnome.seahorse
       gnome.gnome-themes-extra
       gnome.gnome-tweaks
@@ -67,6 +67,7 @@ in
       pkgs.gnome-tour
       pkgs.gnome-photos
       pkgs.gnome-connections
+      pkgs.font-manager
       totem
       yelp
       gnome-music
@@ -152,7 +153,16 @@ in
     security.pam.services.login.enableGnomeKeyring = true;
     
     home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
-      xdg.configFile."run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";
+
+      xdg.configFile = {
+        "run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";
+        "gtk-4.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
+      };
+
+      home.file = {
+        ".themes/".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/shell-themes/";
+      };
+
     };
 
     arclight.home.extraOptions = { lib, ... }: {
@@ -199,11 +209,11 @@ in
             color-scheme = "prefer-dark";
             enable-hot-corners = true;
             clock-show-weekday = true;
-            text-scaling-factor = 1;
+            text-scaling-factor = 1.1;
             cursor-size = 30;
-            font-name = "Cantarell 14";
-            monospace-font-name = "MesloLGS NF 10";
-            document-font-name = "Kanit 12";
+            font-name = "Source Sans 3 Regular 15";
+            monospace-font-name = "MesloLGS NF Regular 11";
+            document-font-name = "Kanit Regular 13";
             show-battery-percentage = false;
           };
 
@@ -218,6 +228,7 @@ in
             num-workspaces = 10;
             focus-mode = "click";
             button-layout = "appmenu:close";
+            titlebar-font = "Source Sans 3 Regular 12";
           };
 
           "org/gnome/desktop/wm/keybindings" = {
@@ -295,13 +306,13 @@ in
             screenshot-window = [ "<Super>Print" ];
           };
 
-
           "org/gnome/mutter" = {
             edge-tiling = false;
             dynamic-workspaces = false;
             workspaces-only-on-primary = true;
             overlay-key = "";
             center-new-windows = true;
+            #experimental-features = [ "scale-monitor-framebuffer" ];
           };
 
           "org/gnome/wayland/keybindings" = {
@@ -309,7 +320,7 @@ in
           };
 
           "org/gnome/shell/extensions/user-theme" = {
-            name = "Gruvbox-Dark-BL-LB";
+            name = "Adwaita-Dark-Gruvbox";
           };
 
           "org/gnome/shell/extensions/dash-to-dock" = {
@@ -375,16 +386,16 @@ in
             quick-settings = true;
             power-icon = true;
 
-            panel-button-padding-size = 6;
-            panel-corner-size = 0;
-            panel-icon-size = 15;
-            panel-indicator-padding-size = 1;
-            panel-size = 0;
+            #panel-button-padding-size = 6;
+            #panel-corner-size = 0;
+            #panel-icon-size = 15;
+            #panel-indicator-padding-size = 1;
+            #panel-size = 0;
           };
 
           "org/gnome/shell/extensions/azwallpaper" = {
             slideshow-directory = "/home/${config.arclight.user.name}/Arclight/dotfiles/wallpaper";
-            slideshow-slide-duration = mkTuple [ 1 0 0 ];
+            slideshow-slide-duration = mkTuple [ 24 0 0 ];
           };
 
           "org/gnome/shell/extensions/blur-my-shell" = {
@@ -413,14 +424,14 @@ in
           };
 
           "org/gnome/shell/extensions/paperwm" = {
-            vertical-margin = 10;
+            vertical-margin = 4;
             vertical-margin-bottom = 0;
-            window-gap = 20;
+            window-gap = 12;
             minimap-scale = 0.15;
 
-            animation-time = 0.15;
+            animation-time = 0.12;
             cycle-width-steps = [ 750.0 1130.0 ];
-            horizontal-margin = 15;
+            horizontal-margin = 10;
 
             disable-scratch-in-overview = false;
             gesture-enabled = true;
@@ -440,7 +451,7 @@ in
               "{\"wm_class\":\"\", \"title\":\"Ncmpcpp\", \"preferredWidth\":\"80%\"}"
               "{\"wm_class\":\"\", \"title\":\"Neovim\", \"preferredWidth\":\"40%\"}"
               "{\"wm_class\":\"\", \"title\":\"Pulsemixer\", \"preferredWidth\":\"60%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Bottom\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Btop\", \"preferredWidth\":\"100%\"}"
             ];
 
           };
@@ -508,6 +519,7 @@ in
             show-battery = true;
             show-fan = false;
             use-higher-precision = false;
+            hot-sensors = "['_memory_usage_', '__network-rx_max__', '__temperature_avg__']";
           };
 
           "org/gnome/shell/extensions/touchx" = {

@@ -31,7 +31,6 @@ in
           services = enabled;
           private = enabled;
           discord = enabled;
-          invidious = enabled;
         };
       };
 
@@ -39,7 +38,7 @@ in
         junction = enabled;
         keepassxc = enabled;
         evolution = enabled;
-        #thunderbird = enabled;
+        freetube = enabled;
         telegram = enabled;
         whatsapp = enabled;
         element = enabled;

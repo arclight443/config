@@ -7,24 +7,29 @@ in
 {
   base = with nur; [
     ublock-origin
-    i-dont-care-about-cookies
     don-t-fuck-with-paste
   ] ++ (with personal; [
     get-rss-feed-url
-    tineye-reverse-image-search
-    simple-translate
-    pipewire-screenaudio
   ]);
 
   browsing = with nur; [
     tridactyl
     xbrowsersync
-    darkreader
   ];
 
   containers = with nur; [
     multi-account-containers
     open-url-in-container
   ];
+  
+  screensharing = with personal; [
+    pipewire-screenaudio
+  ];
+  
+  streaming = with personal; [
+    ultrawideo
+  ];
+
+  
 }
 

@@ -5,6 +5,7 @@ with lib.arclight;
 
 let
   cfg = config.arclight.browsers.firefox;
+  dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
 in
 {
@@ -19,47 +20,53 @@ in
       tridactyl-native
     ];
 
+    home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
+      xdg.configFile = {
+        "tridactyl/themes".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/tridactyl/themes";           
+        "tridactyl/tridactylrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/tridactyl/tridactylrc"; 
+      };
+    };
+
     arclight.home = {
-      configFile."tridactyl/tridactylrc".source = ./tridactylrc;
+
       extraOptions = {
         programs.firefox = {
           enable = true;
-          #package = pkgs.firefox.overrideAttrs (oldAttrs: rec {
-          #  buildCommand = builtins.replaceStrings [ "install -D -t $out/share/applications $desktopItem/share/applications/*" ] [ "" ] oldAttrs.buildCommand;
-          #});
-        package = with pkgs; wrapFirefox firefox-unwrapped {
-          desktopName = "Firefox - Personal";
-          wmClass = "Firefox - Personal";
 
-          #extraNativeMessagingHosts = with pkgs; [
-          #  tridactyl-native
-          #];
-
-          extraPolicies = {
-            AppAutoUpdate = false;
-            DisableAppUpdate = true;
-            DisablePasswordSaving = true;
-            DisableMasterPasswordCreation = true;
-            DisablePocket = true;
-            DisableSetDesktopBackground = true;
-            DontCheckDefaultBrowser = true;
-            EnableTrackingProtection = true;
-            FirefoxHome = {
-              Highlights = false;
-              Pocket = false;
-              Snippets = false;
-              SponsporedPocket = false;
-              SponsporedTopSites = false;
+          package = with pkgs; wrapFirefox firefox-unwrapped {
+            desktopName = "Firefox - Personal";
+            wmClass = "Firefox - Personal";
+            nativeMessagingHosts = [
+              inputs.pipewire-screenaudio.packages.${pkgs.system}.default
+            ];
+            
+            extraPolicies = {
+              AppAutoUpdate = false;
+              DisableAppUpdate = true;
+              DisablePasswordSaving = true;
+              DisablePrivateBrowsing = true;
+              DisableFirefoxAccounts = true;
+              DisableMasterPasswordCreation = true;
+              DisablePocket = true;
+              DisableSetDesktopBackground = true;
+              DontCheckDefaultBrowser = true;
+              EnableTrackingProtection = true;
+              FirefoxHome = {
+                Highlights = false;
+                Pocket = false;
+                Snippets = false;
+                SponsporedPocket = false;
+                SponsporedTopSites = false;
+              };
+              NoDefaultBookmarks = true;
+              OfferToSaveLoginsDefault = false;
+              PasswordManagerEnabled = false;
+              SanitizeOnShutdown = {
+                FormData = true;
+              };
+              UseSystemPrintDialog = true;
             };
-            NoDefaultBookmarks = true;
-            OfferToSaveLoginsDefault = false;
-            PasswordManagerEnabled = false;
-            SanitizeOnShutdown = {
-              FormData = true;
-            };
-            UseSystemPrintDialog = true;
           };
-        };
 
           arkenfox = {
             enable = true;

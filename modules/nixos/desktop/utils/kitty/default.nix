@@ -15,11 +15,6 @@ in
 
   config = mkIf cfg.enable {
     
-    arclight.home.configFile."kitty/sessions/" = {
-      source = ./sessions;
-      recursive = true;
-    };
-
     arclight.home.extraOptions = {
       home.packages = [ gnome-terminal-spoof ];
 
@@ -32,7 +27,7 @@ in
         font = {
           name = "MesloLGS NF";
           package = pkgs.meslo-lgs-nf;
-          size = 13;
+          size = 14;
         };
 
         keybindings = {

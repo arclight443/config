@@ -15,7 +15,9 @@ in
     arclight = {
       nix = enabled;
 
-      cli-apps = { };
+      cli-apps = {
+        btop = enabled;
+      };
 
       tools = {
         uutils = enabled;

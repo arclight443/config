@@ -6,6 +6,7 @@ with lib.arclight;
 let
   cfg = config.arclight.browsers.firefox.profiles.discord;
   userchrome = import ../userchrome.nix { inherit pkgs lib; };
+  extensions = import ../extensions.nix { inherit pkgs; };
   search = import ../search.nix;
   settings = import ../settings.nix { inherit config; };
 
@@ -29,28 +30,31 @@ in
           "browser.startup.page" = "1";
           "browser.startup.homepage" = "https://discord.com/channels/@me";
           "browser.sessionstore.resume_from_crash" = false;
+          "media.navigator.permission.disabled" = true;
+          "media.navigator.permission.override" = "discord.com";
+          "browser.tabs.inTitlebar" = 0;
         };
-        extensions = [];
-        userChrome = userchrome.autohide;
+        extensions = extensions.screensharing;
+        userChrome = userchrome.nobar;
         arkenfox.enable = false;
       };
 
       xdg.desktopEntries = {
         "firefox-${lib.strings.toLower profileName}" = {
           inherit icon;
-          name = "Discord (Firefox)";
+          name = "Discord";
           genericName = "All-in-one cross-platform voice and text chat for gamers";
           exec = if config.arclight.apps.mullvad.enable then ''
-            mullvad-exclude ${pkgs.firefox}/bin/firefox --name "Discord (Firefox)" -P ${lib.strings.toLower profileName} %U
+            mullvad-exclude ${pkgs.firefox}/bin/firefox --name "Discord" -P ${lib.strings.toLower profileName} %U
           '' else ''
-            ${pkgs.firefox}/bin/firefox --name "Discord (Firefox)" -P ${lib.strings.toLower profileName} %U
+            ${pkgs.firefox}/bin/firefox --name "Discord" -P ${lib.strings.toLower profileName} %U
           '';
           type = "Application";
           categories = [ "Network" "InstantMessaging" ];
           terminal = false;
           mimeType = [ "x-scheme-handler/discord" ];
           settings = {
-            StartupWMClass = "Discord (Firefox)";
+            StartupWMClass = "Discord";
           };
 
         };

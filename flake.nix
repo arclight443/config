@@ -58,6 +58,8 @@
       url = "github:drduh/config";
       flake = false;
     };
+    
+    pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
 
   };
 

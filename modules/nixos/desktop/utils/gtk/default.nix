@@ -21,15 +21,12 @@ in
 
     arclight.home.extraOptions = {
 
-      home.sessionVariables = {
-        GTK_THEME = "Gruvbox-Dark-BL-LB";
-      };
-
       gtk = {
         enable = true;
 
         theme = {
-          name = "Adwaita-dark";
+          name = "adw-gtk3-dark";
+          package = pkgs.adw-gtk3;
         };
 
         iconTheme = {
