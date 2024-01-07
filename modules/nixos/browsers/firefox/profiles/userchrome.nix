@@ -17,13 +17,13 @@
     #tracking-protection-icon-container {
     	display: none !important;
     }
-    
-    #context-savepage, #context-sep-selectall, #context-take-screenshot {
+
+    #context-savepage, #context-sep-selectall, #context-take-screenshot, #context-sep-screenshots {
       display: none !important;
     }
 
-    #context-openlinkprivate, #context-sendimage, #context-sep-setbackground, #context-setDesktopBackground {
-        display: none !important;
+    #context-openlinkprivate, #context-sendimage, #context-sep-setbackground, #context-setDesktopBackground, #context-searchselect, #context-searchselect-private, #context-sep-sendlinktodevice {
+      display: none !important;
     }
 
     @media (min-width: 0px) {
@@ -74,4 +74,3 @@ nobar = ''
     }
 '';
 }
-

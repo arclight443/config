@@ -22,8 +22,7 @@ in
 
     home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
       xdg.configFile = {
-        "tridactyl/themes".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/tridactyl/themes";           
-        "tridactyl/tridactylrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/tridactyl/tridactylrc"; 
+        "tridactyl/".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/tridactyl/";
       };
     };
 
@@ -33,6 +32,39 @@ in
         programs.firefox = {
           enable = true;
 
+          policies = {
+            AppAutoUpdate = false;
+            DisableAppUpdate = true;
+            DisableFirefoxAccounts = true;
+            DisableFirefoxScreenshots = true;
+            DisableFirefoxStudies = true;
+            DisableForgetButton = true;
+            DisableFormHistory = true;
+            DisablePasswordReveal = true;
+            DisableMasterPasswordCreation = true;
+            DisablePocket = true;
+            DisablePrivateBrowsing = true;
+            DisableProfileImport = true;
+            DisableSafeMode = true;
+            DisableSetDesktopBackground = true;
+            DisableTelemetry = true;
+            DontCheckDefaultBrowser = true;
+            FirefoxHome = {
+              Highlights = false;
+              Pocket = false;
+              Snippets = false;
+              SponsporedPocket = false;
+              SponsporedTopSites = false;
+            };
+            NoDefaultBookmarks = true;
+            OfferToSaveLoginsDefault = false;
+            PasswordManagerEnabled = false;
+            SanitizeOnShutdown = {
+              FormData = true;
+            };
+            UseSystemPrintDialog = true;
+          };
+
           package = with pkgs; wrapFirefox firefox-unwrapped {
             desktopName = "Firefox - Personal";
             wmClass = "Firefox - Personal";
@@ -40,32 +72,6 @@ in
               inputs.pipewire-screenaudio.packages.${pkgs.system}.default
             ];
             
-            extraPolicies = {
-              AppAutoUpdate = false;
-              DisableAppUpdate = true;
-              DisablePasswordSaving = true;
-              DisablePrivateBrowsing = true;
-              DisableFirefoxAccounts = true;
-              DisableMasterPasswordCreation = true;
-              DisablePocket = true;
-              DisableSetDesktopBackground = true;
-              DontCheckDefaultBrowser = true;
-              EnableTrackingProtection = true;
-              FirefoxHome = {
-                Highlights = false;
-                Pocket = false;
-                Snippets = false;
-                SponsporedPocket = false;
-                SponsporedTopSites = false;
-              };
-              NoDefaultBookmarks = true;
-              OfferToSaveLoginsDefault = false;
-              PasswordManagerEnabled = false;
-              SanitizeOnShutdown = {
-                FormData = true;
-              };
-              UseSystemPrintDialog = true;
-            };
           };
 
           arkenfox = {
