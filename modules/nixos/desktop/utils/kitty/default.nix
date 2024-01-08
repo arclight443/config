@@ -27,7 +27,7 @@ in
         font = {
           name = "MesloLGS NF";
           package = pkgs.meslo-lgs-nf;
-          size = 14;
+          size = 15.5;
         };
 
         keybindings = {

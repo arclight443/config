@@ -25,7 +25,7 @@
     #context-openlinkprivate, #context-sendimage, #context-sep-setbackground, #context-setDesktopBackground, #context-searchselect, #context-searchselect-private, #context-sep-sendlinktodevice {
       display: none !important;
     }
-
+    
     @media (min-width: 0px) {
       #navigator-toolbox { display: flex; flex-wrap: wrap; flex-direction: row; }
 

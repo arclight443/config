@@ -17,10 +17,10 @@ let
     dash-to-dock
     quick-settings-tweaker
     wallpaper-slideshow
-    no-a11y
     gsconnect
     paperwm
     vitals
+    no-a11y
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
 
@@ -156,6 +156,7 @@ in
 
       xdg.configFile = {
         "run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";
+        "paperwm/user.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/paperwm/user.css";
         "gtk-4.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
         "gtk-3.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
       };
@@ -210,11 +211,11 @@ in
             color-scheme = "prefer-dark";
             enable-hot-corners = true;
             clock-show-weekday = true;
-            text-scaling-factor = 1.1;
+            text-scaling-factor = 1.2;
             cursor-size = 30;
             font-name = "Source Sans 3 Regular 15";
             monospace-font-name = "MesloLGS NF Regular 11";
-            document-font-name = "Kanit Regular 13";
+            document-font-name = "Kanit Regular 14";
             show-battery-percentage = false;
           };
 

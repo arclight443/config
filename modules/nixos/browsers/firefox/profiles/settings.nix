@@ -22,12 +22,12 @@
 
   "layers.acceleration.force-enabled" = true;
   "mozilla.widget.use-argb-visuals" = true;
-  "widget.gtk.native-context-menus" = false;
+  "widget.wayland.fractional-scale.enabled" = false;
   
   "devtools.toolbox.host" = "window";
 
-  "ui.textScaleFactor" = 130;
-  "layout.css.devPixelsPerPx" = -1.0;
+  "ui.textScaleFactor" = 145;
+  "layout.css.devPixelsPerPx" = 1.0;
   "browser.zoom.siteSpecific" = false;
   "browser.display.os-zoom-behavior" = 1;
 }

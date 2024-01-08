@@ -14,6 +14,7 @@ in
 
   browsing = with nur; [
     tridactyl
+    darkreader
     xbrowsersync
   ];
 
