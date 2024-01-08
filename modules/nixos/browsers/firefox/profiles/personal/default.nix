@@ -41,7 +41,7 @@ in
           arkenfox.main
           {
             "0100"."0102"."browser.startup.page".value = 1;
-            "0100"."0103"."browser.startup.homepage".value = "moz-extension://60bc0884-8b9f-423f-abd0-64bef9228c4e/static/newtab.html";
+            "0100"."0103"."browser.startup.homepage".value = "https://duckduckgo.com";
           }
         ]);
       };
