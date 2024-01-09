@@ -413,7 +413,7 @@ in
             customize = true;
             opacity = 255;
             sigma = 10;
-            whitelist = [ "kitty" ];
+            #whitelist = [ "kitty" ];
           };
 
           "org/gnome/shell/extensions/blur-my-shell/overview" = {
@@ -565,7 +565,9 @@ in
             menu-button-icon-click-type = "3";
             menu-button-icon-image = 23;
             menu-button-icon-size = 25;
-            menu-button-terminal = "kitty";
+            menu-button-terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
+                                   else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
+                                   else "";
           };
 
           "ca/desrt/dconf-editor" = {
