@@ -20,7 +20,6 @@ let
     gsconnect
     paperwm
     vitals
-    enhanced-osk
     no-a11y
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
