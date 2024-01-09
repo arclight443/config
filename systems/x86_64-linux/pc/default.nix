@@ -8,8 +8,11 @@ with lib.arclight;
   arclight = {
     archetypes = {
       workstation = enabled;
-      gaming = enabled;
       finance = enabled;
+
+      # Game through Atlas on here
+      #gaming = enabled;
+
     };
 
     security = {
