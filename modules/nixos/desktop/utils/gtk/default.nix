@@ -4,6 +4,8 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.gtk;
+  dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
+
 in
 {
   options.arclight.desktop.utils.gtk = with types; {
@@ -18,6 +20,15 @@ in
     environment.systemPackages = with pkgs; [
       gtk4
     ];
+
+    home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
+
+      xdg.configFile = {
+        "gtk-4.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
+        "gtk-3.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
+      };
+
+    };
 
     arclight.home.extraOptions = {
 

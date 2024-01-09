@@ -28,6 +28,7 @@ in
       imports = [
         inputs.arkenfox.hmModules.default
         inputs.nur.hmModules.nur
+        inputs.ags.homeManagerModules.default
       ];
 
       home.stateVersion = config.system.stateVersion;

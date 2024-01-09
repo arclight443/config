@@ -14,7 +14,6 @@ in
     programs.ssh.askPassword = "";
 
     environment.systemPackages = with pkgs; [
-      cosign
       # Performance monitoring
       bottom
 
@@ -26,6 +25,7 @@ in
       p7zip
       file
       unzip
+      unar
 
       # Process
       killall

@@ -29,6 +29,9 @@ in
           noto-fonts-cjk-sans
           noto-fonts-cjk-serif
           (nerdfonts.override { fonts = [ "Hack" "FiraCode" "Iosevka" ]; })
+          cantarell-fonts
+          terminus_font
+          font-awesome
         ] ++ cfg.fonts;
       fontconfig = {
         defaultFonts = {

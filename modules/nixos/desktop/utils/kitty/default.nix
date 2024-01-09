@@ -27,7 +27,7 @@ in
         font = {
           name = "MesloLGS NF";
           package = pkgs.meslo-lgs-nf;
-          size = 15.5;
+          size = if config.arclight.desktop.gnome.enable then 16.5 else 11.5;
         };
 
         keybindings = {

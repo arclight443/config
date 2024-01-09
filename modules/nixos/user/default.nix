@@ -50,7 +50,10 @@ in
 
     programs.zsh = {
       enable = true;
-      autosuggestions.enable = true;
+      autosuggestions = {
+        enable = true;
+        highlightStyle = "fg=#7c6f64";
+      };
       histFile = "$XDG_CACHE_HOME/zsh/history";
     };
 
@@ -82,11 +85,13 @@ in
             enableCompletion = true;
             enableAutosuggestions = true;
             syntaxHighlighting.enable = true;
-
+            
             initExtraBeforeCompInit = ''
               # Enable PowerLevel10k instant prompt.
               P10K_INSTANT_PROMPT="$XDG_CACHE_HOME/p10k-instant-prompt-''${(%):-%n}.zsh"
               [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
+
+
             '';
             
             completionInit = ''
@@ -139,11 +144,13 @@ in
               # Fix an issue with tmux.
               export KEYTIMEOUT=1
 
+
               # Use vim bindings.
               set -o vi
 
               # Improved vim bindings.
               source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
 
             '';
 

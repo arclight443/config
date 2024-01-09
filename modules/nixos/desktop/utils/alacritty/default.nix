@@ -4,6 +4,9 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.alacritty;
+  gnome-terminal-spoof = pkgs.writeShellScriptBin "gnome-terminal" ''
+    ${pkgs.alacritty}/bin/alacritty $@
+  '';
 
 in
 {
@@ -13,49 +16,51 @@ in
 
   config = mkIf cfg.enable {
     arclight.system.env = {
-      "XCURSOR_THEME" = lib.concatStringsSep " " [ config.arclight.home.extraOptions.gtk.cursorTheme.name "alacritty" ];
+      #"XCURSOR_THEME" = lib.concatStringsSep " " [ config.arclight.home.extraOptions.gtk.cursorTheme.name "alacritty" ];
+      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#7c6f64";
     };
     arclight.home.extraOptions = {
+      home.packages = [ gnome-terminal-spoof ];
       programs.alacritty = {
         enable = true;
         settings = {
-          window.opacity = 0.7;
+          window.opacity = 0.75;
 
           font = {
             normal.family = "MesloLGS NF";
-            size = 13.5;
+            size = 16.5;
           };
 
-          padding.x = 4;
-          padding.y = 4;
+          padding.x = 50;
+          padding.y = 50;
 
           colors = {
 
             primary = {
-              background = "0x1d2021";
-              foreground = "0xd4be98";
+              background = "#282828";
+              foreground = "#d4be98";
             };
 
             normal = {
-              black = "0x1D2021";
-              red = "0xea6962";
-              green = "0xa9b665";
-              yellow = "0xd8a657";
-              blue = "0x7daea3";
-              magenta = "0xd3869b";
-              aqua = "0x89b482";
-              white = "0xd4be98";
+              black = "#3c3836";
+              red = "#ea6962";
+              green = "#a9b665";
+              yellow = "#d8a657";
+              blue = "#7daea3";
+              magenta = "#d3869b";
+              aqua = "#89b482";
+              white = "#d4be98";
             };
 
             bright = {
-              black = "0x17191a";
-              red = "0xea6962";
-              green = "0xa9b665";
-              yellow = "0xd8a657";
-              blue = "0x7daea3";
-              magenta = "0xd3869b";
-              aqua = "0x89b482";
-              white = "0xd4be98";
+              black = "#3c3836";
+              red = "#ea6962";
+              green = "#a9b665";
+              yellow = "#d8a657";
+              blue = "#7daea3";
+              magenta = "#d3869b";
+              aqua = "#89b482";
+              white = "#d4be98";
             };
 
           };

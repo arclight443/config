@@ -20,6 +20,7 @@ let
     gsconnect
     paperwm
     vitals
+    enhanced-osk
     no-a11y
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
@@ -31,7 +32,6 @@ in
   options.arclight.desktop.gnome = with types; {
     enable =
       mkBoolOpt false "Whether or not to use Gnome as the desktop environment.";
-    wayland = mkBoolOpt true "Whether or not to use Wayland.";
     suspend = mkBoolOpt true "Whether or not to suspend the machine after inactivity.";
     extensions = mkOpt (listOf package) [ ] "Extra Gnome extensions to install.";
   };
@@ -43,7 +43,8 @@ in
       qt = enabled;
       dconf = enabled;
       electron-support = enabled;
-      kitty = enabled;
+      alacritty = enabled;
+      #kitty = enabled;
       ibus = enabled;
     };
 
@@ -132,7 +133,7 @@ in
 
         gdm = {
           enable = true;
-          wayland = cfg.wayland;
+          wayland = true;
           autoSuspend = cfg.suspend;
           settings = {
             greeter = {
@@ -157,8 +158,6 @@ in
       xdg.configFile = {
         "run-or-raise".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/run-or-raise";
         "paperwm/user.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/paperwm/user.css";
-        "gtk-4.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
-        "gtk-3.0/gtk.css".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/gtk-4.0/gtk.css";
       };
 
       home.file = {
@@ -187,6 +186,7 @@ in
               [ "org.gnome.Nautilus.desktop" ]
               ++ optional config.arclight.apps.evolution.enable "evolution.desktop"
               ++ optional config.arclight.desktop.utils.kitty.enable "kitty.desktop"
+              ++ optional config.arclight.desktop.utils.alacritty.enable "alacritty.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.services.enable "firefox-services.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.discord.enable "firefox-discord.desktop"
@@ -211,8 +211,8 @@ in
             color-scheme = "prefer-dark";
             enable-hot-corners = true;
             clock-show-weekday = true;
-            text-scaling-factor = 1.2;
-            cursor-size = 30;
+            text-scaling-factor = 1.25;
+            cursor-size = 42;
             font-name = "Source Sans 3 Regular 15";
             monospace-font-name = "MesloLGS NF Regular 11";
             document-font-name = "Kanit Regular 14";
@@ -335,13 +335,13 @@ in
             custom-background-color = true;
             custom-theme-shrink = true;
             customize-alphas = true;
-            dash-max-icon-size = 48;
+            dash-max-icon-size = 64;
             dock-fixed = false;
             dock-position = "BOTTOM";
             extend-height = false;
             height-fraction = 0.9;
             hot-keys = false;
-            intellihide = true;
+            intellihide = if config.arclight.hardware.laptop.tabletpc.enable then true else false;
             intellihide-mode = "ALL_WINDOWS";
             isolate-monitors = true;
             isolate-workspaces = false;
@@ -349,7 +349,7 @@ in
             max-alpha = 0.9;
             multi-monitor = false;
             pressure-threshold = 100;
-            preview-size-scale = 0.5;
+            preview-size-scale = 1.0;
             running-indicator-style = "DOTS";
             show-icon-emblems = false;
             transparency-mode = "DYNAMIC";
@@ -382,7 +382,7 @@ in
             world-clock = false;
             workspace = true;
             workspace-popup = false;
-            workspaces-in-app-grid = true;
+            workspaces-in-app-grid = false;
             window-demands-attention-focus = true;
             ripple-box = true;
             quick-settings = true;
@@ -451,7 +451,7 @@ in
               "{\"wm_class\":\"evolution\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
               "{\"wm_class\":\"KeePassXC\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
               "{\"wm_class\":\"\", \"title\":\"Ncmpcpp\", \"preferredWidth\":\"80%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Neovim\", \"preferredWidth\":\"40%\"}"
+              "{\"wm_class\":\"\", \"title\":\"Neovim\", \"preferredWidth\":\"60%\"}"
               "{\"wm_class\":\"\", \"title\":\"Pulsemixer\", \"preferredWidth\":\"60%\"}"
               "{\"wm_class\":\"\", \"title\":\"Btop\", \"preferredWidth\":\"100%\"}"
             ];

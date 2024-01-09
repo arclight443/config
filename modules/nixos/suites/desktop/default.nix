@@ -15,6 +15,7 @@ in
     arclight = {
       desktop = {
         gnome = enabled;
+        #hyprland = enabled;
       };
 
       cli-apps = {
@@ -54,7 +55,7 @@ in
 
       services = {
         bluetooth = enabled;
-        flatpak = enabled;
+        #flatpak = enabled;
         printing = enabled;
       };
 

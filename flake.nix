@@ -60,6 +60,8 @@
     };
     
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
+    hyprland.url = "github:hyprwm/Hyprland";
+    ags.url = "github:Aylur/ags";
 
   };
 

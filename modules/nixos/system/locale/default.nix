@@ -31,6 +31,11 @@ in
       "ja_JP.UTF-8/UTF-8"
     ];
 
-    console = { keyMap = mkForce "us"; };
+    console = { 
+      keyMap = mkForce "us"; 
+      earlySetup = true;
+      packages = with pkgs; [ terminus_font ];
+      font = "ter-u28n";
+    };
   };
 }

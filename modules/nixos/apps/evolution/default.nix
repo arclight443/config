@@ -21,7 +21,7 @@ in
       plugins = [ pkgs.evolution-ews ];
     };
 
-    services.gnome.evolution-data-server.enable = config.arclight.desktop.gnome.enable;
+    services.gnome.evolution-data-server.enable = lib.mkForce config.arclight.desktop.gnome.enable;
 
     environment.systemPackages =  with pkgs;[
       evolution
