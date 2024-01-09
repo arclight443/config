@@ -22,7 +22,13 @@ in
       desktopManager.plasma6.enable = true;
     };
     
-    programs.dconf.enable = true;
+    arclight.system.xkb.enable = true;
+    arclight.desktop.utils = {
+      dconf = enabled;
+      electron-support = enabled;
+      alacritty = enabled;
+      #ibus = enabled;
+    };
   };
 
 }

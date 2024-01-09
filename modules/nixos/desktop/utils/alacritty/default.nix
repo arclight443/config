@@ -16,8 +16,7 @@ in
 
   config = mkIf cfg.enable {
     arclight.system.env = {
-      #"XCURSOR_THEME" = lib.concatStringsSep " " [ config.arclight.home.extraOptions.gtk.cursorTheme.name "alacritty" ];
-      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#7c6f64";
+      "XCURSOR_THEME" = lib.concatStringsSep " " [ config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name "alacritty" ];
     };
     arclight.home.extraOptions = {
       home.packages = [ gnome-terminal-spoof ];
@@ -28,7 +27,7 @@ in
 
           font = {
             normal.family = "MesloLGS NF";
-            size = 16.5;
+            size = if config.arclight.desktop.gnome.enable then 16.5 else 11.5;
           };
 
           padding.x = 50;
