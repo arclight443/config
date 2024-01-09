@@ -15,6 +15,7 @@ in
     arclight = {
       desktop = {
         gnome = enabled;
+        #kde = enabled;
         #hyprland = enabled;
       };
 

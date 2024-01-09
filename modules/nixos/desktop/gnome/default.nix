@@ -573,7 +573,9 @@ in
           };
 
           "com/github/stunkymonkey/nautilus-open-any-terminal" = {
-            terminal = "kitty";
+            terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
+                       else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
+                       else "";
             new-tab = true;
           };
 
