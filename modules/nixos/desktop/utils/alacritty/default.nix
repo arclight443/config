@@ -15,21 +15,28 @@ in
   };
 
   config = mkIf cfg.enable {
-    arclight.system.env = {
+    #arclight.system.env = {
       #"XCURSOR_THEME" = lib.concatStringsSep " " [ config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name "alacritty" ];
-      "XCURSOR_THEME" = "Adwaita";
-    };
+      #"XCURSOR_THEME" = "Adwaita";
+    #};
 
     arclight.home.extraOptions = {
       home.packages = [ gnome-terminal-spoof ];
       programs.alacritty = {
         enable = true;
         settings = {
+          #Fix cursor theme on Gnome
+          env."XCURSOR_THEME" = if config.arclight.desktop.gnome.enable 
+                                then "Adwaita"
+                                else config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name;
+
           window.opacity = 0.75;
 
           font = {
             normal.family = "MesloLGS NF";
-            size = if config.arclight.desktop.gnome.enable then 16.5 else 11.5;
+            size = if config.arclight.desktop.gnome.enable 
+                   then 16.5 
+                   else 11.5;
           };
 
           padding.x = 50;

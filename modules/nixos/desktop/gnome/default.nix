@@ -20,7 +20,6 @@ let
     gsconnect
     paperwm
     vitals
-    no-a11y
   ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
     ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
 
@@ -185,7 +184,7 @@ in
               [ "org.gnome.Nautilus.desktop" ]
               ++ optional config.arclight.apps.evolution.enable "evolution.desktop"
               ++ optional config.arclight.desktop.utils.kitty.enable "kitty.desktop"
-              ++ optional config.arclight.desktop.utils.alacritty.enable "alacritty.desktop"
+              ++ optional config.arclight.desktop.utils.alacritty.enable "Alacritty.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.services.enable "firefox-services.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.discord.enable "firefox-discord.desktop"
@@ -210,9 +209,9 @@ in
             color-scheme = "prefer-dark";
             enable-hot-corners = true;
             clock-show-weekday = true;
-            text-scaling-factor = 1.25;
+            text-scaling-factor = 1.00;
             cursor-size = 42;
-            font-name = "Source Sans 3 Regular 15";
+            font-name = "Source Sans 3 Regular 16";
             monospace-font-name = "MesloLGS NF Regular 11";
             document-font-name = "Kanit Regular 14";
             show-battery-percentage = false;
@@ -435,6 +434,7 @@ in
             horizontal-margin = 10;
 
             disable-scratch-in-overview = false;
+            disable-top-bar-styling = false;
             gesture-enabled = true;
             only-scratch-in-overview = false;
             restore-attach-modal-dialogs = false;
