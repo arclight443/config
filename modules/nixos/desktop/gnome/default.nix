@@ -41,8 +41,8 @@ in
       qt = enabled;
       dconf = enabled;
       electron-support = enabled;
-      alacritty = enabled;
-      #kitty = enabled;
+      #alacritty = enabled;
+      kitty = enabled;
       ibus = enabled;
     };
 
