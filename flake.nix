@@ -61,8 +61,6 @@
     
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     
-    plasma6.url = "github:nix-community/kde2nix";
-
     hyprland.url = "github:hyprwm/Hyprland";
     ags.url = "github:Aylur/ags";
 
@@ -118,7 +116,6 @@
         home-manager.nixosModules.home-manager
         nur.nixosModules.nur
         sops-nix.nixosModules.sops
-        plasma6.nixosModules.plasma6
       ];
 
 

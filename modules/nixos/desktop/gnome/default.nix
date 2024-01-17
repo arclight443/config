@@ -6,6 +6,9 @@ let
   cfg = config.arclight.desktop.gnome;
   gdmHome = config.users.users.gdm.home;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
+  terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
+             else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
+             else "";
 
   defaultExtensions = with pkgs.gnomeExtensions; [
     just-perfection
@@ -207,7 +210,7 @@ in
 
           "org/gnome/desktop/interface" = {
             color-scheme = "prefer-dark";
-            enable-hot-corners = true;
+            enable-hot-corners = false;
             clock-show-weekday = true;
             text-scaling-factor = 1.00;
             cursor-size = 42;
@@ -225,7 +228,7 @@ in
           };
 
           "org/gnome/desktop/wm/preferences" = {
-            num-workspaces = 10;
+            num-workspaces = "10";
             focus-mode = "click";
             button-layout = "appmenu:close";
             titlebar-font = "Source Sans 3 Regular 12";
@@ -309,7 +312,8 @@ in
           "org/gnome/mutter" = {
             edge-tiling = false;
             dynamic-workspaces = false;
-            workspaces-only-on-primary = true;
+            workspaces-only-on-primary = false;
+            attach-modal-dialogs = false;
             overlay-key = "";
             center-new-windows = true;
             #experimental-features = [ "scale-monitor-framebuffer" ];
@@ -565,9 +569,7 @@ in
             menu-button-icon-click-type = "3";
             menu-button-icon-image = 23;
             menu-button-icon-size = 25;
-            menu-button-terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
-                                   else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
-                                   else "";
+            menu-button-terminal = terminal;
           };
 
           "ca/desrt/dconf-editor" = {
@@ -575,9 +577,7 @@ in
           };
 
           "com/github/stunkymonkey/nautilus-open-any-terminal" = {
-            terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
-                       else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
-                       else "";
+            inherit terminal;
             new-tab = true;
           };
 
