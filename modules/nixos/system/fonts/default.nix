@@ -25,18 +25,19 @@ in
           meslo-lgs-nf
           kanit-font
           inter
+          roboto
           noto-fonts
           noto-fonts-cjk-sans
           noto-fonts-cjk-serif
-          (nerdfonts.override { fonts = [ "Hack" "FiraCode" "Iosevka" ]; })
+          #(nerdfonts.override { fonts = [ "Hack" "FiraCode" "Iosevka" ]; })
+          nerdfonts
           cantarell-fonts
-          terminus_font
           font-awesome
         ] ++ cfg.fonts;
       fontconfig = {
         defaultFonts = {
-          serif = [ "Noto Serif Thai" ];
-          sansSerif = [ "Noto Sans Thai" ];
+          serif = [ "Noto Serif Thai" "Roboto" ];
+          sansSerif = [ "Noto Sans Thai" "Roboto" ];
           monospace = [ "MesloLGS NF Regular" ];
         };
       };

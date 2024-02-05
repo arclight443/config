@@ -52,6 +52,16 @@ in
   swapDevices = [
     { device = "/dev/disk/by-label/SWAP"; }
   ];
+  
+  hardware.opengl = {
+    driSupport = true;
+    driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      # VAAPI
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

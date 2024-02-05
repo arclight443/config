@@ -21,7 +21,7 @@ in
     #};
 
     arclight.home.extraOptions = {
-      home.packages = [ gnome-terminal-spoof ];
+      home.packages = [] ++ optional config.arclight.desktop.gnome.enable gnome-terminal-spoof;
       programs.alacritty = {
         enable = true;
         settings = {

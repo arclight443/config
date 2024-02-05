@@ -14,9 +14,8 @@ in
   config = mkIf cfg.enable {
     arclight = {
       desktop = {
-        gnome = enabled;
-        #kde = enabled;
-        #hyprland = enabled;
+        #gnome = enabled;
+        hyprland = enabled;
       };
 
       cli-apps = {
@@ -24,6 +23,7 @@ in
         ncmpcpp = enabled;
         ytdlp = enabled;
         chatblade = enabled;
+        bluetuith = enabled;
       };
 
       browsers = {
@@ -45,11 +45,12 @@ in
         whatsapp = enabled;
         element = enabled;
         tor-browser = enabled;
+        mission-center = enabled;
+        onlyoffice = enabled;
         mpv = enabled;
         vlc = enabled;
         mpdevil = enabled;
         mullvad = enabled;
-        nautilus = enabled;
         remmina = enabled;
         picard = enabled;
       };

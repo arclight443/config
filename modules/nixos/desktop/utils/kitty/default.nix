@@ -16,7 +16,7 @@ in
   config = mkIf cfg.enable {
     
     arclight.home.extraOptions = {
-      home.packages = [ gnome-terminal-spoof ];
+      home.packages = [] ++ optional config.arclight.desktop.gnome.enable gnome-terminal-spoof;
 
       programs.kitty = {
         enable = true;
@@ -54,7 +54,7 @@ in
 
           clipboard_control = "write-primary write-clipboard no-append";
           select_by_word_characters = ":@-./_~?&=%+#";
-          confirm_os_window_close = -1;
+          confirm_os_window_close = 0;
           scrollback_lines = 10000;
           hide_window_decorations = true;
           enable_audio_bell = false;

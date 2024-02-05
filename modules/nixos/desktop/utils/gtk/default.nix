@@ -50,6 +50,11 @@ in
           package = pkgs.capitaine-cursors;
         };
 
+        font = {
+          name = "Inter Nerd Font";
+          size = 12;
+        };
+
         gtk3.extraConfig = {
           Settings = ''
             gtk-application-prefer-dark-theme=1

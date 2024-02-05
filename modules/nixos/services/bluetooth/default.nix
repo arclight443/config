@@ -16,8 +16,12 @@ in
 
     hardware.bluetooth = {
       enable = true;
-      powerOnBoot = false;
+      powerOnBoot = true;
     };
+
+    environment.systemPackages = with pkgs; [
+      obexftp
+    ];
 
   };
 }

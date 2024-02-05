@@ -18,7 +18,7 @@ in
         ungoogled-chromium.enable = true;
         ungoogled-chromium.apps = {
           line = enabled;
-          gather = enabled;
+          #gather = enabled;
         };
       };
 

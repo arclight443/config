@@ -2,14 +2,15 @@
   description = "Arclight's NixOS configuration. Heavily based on Jake Hamilton's snowfall-lib.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # System is now on Unstable (nixpkgs = unstable, stable = 23.11)
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    stable.url = "github:nixos/nixpkgs/nixos-23.11";
     master.url = "github:nixos/nixpkgs";
 
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -25,7 +26,7 @@
 
     snowfall-flake = {
       url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -45,8 +46,8 @@
 
 		plusultra = {
 			url = "github:jakehamilton/config";
-			inputs.nixpkgs.follows = "nixpkgs";
-			inputs.unstable.follows = "unstable";
+			inputs.nixpkgs.follows = "stable";
+			inputs.unstable.follows = "nixpkgs";
 		};
 
     yubikey-guide = {
@@ -58,11 +59,26 @@
       url = "github:drduh/config";
       flake = false;
     };
+
+    nix-colors.url = "github:misterio77/nix-colors";
     
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     
-    hyprland.url = "github:hyprwm/Hyprland";
-    ags.url = "github:Aylur/ags";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprgrass = {
+      url = "github:horriblename/hyprgrass";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    raise = {
+      url = "github:knarkzel/raise";
+    };
+
+    nixgl.url = "github:guibou/nixGL";
 
   };
 
@@ -105,6 +121,8 @@
         plusultra.overlays."package/nix-get-protonup"
         plusultra.overlays."package/list-iommu"
 
+        nixgl.overlay
+
         inputs.nur.overlay
         (final: prev: {
           inherit (inputs.firefox-addons.lib.${prev.system}) buildFirefoxXpiAddon;
@@ -118,6 +136,12 @@
         sops-nix.nixosModules.sops
       ];
 
+      homes.modules = with inputs; [
+        arkenfox.hmModules.default
+        nur.hmModules.nur
+        hyprland.homeManagerModules.default
+        sops-nix.homeManagerModules.sops
+      ];
 
     };
 }

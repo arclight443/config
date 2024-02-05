@@ -18,7 +18,7 @@ in
     environment.systemPackages = with pkgs; [
       slack
     ] ++ optional config.arclight.apps.mullvad.enable
-    (patchDesktop slack "slack" "^Exec=" "Exec=mullvad-exclude ") ;
+    (patchDesktop slack "slack" "^Exec=.*" "Exec=mullvad-exclude ${pkgs.slack}/bin/slack -s --enable-wayland-ime %U") ;
 
   };
 }

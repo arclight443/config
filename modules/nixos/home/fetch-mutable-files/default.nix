@@ -108,7 +108,9 @@ in
   };
 
   config = lib.mkIf (cfg != { }) {
+
     arclight.home.extraOptions = {
+
       systemd.user.startServices = "sd-switch";
       systemd.user.services.fetch-mutable-files = {
         Unit = {

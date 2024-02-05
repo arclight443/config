@@ -2,13 +2,13 @@
 
 pkgs.stdenv.mkDerivation rec {
   name = "gruvbox-plus-icon-pack";
-  version = "5.0";
+  version = "5.0.1";
 
   src = fetchFromGitHub {
     owner = "SylEleuth";
     repo = name;
     rev = "v${version}";
-    sha256 = "CpSMYCNtDcLpHbBaK1irsnDa6PuINjDqs4KVPpijj30=";
+    sha256 = "S5+pTGNAlMIWiYl3d6Pyd8AbvUDLxnvfraTC3HX0BcE=";
   };
 
   #nativeBuildInputs = [ gtk3 ];

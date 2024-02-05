@@ -16,7 +16,7 @@ in
     };
 
     services.acpid.enable = true;
-    services.gnome.at-spi2-core.enable = true;
+    services.gnome.at-spi2-core.enable = config.arclight.desktop.gnome.enable;
 
   };
 

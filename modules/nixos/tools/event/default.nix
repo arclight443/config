@@ -14,6 +14,7 @@ in
     environment.systemPackages = with pkgs; [
       wev
       evtest
+      libnotify
     ];
   };
 }

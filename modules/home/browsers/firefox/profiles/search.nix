@@ -1,0 +1,5 @@
+{
+  default = "DuckDuckGo";
+  force = true;
+}
+

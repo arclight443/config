@@ -40,13 +40,13 @@ in
   config = mkIf cfg.enable {
     arclight.system.xkb.enable = true;
     arclight.desktop.utils = {
+      common = enabled;
       gtk = enabled;
       qt = enabled;
-      dconf = enabled;
       electron-support = enabled;
-      #alacritty = enabled;
       kitty = enabled;
       ibus = enabled;
+      nautilus = enabled;
     };
 
     environment.systemPackages = with pkgs; [
@@ -59,7 +59,6 @@ in
       gnome.gnome-tweaks
       gnome.nautilus-python
       gnome.zenity
-      mission-center
     ] ++ defaultExtensions ++ cfg.extensions
       ++ optional config.arclight.security.yubikey.enable pkgs.arclight.gnome-lock-all-sessions;
 
