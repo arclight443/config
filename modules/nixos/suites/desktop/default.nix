@@ -53,6 +53,11 @@ in
         mullvad = enabled;
         remmina = enabled;
         picard = enabled;
+        youtube-music = enabled;
+      };
+
+      hardware = {
+        keyboard = enabled;
       };
 
       services = {

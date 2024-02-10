@@ -17,7 +17,7 @@ in
     
     environment.systemPackages = with pkgs;[
       inputs.raise.defaultPackage.${pkgs.system}
-    ];
+    ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
 
     arclight.desktop.utils = {
       gtk = enabled;
@@ -47,6 +47,7 @@ in
       wayland.windowManager.hyprland = {
         enable = true;
         xwayland.enable = true;
+        systemd.enable = true;
         plugins = [
           inputs.hyprgrass.packages.${pkgs.system}.default
         ];
@@ -59,7 +60,7 @@ in
           exec = [ 
             "pgrep waybar && pkill -9 waybar; waybar"
             "pgrep ulauncher && pkill -9 ulauncher; ulauncher --hide-window"
-          ];
+          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep waybar && pkill -9 iio-hyprland; iio-hyprland";
 
           exec-once = [
             "wvkbd-mobintl --hidden -L 150"
@@ -69,7 +70,7 @@ in
             "blueman-applet"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
-          ];
+          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland";
 
           # Env
           env = [

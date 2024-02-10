@@ -10,6 +10,22 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Thermald
+    services.thermald.enable = true;
+
+    # Battery optimization
+    services.auto-cpufreq.enable = true;
+    services.auto-cpufreq.settings = {
+      battery = {
+         governor = "powersave";
+         turbo = "never";
+      };
+      charger = {
+         governor = "performance";
+         turbo = "auto";
+      };
+    };
+
     # Backlight
     arclight.user.extraGroups = [ "video" ];
     programs.light.enable = true;

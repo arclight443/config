@@ -15,7 +15,7 @@ in
 
   config = mkIf cfg.enable {
     
-    home.packages = with pkgs;[
+    home.packages = with pkgs; [
       inputs.raise.defaultPackage.${pkgs.system}
     ];
 
@@ -28,7 +28,6 @@ in
       thunar = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
-      sddm = enabled;
     };
 
     wayland.windowManager.hyprland = {

@@ -2,10 +2,10 @@
 
 with lib;
 with lib.arclight;
-let cfg = config.arclight.cli-apps.ytdlp;
+let cfg = config.arclight.cli-apps.zsh;
 in
 {
-  options.arclight.cli-apps.ytdlp = with types; {
+  options.arclight.cli-apps.zsh = with types; {
     enable = mkBoolOpt false "Whether or not to enable zsh.";
   };
 

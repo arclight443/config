@@ -17,16 +17,14 @@ in
 
   config = mkIf cfg.enable {
 
-    arclight.home.extraOptions = {
-      qt.enable = true;
-      #qt.platformTheme = "gnome";
-      #qt.style.name = "adwaita-dark";
-      qt.platformTheme = "qtct";
-      qt.style.name = "kvantum";
-      #qt.style.package = pkgs.adwaita-qt;
-    };
+    qt.enable = true;
+    #qt.platformTheme = "gnome";
+    #qt.style.name = "adwaita-dark";
+    qt.platformTheme = "qtct";
+    qt.style.name = "kvantum";
+    #qt.style.package = pkgs.adwaita-qt;
 
-    environment.systemPackages = with pkgs; [
+    home.packages = with pkgs; [
       libsForQt5.qtstyleplugin-kvantum
     ];
 

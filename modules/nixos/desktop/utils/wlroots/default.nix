@@ -24,6 +24,11 @@ in
         wl-clipboard
         wvkbd
 
+        # Rofi
+        rofi
+        rofi-bluetooth
+        pkgs.arclight.rofi-wifi-menu
+
         # GTK utilities
         networkmanagerapplet
         blueman

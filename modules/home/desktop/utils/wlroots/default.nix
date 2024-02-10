@@ -22,7 +22,11 @@ in
         grim
         slurp
         wl-clipboard
-        wvkbd
+
+        # Rofi
+        rofi
+        #rofi-bluetooth
+        #pkgs.arclight.rofi-wifi-menu
 
         # GTK utilities
         swaynotificationcenter
@@ -35,32 +39,30 @@ in
 
       ];
 
-      arclight.home.extraOptions = {
-
-        programs.waybar = {
-          enable = true;
-          #settings = {
-          #  mainBar = {
-          #    layer = "top";
-          #    position = "top";
-          #    height = 30;
-          #    output = [
-          #      "eDP-1"
-          #    ];
-          #    modules-left = [ "hyprland/workspaces" "hyprland/submap" "wlr/taskbar" ];
-          #    modules-center = [ "hyprland/window" ];
-          #    #modules-right = [ "mpd" ];
-          #
-          #    "sway/workspaces" = {
-          #      disable-scroll = true;
-          #      all-outputs = true;
-          #    };
-          #
-          #  };
-          #};
-        };
-        
+      programs.waybar = {
+        enable = true;
+        #settings = {
+        #  mainBar = {
+        #    layer = "top";
+        #    position = "top";
+        #    height = 30;
+        #    output = [
+        #      "eDP-1"
+        #    ];
+        #    modules-left = [ "hyprland/workspaces" "hyprland/submap" "wlr/taskbar" ];
+        #    modules-center = [ "hyprland/window" ];
+        #    #modules-right = [ "mpd" ];
+        #
+        #    "sway/workspaces" = {
+        #      disable-scroll = true;
+        #      all-outputs = true;
+        #    };
+        #
+        #  };
+        #};
       };
+      
+      
 
   };
 }

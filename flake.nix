@@ -78,6 +78,10 @@
       url = "github:knarkzel/raise";
     };
 
+    iio-hyprland = {
+      url = "github:arclight443/iio-hyprland";
+    };
+
     nixgl.url = "github:guibou/nixGL";
 
   };
@@ -136,7 +140,7 @@
         sops-nix.nixosModules.sops
       ];
 
-      homes.modules = with inputs; [
+      homes.users."deck@steamdeck".modules = with inputs; [
         arkenfox.hmModules.default
         nur.hmModules.nur
         hyprland.homeManagerModules.default
