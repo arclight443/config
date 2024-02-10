@@ -130,5 +130,9 @@ in
       size = 24;
     };
 
+    xdg.configFile = {
+      "hypr/test.conf".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr/test.conf";
+    };
+
   };
 }

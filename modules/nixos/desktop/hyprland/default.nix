@@ -7,6 +7,8 @@ let
   terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
              else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
              else "";
+  dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
+
 in
 {
   options.arclight.desktop.hyprland = with types; {
@@ -143,6 +145,14 @@ in
         package = pkgs.capitaine-cursors;
         name = "capitaine-cursors";
         size = 24;
+      };
+
+    };
+
+    home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
+
+      xdg.configFile = {
+        "hypr/test.conf".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr/test.conf";
       };
 
     };

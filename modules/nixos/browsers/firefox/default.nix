@@ -67,11 +67,11 @@ in
 
           package = with pkgs; wrapFirefox firefox-unwrapped {
             desktopName = "Firefox - Personal";
-            wmClass = "Firefox - Personal";
+            wmClass = "\"Firefox - Personal\"";
             nativeMessagingHosts = [
               inputs.pipewire-screenaudio.packages.${pkgs.system}.default
             ];
-            
+
           };
 
           arkenfox = {

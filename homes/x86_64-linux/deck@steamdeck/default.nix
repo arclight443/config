@@ -7,7 +7,7 @@ with lib.arclight;
       enable = true;
       name = "deck";
     };
-    
+
     desktop = {
       hyprland = enabled;
     };
@@ -54,6 +54,8 @@ with lib.arclight;
     system = {
       fonts = enabled;
     };
+
+    services.syncthing = enabled;
 
   };
 }
