@@ -5,7 +5,7 @@ with lib.arclight;
 
 let
   rofi-wifi-menu = pkgs.fetchFromGitHub {
-    owner = "eriicmurphyxyz";
+    owner = "ericmurphyxyz";
     repo = "rofi-wifi-menu";
     rev = "d6debde6e302f68d8235ced690d12719124ff18e";
     sha256 = "0vjl2js3qznnsqik6i86xzq7hpcrw8g3rqdi30536j4ws52w3sqz";
@@ -19,3 +19,4 @@ in
     runtimeInputs = [];
     text = builtins.readFile (builtins.toPath "${rofi-wifi-menu}/rofi-wifi-menu.sh") ;
   }
+

@@ -13,6 +13,7 @@ in
 
   config = mkIf cfg.enable {
     programs.home-manager = enabled;
+    home.stateVersion = "23.11";
 
     arclight.home.mutableFile = {
       "/home/${config.arclight.user.name}/Arclight/dotfiles" = {

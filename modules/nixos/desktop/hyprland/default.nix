@@ -9,6 +9,22 @@ let
              else "";
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
+  hyprland-ipc = pkgs.writeShellApplication {
+    name = "hyprland-ipc";
+    checkPhase = "";
+    runtimeInputs = [];
+    text = ''
+      handle() {
+      	case $1 in
+      	closewindow*)
+		      [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
+          ;;
+      	esac
+      }
+      ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+    '';
+  };
+
 in
 {
   options.arclight.desktop.hyprland = with types; {
@@ -19,6 +35,7 @@ in
     
     environment.systemPackages = with pkgs;[
       inputs.raise.defaultPackage.${pkgs.system}
+      hyprkeys
     ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
 
     arclight.desktop.utils = {
@@ -61,15 +78,12 @@ in
           # Auto-start
           exec = [ 
             "pgrep waybar && pkill -9 waybar; waybar"
-            "pgrep ulauncher && pkill -9 ulauncher; ulauncher --hide-window"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep waybar && pkill -9 iio-hyprland; iio-hyprland";
 
           exec-once = [
             "wvkbd-mobintl --hidden -L 150"
             "fcitx5"
             "swaync"
-            "nm-applet --indicator"
-            "blueman-applet"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland";
@@ -82,16 +96,34 @@ in
             "HYPRLAND_LOG_WLR,1"
           ];
 
-          monitor = [
-            "eDP-1, 1920x1080@60, auto, auto, transform, 0"
-          ];
+          #monitor = [
+          #  "eDP-1, 1920x1080@60, auto, auto, transform, 0"
+          #];
 
           # Keybinds
           "$mod" = "SUPER";
           bind = [
-            # Launch
-            "$mod, return, exec, kitty"
+            # General
+            "$mod, r, exec, hyprctl reload"
+            "$mod, f, fullscreen"
             "$mod, Q, killactive"
+            "CTRL SHIFT, q, exit"
+            "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
+
+            # CLI apps
+            "$mod, return, exec, kitty"
+            "$mod, d, exec, rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+            "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && kitty --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
+            "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'kitty --class 'pulsemixer' -e pulsemixer'"
+            "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && kitty --class 'btop' -e btop\""
+            "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"kitty --class 'neovim' -e nvim\""
+
+            # GUI apps
+            "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
+            "$mod, s, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
+            "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'keepassxc'"
+            "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
+            "$mod, y, exec, raise --class 'FreeTube' --launch 'Freetube'"
 
             # Focus
             "$mod, h, movefocus, l"
@@ -125,7 +157,8 @@ in
             "$mod SHIFT, 8, movetoworkspace, 8"
             "$mod SHIFT, 9, movetoworkspace, 9"
             "$mod SHIFT, 0, movetoworkspace, 10"
-          ];
+          ] ++ optional config.arclight.cli-apps.chatblade.enable "$mod, c, exec, raise --class 'chatblade-gpt-35-turbo' --launch 'chatblade-launch gpt-35-turbo'"
+            ++ optional config.arclight.cli-apps.chatblade.enable "$mod SHIFT, c, exec, raise --class 'chatblade-gpt-4' --launch 'chatblade-launch gpt-4'";
 
           # Inputs
           input = {

@@ -1,12 +1,16 @@
 { lib, pkgs, config, osConfig ? { }, format ? "unknown", ... }:
 
 with lib.arclight;
+
 {
+
   arclight = {
     user = {
       enable = true;
       name = "deck";
     };
+
+    home-manager = enabled;
 
     desktop = {
       hyprland = enabled;
@@ -14,21 +18,39 @@ with lib.arclight;
 
     browsers = {
       firefox.enable = true;
+
       firefox.profiles = {
         personal = enabled;
         services = enabled;
         private = enabled;
         discord = enabled;
       };
+
+      ungoogled-chromium.enable = true;
+      ungoogled-chromium.apps = {
+        line = enabled;
+        #gather = enabled;
+      };
+
     };
 
     apps = {
       insomnia = enabled;
       dbeaver = enabled;
+      mpdevil = enabled;
+      youtube-music = enabled;
+      freetube = enabled;
+      junction = enabled;
+      krita = enabled;
+      remmina = enabled;
+      deskreen = enabled;
+      telegram = enabled;
+      keepassxc = enabled;
+      mission-center = enabled;
+      vlc = enabled;
     };
 
     cli-apps = {
-      home-manager = enabled;
       zsh = enabled;
       tmux = enabled;
       lazygit = enabled;
@@ -38,6 +60,7 @@ with lib.arclight;
       ncmpcpp = enabled;
       ytdlp = enabled;
       chatblade = enabled;
+      pulsemixer = enabled;
     };
 
     tools = {
@@ -53,9 +76,8 @@ with lib.arclight;
 
     system = {
       fonts = enabled;
+      udiskie = enabled;
     };
-
-    services.syncthing = enabled;
 
   };
 }

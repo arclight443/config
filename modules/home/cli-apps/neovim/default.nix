@@ -26,6 +26,7 @@ let
     p.lua
     p.make
     p.markdown
+    p.markdown-inline
     p.nix
     p.python
     p.rust

@@ -23,8 +23,11 @@ in
   config = mkIf cfg.enable {
 
     programs.firefox.profiles.${lib.strings.toLower profileName} = {
-      inherit search settings;
+      inherit search;
       id = 1;
+      settings = settings // {
+        "browser.startup.page" = "3";
+      };
       extensions = extensions.browsing ++ extensions.containers;
       userChrome = userchrome.cascade;
       arkenfox.enable = false;

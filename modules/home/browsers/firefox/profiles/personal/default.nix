@@ -26,7 +26,7 @@ in
       inherit search;
       id = 0;
       settings = settings // {
-        cookiebanners.service.mode = 2;
+        "cookiebanners.service.mode" = "2";
       };
       isDefault = true;
       extensions = extensions.base ++ extensions.browsing;

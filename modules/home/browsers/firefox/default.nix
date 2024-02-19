@@ -80,7 +80,7 @@ in
           paths = [ ./scripts ];
         }
       )
-      tridactylnative
+      tridactyl-native
     ];
 
   };

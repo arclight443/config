@@ -22,15 +22,13 @@ in
         enableCompletion = true;
         enableAutosuggestions = true;
         syntaxHighlighting.enable = true;
-        
+
         initExtraBeforeCompInit = ''
           # Enable PowerLevel10k instant prompt.
           P10K_INSTANT_PROMPT="$XDG_CACHE_HOME/p10k-instant-prompt-''${(%):-%n}.zsh"
           [[ ! -r "$P10K_INSTANT_PROMPT" ]] || source "$P10K_INSTANT_PROMPT"
-
-
         '';
-        
+
         completionInit = ''
           autoload bashcompinit && bashcompinit
           autoload -Uz compinit && compinit

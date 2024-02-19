@@ -24,6 +24,7 @@ in
         ytdlp = enabled;
         chatblade = enabled;
         bluetuith = enabled;
+        pulsemixer = enabled;
       };
 
       browsers = {

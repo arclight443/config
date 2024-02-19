@@ -36,7 +36,6 @@ in
 
     environment.systemPackages = with pkgs; [
       alsa-utils
-      pulsemixer
     ] ++ cfg.extra-packages;
 
     arclight.user.extraGroups = [ "audio" ];

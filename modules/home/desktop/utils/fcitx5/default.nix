@@ -13,11 +13,10 @@ in
 
   config = mkIf cfg.enable {
     home.sessionVariables = {
-      "NIX_PROFILES" = "${concatStringsSep " " (reverseList config.environment.profiles)}";
-      "GTK_IM_MODULE" = "";
-      "QT_IM_MODULE" = "fcitx5";
-      "GLFW_IM_MODULE" = "ibus";
-      "XMODIFIERS" = "@im=fcitx";
+      "GTK_IM_MODULE" = mkForce "fcitx";
+      "QT_IM_MODULE" = mkForce "fcitx";
+      "GLFW_IM_MODULE" = mkForce "ibus";
+      "XMODIFIERS" = mkForce "@im=fcitx";
     };
 
     i18n.inputMethod = {
@@ -30,7 +29,7 @@ in
 
     home.file."themes" = {
       source = ./themes;
-      target = "${config.users.users.${config.arclight.user.name}.home}/.local/share/fcitx5/themes";
+      target = "/home/${config.arclight.user.name}/.local/share/fcitx5/themes";
       recursive = true;
     };
 

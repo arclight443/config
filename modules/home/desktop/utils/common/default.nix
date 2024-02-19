@@ -21,6 +21,7 @@ in
     home.packages = with pkgs; [
       gnome.dconf-editor
       dconf2nix
+      nixgl.auto.nixGLDefault
     ];
 
     dconf.settings = {

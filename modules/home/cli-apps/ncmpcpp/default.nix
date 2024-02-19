@@ -15,6 +15,11 @@ in
       source = ./config;
       recursive = true;
     };
+    
+    # Fix unicode issues on non-NixOS
+    #home.shellAliases = {
+    #  "ncmpcpp" = "LC_ALL=ja_JP.UTF-8 ncmpcpp";
+    #};
 
     home.packages = with pkgs; [
       flac

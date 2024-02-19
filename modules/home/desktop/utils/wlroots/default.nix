@@ -15,7 +15,7 @@ in
   config = mkIf cfg.enable {
 
       home.packages = with pkgs;[
-        
+
         # Wlroots-specific
         swww
         brightnessctl
@@ -25,10 +25,8 @@ in
 
         # Rofi
         rofi
-
-        # GTK utilities
-        swaynotificationcenter
-        ulauncher
+        rofi-bluetooth
+        pkgs.arclight.rofi-wifi-menu
 
         # Apps
         gnome.gnome-calendar
@@ -43,9 +41,7 @@ in
 
       xdg.configFile = {
         "waybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
-        "swaync".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/swaync";
         "rofi".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/rofi";
-        "swaylock".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/swaylock";
       };
 
   };

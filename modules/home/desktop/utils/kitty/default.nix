@@ -4,9 +4,6 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.kitty;
-  gnome-terminal-spoof = pkgs.writeShellScriptBin "gnome-terminal" ''
-    ${pkgs.kitty}/bin/kitty $@
-  '';
 in
 {
   options.arclight.desktop.utils.kitty = with types; {
@@ -15,8 +12,6 @@ in
 
   config = mkIf cfg.enable {
     
-    home.packages = [] ++ optional config.arclight.desktop.gnome.enable gnome-terminal-spoof;
-
     programs.kitty = {
       enable = true;
       shellIntegration = {
@@ -26,7 +21,7 @@ in
       font = {
         name = "MesloLGS NF";
         package = pkgs.meslo-lgs-nf;
-        size = if config.arclight.desktop.gnome.enable then 16.5 else 11.5;
+        size = 11.5;
       };
 
       keybindings = {

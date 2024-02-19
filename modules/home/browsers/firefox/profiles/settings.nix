@@ -26,8 +26,8 @@
   
   "devtools.toolbox.host" = "window";
 
-  "ui.textScaleFactor" = if config.arclight.desktop.gnome.enable then 145 else 100;
-  "layout.css.devPixelsPerPx" = if config.arclight.desktop.gnome.enable then -1.0 else 2.0;
+  "ui.textScaleFactor" = 100;
+  "layout.css.devPixelsPerPx" =  2.0;
   "browser.zoom.siteSpecific" = false;
   "browser.display.os-zoom-behavior" = 1;
 }
