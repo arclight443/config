@@ -29,6 +29,7 @@ in
         inputs.arkenfox.hmModules.default
         inputs.nur.hmModules.nur
         inputs.hyprland.homeManagerModules.default
+        inputs.sops-nix.homeManagerModules.sops
       ];
 
       home.stateVersion = config.system.stateVersion;

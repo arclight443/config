@@ -11,7 +11,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      onlyoffice-bin_7_5
+      onlyoffice-bin_latest
     ];
   };
 }

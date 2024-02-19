@@ -27,12 +27,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      pkgs.chatblade
-      chatblade-launch
+    home.packages = with pkgs;[
+      chatblade
     ];
     
-    #TODO Enable these once I know how sops as a HM module works
     sops.gnupg.home = "~/.gnupg";
     sops.gnupg.sshKeyPaths = [];
 
@@ -44,6 +42,15 @@ in
       "openai-api-azure-engine" = { inherit sopsFile; };
       "openai-api-key" = { inherit sopsFile; };
     };
+
+    programs.zsh.initExtra = mkIf config.arclight.security.yubikey.enable ''
+      if [[ -o interactive ]]; then
+        export OPENAI_API_TYPE=azure;
+        export OPENAI_API_BASE=$(cat /run/user/1000/secrets/azure-openai-endpoint)
+        export OPENAI_API_AZURE_ENGINE=$(cat /run/user/1000/secrets/openai-api-azure-engine)
+        export OPENAI_API_KEY=$(cat /run/user/1000/secrets/openai-api-key)
+      fi
+    '';
 
   };
 }
