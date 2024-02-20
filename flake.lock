@@ -675,6 +675,22 @@
         "type": "github"
       }
     },
+    "flake-compat_28": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "flake-compat_3": {
       "flake": false,
       "locked": {
@@ -2747,6 +2763,7 @@
         "snowfall-lib": "snowfall-lib_16",
         "sops-nix": "sops-nix",
         "stable": "stable",
+        "waybar": "waybar",
         "yubikey-guide": "yubikey-guide_2"
       }
     },
@@ -3676,6 +3693,27 @@
         "owner": "snowfallorg",
         "ref": "v1.0.0",
         "repo": "vhs",
+        "type": "github"
+      }
+    },
+    "waybar": {
+      "inputs": {
+        "flake-compat": "flake-compat_28",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1708421973,
+        "narHash": "sha256-VZGI+dnW1RYddiTjD35W/WCXPrTiXQYLQi3Dll1ZfmY=",
+        "owner": "Alexays",
+        "repo": "Waybar",
+        "rev": "4ef5b48474c0896f7045b7f9c8ab4b39cadf0813",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Alexays",
+        "repo": "Waybar",
         "type": "github"
       }
     },

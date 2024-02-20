@@ -61,11 +61,16 @@
     };
 
     nix-colors.url = "github:misterio77/nix-colors";
-    
+
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
-    
+
     hyprland = {
       url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    waybar = {
+      url = "github:Alexays/Waybar";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

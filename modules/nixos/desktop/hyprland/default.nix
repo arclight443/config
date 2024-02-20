@@ -89,7 +89,6 @@ in
             "wvkbd-mobintl --hidden -L 150"
             "fcitx5"
             "swaync"
-            "hyprland-ipc"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland";
