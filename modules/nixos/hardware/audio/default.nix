@@ -36,7 +36,8 @@ in
 
     environment.systemPackages = with pkgs; [
       alsa-utils
-    ] ++ cfg.extra-packages;
+    ] ++ cfg.extra-packages
+      ++ optional config.arclight.suites.desktop.enable pkgs.helvum;
 
     arclight.user.extraGroups = [ "audio" ];
 

@@ -28,6 +28,7 @@ let
     p.markdown
     p.nix
     p.python
+    p.ron
     p.rust
     p.toml
     p.typescript
@@ -51,7 +52,7 @@ in
       black
       nodePackages.prettier
       nixpkgs-fmt
-    
+
       gotools
       gofumpt
       gomodifytags
@@ -66,14 +67,16 @@ in
       nodePackages.typescript-language-server
       nodePackages.bash-language-server
       gopls
-      
+      rust-analyzer
+      cargo
+
       terraform
       terraform-ls
       dockerfile-language-server-nodejs
       docker-compose-language-service
       yaml-language-server
       nil
-      
+
       # Other dependencies
       gcc
       gnumake
@@ -91,7 +94,7 @@ in
     };
 
     arclight.home.extraOptions = { config, pkgs, ... }: {
-      
+
       programs.neovim = {
         enable = true;
         plugins = [

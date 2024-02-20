@@ -12,8 +12,11 @@ let cfg = config.arclight.desktop.hyprland; terminal = if       config.arclight.
     text = ''
       handle() {
       	case $1 in
-      	closewindow*)
-		      [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
+        #closewindow*)
+		    #  [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
+        #  ;;
+        focusedmon*)
+          pkill -SIGUSR2 waybar
           ;;
       	esac
       }
@@ -29,10 +32,11 @@ in
 
   config = mkIf cfg.enable {
     
-    home.packages = with pkgs; [
+    home.packages = [
       inputs.raise.defaultPackage.${pkgs.system}
-      hyprkeys
-      socat
+      hyprland-ipc
+      pkgs.hyprkeys
+      pkgs.socat
     ];
 
     arclight.desktop.utils = {
@@ -66,6 +70,7 @@ in
 
         exec-once = [
           "fcitx5"
+          "hyprland-ipc"
           "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
           "sleep 1; swww init"
         ];

@@ -16,8 +16,11 @@ let
     text = ''
       handle() {
       	case $1 in
-      	closewindow*)
-		      [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
+      	#closewindow*)
+		    #  [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
+        #  ;;
+        focusedmon*)
+          pkill -SIGUSR2 waybar
           ;;
       	esac
       }
@@ -33,9 +36,11 @@ in
 
   config = mkIf cfg.enable {
     
-    environment.systemPackages = with pkgs;[
+    environment.systemPackages = [
       inputs.raise.defaultPackage.${pkgs.system}
-      hyprkeys
+      hyprland-ipc
+      pkgs.socat
+      pkgs.hyprkeys
     ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
 
     arclight.desktop.utils = {
@@ -84,6 +89,7 @@ in
             "wvkbd-mobintl --hidden -L 150"
             "fcitx5"
             "swaync"
+            "hyprland-ipc"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland";
