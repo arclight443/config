@@ -162,8 +162,7 @@ in
             "$mod SHIFT, 8, movetoworkspace, 8"
             "$mod SHIFT, 9, movetoworkspace, 9"
             "$mod SHIFT, 0, movetoworkspace, 10"
-          ] ++ optional config.arclight.cli-apps.chatblade.enable "$mod, c, exec, raise --class 'chatblade-gpt-35-turbo' --launch 'chatblade-launch gpt-35-turbo'"
-            ++ optional config.arclight.cli-apps.chatblade.enable "$mod SHIFT, c, exec, raise --class 'chatblade-gpt-4' --launch 'chatblade-launch gpt-4'";
+          ];
 
           # Inputs
           input = {

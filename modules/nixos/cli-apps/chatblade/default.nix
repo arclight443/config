@@ -18,8 +18,10 @@ in
     environment.systemPackages = with pkgs;[
       chatblade
     ];
+    
+    arclight.security.yubikey.enable = true;
 
-    sops.secrets = mkIf config.arclight.security.yubikey.enable {
+    sops.secrets = {
       "azure-openai-endpoint" = { inherit sopsFile owner group; };
       "openai-api-azure-engine" = { inherit sopsFile owner group; };
       "openai-api-key" = { inherit sopsFile owner group; };
@@ -28,7 +30,7 @@ in
 
     arclight.home.extraOptions = {
 
-      programs.zsh.initExtra = mkIf config.arclight.security.yubikey.enable ''
+      programs.zsh.initExtra = ''
         if [[ -o interactive ]]; then
           export OPENAI_API_TYPE=azure;
           export OPENAI_API_BASE=$(cat /run/secrets/azure-openai-endpoint)

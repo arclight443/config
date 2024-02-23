@@ -31,7 +31,6 @@ in
 
         # GTK utilities
         networkmanagerapplet
-        blueman
         swaynotificationcenter
         ulauncher
 
@@ -48,7 +47,7 @@ in
 
         programs.waybar = {
           enable = true;
-          #package = inputs.waybar.packages.${pkgs.system}.waybar;
+          package = inputs.waybar.packages.${pkgs.system}.waybar;
         };
         
         programs.swaylock = {
