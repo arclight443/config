@@ -78,14 +78,14 @@ in
             (createChromiumExtension {
               # ublock origin
               id = "cjpalhdlnbpafiamejdnhcphjbkeiagm";
-              sha256 = "15pxy8nmk3803x8wkmyqy5zgi6vf6fh4df96jzkp282fw6pw5rxr";
-              version = "1.52.2";
+              sha256 = "07h94p8a02h23sqwbllhj47k3inlahnd4pbvqpim0wywa4yqzca3";
+              version = "1.56.0";
             })
             (createChromiumExtension {
               # line
               id = "ophjlpahpchlmihnnnihgmmeilfjmjjc";
-              sha256 = "0ib6v6rszc38i5m771ai3w8bv0dhgv87jy17rnmsy2f7paa52vk3";
-              version = "3.1.2";
+              sha256 = "0i5xz3wi8i54argv0hznzcd6ibzkh0ac60lx8k2wf1bvpx1kn185";
+              version = "3.2.3";
             })
           ];
       };
