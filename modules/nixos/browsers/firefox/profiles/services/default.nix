@@ -26,7 +26,7 @@ in
       programs.firefox.profiles.${lib.strings.toLower profileName} = {
         inherit search settings;
         id = 1;
-        extensions = extensions.browsing ++ extensions.containers;
+        extensions = extensions.browsing ++ extensions.containers ++ extensions.streaming;
         userChrome = userchrome.cascade;
         arkenfox.enable = false;
       };

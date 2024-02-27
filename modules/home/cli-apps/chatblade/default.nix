@@ -38,17 +38,17 @@ in
     sops.defaultSecretsMountPoint = "/run/user/1000/secrets.d";
 
     sops.secrets = {
-      "azure-openai-endpoint" = { inherit sopsFile owner group; };
-      "openai-api-azure-engine" = { inherit sopsFile owner group; };
-      "openai-api-key" = { inherit sopsFile owner group; };
+      "azure-openai-endpoint" = { inherit sopsFile; };
+      "openai-api-azure-engine" = { inherit sopsFile; };
+      "openai-api-key" = { inherit sopsFile; };
     };
 
     programs.zsh.initExtra = ''
       if [[ -o interactive ]]; then
         export OPENAI_API_TYPE=azure;
-        export OPENAI_API_BASE=$(cat /run/secrets/azure-openai-endpoint)
-        export OPENAI_API_AZURE_ENGINE=$(cat /run/secrets/openai-api-azure-engine)
-        export OPENAI_API_KEY=$(cat /run/secrets/openai-api-key)
+        export OPENAI_API_BASE=$(cat /run/user/1000/secrets/azure-openai-endpoint)
+        export OPENAI_API_AZURE_ENGINE=$(cat /run/user/1000/secrets/openai-api-azure-engine)
+        export OPENAI_API_KEY=$(cat /run/user/1000/secrets/openai-api-key)
       fi
     '';
 

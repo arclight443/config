@@ -28,7 +28,7 @@ in
       settings = settings // {
         "browser.startup.page" = "3";
       };
-      extensions = extensions.browsing ++ extensions.containers;
+      extensions = extensions.browsing ++ extensions.containers ++ extensions.streaming;
       userChrome = userchrome.cascade;
       arkenfox.enable = false;
     };

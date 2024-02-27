@@ -64,10 +64,10 @@
 
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
 
-    hyprland.url = "github:hyprwm/Hyprland/84ab8d11e8951a6551d1e1bf87796a8589da6d47";
+    hyprland.url = "github:hyprwm/Hyprland/2a3429d4cfdc01794b9d6fc1b49be1da019b5606";
 
     waybar = {
-      url = "github:Alexays/Waybar";
+      url = "github:Alexays/Waybar/601af3de81acc0dbe5aa967d7f10f8a69d10bd02";
     };
 
     #FIX: touch gesture broke. Pin latest working commit
@@ -142,12 +142,18 @@
         sops-nix.nixosModules.sops
       ];
 
+      systems.hosts."pc".specialArgs = { inherit inputs; };
+      systems.hosts."yoga".specialArgs = { inherit inputs; };
+
       homes.users."deck@steamdeck".modules = with inputs; [
         arkenfox.hmModules.default
         nur.hmModules.nur
         hyprland.homeManagerModules.default
+        nix-colors.homeManagerModules.default
         sops-nix.homeManagerModules.sops
       ];
+
+      homes.users."deck@steamdeck".specialArgs = { inherit inputs; };
 
     };
 }
