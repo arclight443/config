@@ -99,7 +99,7 @@ in
 
           # CLI apps
           "$mod, return, exec, kitty"
-          "$mod, d, exec, XDG_DATA_DIRS='/home/${config.arclight.user.name}/.nix-profile/share/' rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+          "$mod, d, exec, XDG_DATA_DIRS='/home/${config.arclight.user.name}/.nix-profile/share/:/var/lib/flatpak/exports/share' rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
           "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 kitty --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
           "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'LC_ALL=en_US.UTF-8 kitty --class 'pulsemixer' -e pulsemixer'"
           "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 kitty --class 'btop' -e btop\""
