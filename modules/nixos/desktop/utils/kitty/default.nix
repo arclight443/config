@@ -75,10 +75,10 @@ in
           color13 = "#${colors.base0E}";
           color14 = "#${colors.base0C}";
           color15 = "#${colors.base05}";
-          
+
           color16 = "#${colors.base09}";
           color17 = "#${colors.base08}";
-          
+
           background_opacity = if config.arclight.colorscheme.oled then "1" else "0.8";
 
           remember_window_size = "no";

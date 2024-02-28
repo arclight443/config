@@ -48,7 +48,7 @@ in
       qt = enabled;
       common = enabled;
       electron-support = enabled;
-      kitty = enabled;
+      alacritty = enabled;
       thunar = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
@@ -81,7 +81,7 @@ in
           source = "~/.config/hypr/test.conf";
 
           # Auto-start
-          exec = [ 
+          exec = [
             "pgrep waybar && pkill -9 waybar; waybar"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep waybar && pkill -9 iio-hyprland; iio-hyprland";
 
@@ -116,12 +116,12 @@ in
             "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
 
             # CLI apps
-            "$mod, return, exec, kitty"
+            "$mod, return, exec, ${terminal}"
             "$mod, d, exec, rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
-            "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && kitty --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
-            "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'kitty --class 'pulsemixer' -e pulsemixer'"
-            "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && kitty --class 'btop' -e btop\""
-            "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"kitty --class 'neovim' -e nvim\""
+            "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
+            "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"
+            "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'btop' -e btop\""
+            "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
 
             # GUI apps
             "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
@@ -151,6 +151,8 @@ in
             "$mod, 8, workspace, 8"
             "$mod, 9, workspace, 9"
             "$mod, 0, workspace, 10"
+            "$mod, bracketleft, workspace, -1"
+            "$mod, bracketright, workspace, +1"
 
             "$mod SHIFT, 1, movetoworkspace, 1"
             "$mod SHIFT, 2, movetoworkspace, 2"
@@ -162,17 +164,9 @@ in
             "$mod SHIFT, 8, movetoworkspace, 8"
             "$mod SHIFT, 9, movetoworkspace, 9"
             "$mod SHIFT, 0, movetoworkspace, 10"
+            "$mod SHIFT, bracketleft, movetoworkspace, -1"
+            "$mod SHIFT, bracketright, movetoworkspace, +1"
           ];
-
-          # Inputs
-          input = {
-            touchpad = {
-              natural_scroll = true;
-              disable_while_typing = true;
-            };
-            accel_profile = "flat";
-            sensitivity = 0;
-          };
 
         };
       };

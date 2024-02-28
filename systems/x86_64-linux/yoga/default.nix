@@ -15,11 +15,16 @@ with lib.arclight;
     security = {
       yubikey = enabled;
     };
-  
-  # 2-in-1 laptop features
-  hardware.laptop.common = enabled;
-  hardware.laptop.tabletpc = enabled;
-  
+
+    colorscheme = {
+      enable = true;
+      theme = "gruvbox-material-dark-medium";
+    };
+
+    # 2-in-1 laptop features
+    hardware.laptop.common = enabled;
+    hardware.laptop.tabletpc = enabled;
+
   };
 
   # Syncthing

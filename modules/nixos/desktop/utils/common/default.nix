@@ -21,9 +21,9 @@ in
 
     home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
 
-      xdg.configFile = {
-        "mimeapps.list".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/mimeapps.list";
-      };
+      #xdg.configFile = {
+      #  "mimeapps.list".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/mimeapps.list";
+      #};
 
       dconf.settings = {
         "org/gnome/desktop/interface" = {
