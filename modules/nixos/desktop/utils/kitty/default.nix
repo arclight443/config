@@ -46,7 +46,7 @@ in
 
         settings = {
           #include = "${pkgs.arclight.gruvbox-flat-nvim-extras}/extras/kitty_gruvbox_.conf";
-          background = if config.arclight.colorscheme.oled then "#000000" else "${colors.base00}";
+          background = if config.arclight.colorscheme.oled then "#000000" else "#${colors.base00}";
           foreground = "#${colors.base05}";
           selection_background = "#${colors.base01}";
           selection_foreground = "#${colors.base05}";
