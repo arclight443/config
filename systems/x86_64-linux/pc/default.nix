@@ -15,6 +15,11 @@ with lib.arclight;
 
     };
 
+    colorscheme = {
+      enable = true;
+      theme = "gruvbox-material-dark-medium";
+    };
+
     security = {
       yubikey = enabled;
     };

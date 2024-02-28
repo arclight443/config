@@ -2,7 +2,11 @@
 
 with lib;
 with lib.arclight;
-let cfg = config.arclight.desktop.hyprland; terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty" else if  config.arclight.desktop.utils.alacritty.enable then "alacritty" else "";
+let 
+  cfg = config.arclight.desktop.hyprland; 
+  terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
+             else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
+             else "";
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   hyprland-ipc = pkgs.writeShellApplication {
@@ -44,7 +48,7 @@ in
       qt = enabled;
       common = enabled;
       electron-support = enabled;
-      kitty = enabled;
+      alacritty = enabled;
       thunar = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
@@ -98,12 +102,12 @@ in
           "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
 
           # CLI apps
-          "$mod, return, exec, kitty"
+          "$mod, return, exec, ${terminal}"
           "$mod, d, exec, XDG_DATA_DIRS='/home/${config.arclight.user.name}/.nix-profile/share/:/var/lib/flatpak/exports/share' rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
-          "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 kitty --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
-          "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'LC_ALL=en_US.UTF-8 kitty --class 'pulsemixer' -e pulsemixer'"
-          "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 kitty --class 'btop' -e btop\""
-          "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 kitty --class 'neovim' -e nvim\""
+          "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
+          "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'LC_ALL=en_US.UTF-8 ${terminal} --class 'pulsemixer' -e pulsemixer'"
+          "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class 'btop' -e btop\""
+          "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
 
           # GUI apps
           "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""

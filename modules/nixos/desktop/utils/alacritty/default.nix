@@ -16,10 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    #arclight.system.env = {
-      #"XCURSOR_THEME" = lib.concatStringsSep " " [ config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name "alacritty" ];
-      #"XCURSOR_THEME" = "Adwaita";
-    #};
 
     arclight.home.extraOptions = {
       home.packages = [] ++ optional config.arclight.desktop.gnome.enable gnome-terminal-spoof;

@@ -1,9 +1,10 @@
-{ options, config, lib, pkgs, ... }:
+{ options, config, lib, pkgs, inputs, ... }:
 
 with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.alacritty;
+  colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   gnome-terminal-spoof = pkgs.writeShellScriptBin "gnome-terminal" ''
     ${pkgs.alacritty}/bin/alacritty $@
   '';
@@ -15,10 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    #arclight.system.env = {
-      #"XCURSOR_THEME" = lib.concatStringsSep " " [ config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name "alacritty" ];
-      #"XCURSOR_THEME" = "Adwaita";
-    #};
 
     home.packages = [] ++ optional config.arclight.desktop.gnome.enable gnome-terminal-spoof;
     programs.alacritty = {
@@ -29,8 +26,6 @@ in
                               then "Adwaita"
                               else config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name;
 
-        window.opacity = 0.75;
-
         font = {
           normal.family = "MesloLGS NF";
           size = if config.arclight.desktop.gnome.enable 
@@ -38,37 +33,40 @@ in
                  else 11.5;
         };
 
-        padding.x = 50;
-        padding.y = 50;
+        window.opacity = if config.arclight.colorscheme.oled then 1 else 0.8;
+        window.padding = {
+          x = 4;
+          y = 4;
+        };
 
         colors = {
 
-          primary = {
-            background = "#282828";
-            foreground = "#d4be98";
-          };
+            primary = {
+              background = if config.arclight.colorscheme.oled then "#000000" else "#${colors.base00}";
+              foreground = "#${colors.base05}";
+            };
 
-          normal = {
-            black = "#3c3836";
-            red = "#ea6962";
-            green = "#a9b665";
-            yellow = "#d8a657";
-            blue = "#7daea3";
-            magenta = "#d3869b";
-            aqua = "#89b482";
-            white = "#d4be98";
-          };
+            normal = {
+              black   = "#${colors.base00}";
+              red     = "#${colors.base08}";
+              green   = "#${colors.base0B}";
+              yellow  = "#${colors.base0A}";
+              blue    = "#${colors.base0D}";
+              magenta = "#${colors.base0E}";
+              cyan    = "#${colors.base0C}";
+              white   = "#${colors.base05}";
+            };
 
-          bright = {
-            black = "#3c3836";
-            red = "#ea6962";
-            green = "#a9b665";
-            yellow = "#d8a657";
-            blue = "#7daea3";
-            magenta = "#d3869b";
-            aqua = "#89b482";
-            white = "#d4be98";
-          };
+            bright = {
+              black   = "#${colors.base03}";
+              red     = "#${colors.base08}";
+              green   = "#${colors.base0B}";
+              yellow  = "#${colors.base0A}";
+              blue    = "#${colors.base0D}";
+              magenta = "#${colors.base0E}";
+              cyan    = "#${colors.base0C}";
+              white   = "#${colors.base05}";
+            };
 
         };
       };
