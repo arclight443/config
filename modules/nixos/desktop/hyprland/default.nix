@@ -7,6 +7,7 @@ let
   terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
              else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
              else "";
+  colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   hyprland-ipc = pkgs.writeShellApplication {
@@ -86,12 +87,12 @@ in
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep waybar && pkill -9 iio-hyprland; iio-hyprland";
 
           exec-once = [
-            "wvkbd-mobintl --hidden -L 150"
             "fcitx5"
             "swaync"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
-          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland";
+          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
+            ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 150 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";
 
           # Env
           env = [
