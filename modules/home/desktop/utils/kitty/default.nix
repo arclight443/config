@@ -1,9 +1,11 @@
-{ options, config, lib, pkgs, ... }:
+{ options, config, lib, pkgs, inputs, ... }:
 
 with lib;
 with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.kitty;
+  colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
+
 in
 {
   options.arclight.desktop.utils.kitty = with types; {
@@ -38,8 +40,41 @@ in
       };
 
       settings = {
-        include = "${pkgs.arclight.gruvbox-flat-nvim-extras}/extras/kitty_gruvbox_.conf";
-        background_opacity = "0.8";
+        #include = "${pkgs.arclight.gruvbox-flat-nvim-extras}/extras/kitty_gruvbox_.conf";
+        background = if config.arclight.colorscheme.oled then "#000000" else "${colors.base00}";
+        foreground = "#${colors.base05}";
+        selection_background = "#${colors.base01}";
+        selection_foreground = "#${colors.base05}";
+        url_color = "#${colors.base0B}";
+        cursor = "#${colors.base05}";
+
+        active_tab_background = "#${colors.base09}";
+        active_tab_foreground = "#${colors.base00}";
+        inactive_tab_background = "#${colors.base01}";
+        inactive_tab_foreground = "#${colors.base05}";
+
+        color0 = "#${colors.base00}";
+        color1 = "#${colors.base08}";
+        color2 = "#${colors.base0B}";
+        color3 = "#${colors.base0A}";
+        color4 = "#${colors.base0D}";
+        color5 = "#${colors.base0E}";
+        color6 = "#${colors.base0C}";
+        color7 = "#${colors.base05}";
+
+        color8 = "#${colors.base03}";
+        color9 = "#${colors.base09}";
+        color10 = "#${colors.base0B}";
+        color11 = "#${colors.base0A}";
+        color12 = "#${colors.base0D}";
+        color13 = "#${colors.base0E}";
+        color14 = "#${colors.base0C}";
+        color15 = "#${colors.base05}";
+
+        color16 = "#${colors.base09}";
+        color17 = "#${colors.base08}";
+
+        background_opacity = if config.arclight.colorscheme.oled then "1" else "0.8";
 
         remember_window_size = "no";
         placement_strategy = "top-left";

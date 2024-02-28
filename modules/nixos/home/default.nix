@@ -25,11 +25,12 @@ in
 
     arclight.home.extraOptions = {
 
-      imports = [
-        inputs.arkenfox.hmModules.default
-        inputs.nur.hmModules.nur
-        inputs.hyprland.homeManagerModules.default
-        inputs.sops-nix.homeManagerModules.sops
+      imports = with inputs; [
+        arkenfox.hmModules.default
+        nur.hmModules.nur
+        hyprland.homeManagerModules.default
+        sops-nix.homeManagerModules.sops
+        nix-colors.homeManagerModules.default
       ];
 
       home.stateVersion = config.system.stateVersion;

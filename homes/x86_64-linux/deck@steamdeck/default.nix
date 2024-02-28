@@ -10,6 +10,12 @@ with lib.arclight;
       name = "deck";
     };
 
+    colorscheme = {
+      enable = true;
+      theme = "gruvbox-material-dark-medium";
+      oled = true;
+    };
+
     home-manager = enabled;
 
     desktop = {
