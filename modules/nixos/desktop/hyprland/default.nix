@@ -50,7 +50,7 @@ in
       common = enabled;
       electron-support = enabled;
       alacritty = enabled;
-      thunar = enabled;
+      nautilus = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
       sddm = enabled;

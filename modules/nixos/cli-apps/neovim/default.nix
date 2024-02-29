@@ -69,6 +69,7 @@ in
       gopls
       rust-analyzer
       cargo
+      taplo
 
       terraform
       terraform-ls
