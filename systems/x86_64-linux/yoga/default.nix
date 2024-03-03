@@ -45,21 +45,31 @@ with lib.arclight;
         devices = {
           "pc" = { id = "TLWZQ66-6BYGTM3-UYQKSCN-R3VBMX3-SXJKHQ2-IG2MVVJ-3SFSSXR-3HBLOA5"; };
           "pixel6pro" = { id = "FNRJSFE-NGN2MMG-WZFBZQE-PF5LATW-WBDTYD5-OVDEAQY-F6KHWNZ-Q2KNLAL"; };
+          "steamdeck" = { id = "6UQOTZ3-XZ67UWJ-POQE3WJ-GUNE2VE-J2XADCX-2DPC67Z-CD74HFX-ALUBYQC"; };
         };
         folders = {
+
           "Work" = {
             path = "/home/${config.arclight.user.name}/Work";
             devices = [ "pc" ];
             ignorePerms = false;
           };
+
           "Music" = {
             path = "/home/${config.arclight.user.name}/Music";
-            devices = [ "pc" "pixel6pro" ];
+            devices = [ "pc" "pixel6pro" "steamdeck" ];
           };
+
           "Sync" = {
             path = "/home/${config.arclight.user.name}/Sync";
-            devices = [ "pc" "pixel6pro" ];
+            devices = [ "pc" "pixel6pro" "steamdeck" ];
           };
+
+          "Secure" = {
+            path = "/home/${config.arclight.user.name}/Secure";
+            devices = [ "steamdeck" ];
+          };
+
         };
       };
 
