@@ -22,6 +22,8 @@ with lib.arclight;
       hyprland = enabled;
     };
 
+    syncthing = enabled;
+
     browsers = {
       firefox.enable = true;
 
@@ -44,7 +46,7 @@ with lib.arclight;
       insomnia = enabled;
       dbeaver = enabled;
       mpdevil = enabled;
-      helvum = enabled;
+      qpwgraph = enabled;
       youtube-music = enabled;
       junction = enabled;
       krita = enabled;

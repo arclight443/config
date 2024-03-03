@@ -28,12 +28,11 @@ in
       libsForQt5.qtstyleplugin-kvantum
     ];
 
-    
-    #arclight.home.configFile."Kvantum/" =
-    #  {
-    #    source = ./config;
-    #    recursive = true;
-    #  };
+    xdg.configFile."Kvantum/" =
+      {
+        source = ./config;
+        recursive = true;
+      };
 
     #environment.variables = lib.mkForce env;
   };

@@ -31,11 +31,11 @@ in
     ];
 
     
-    #arclight.home.configFile."Kvantum/" =
-    #  {
-    #    source = ./config;
-    #    recursive = true;
-    #  };
+    arclight.home.configFile."Kvantum/" =
+      {
+        source = ./config;
+        recursive = true;
+      };
 
     #environment.variables = lib.mkForce env;
   };
