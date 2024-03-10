@@ -52,12 +52,10 @@ in
     environment.systemPackages = with pkgs; [
       wl-clipboard
       gtk-engine-murrine
-      nautilus-open-any-terminal
       qgnomeplatform
       gnome.seahorse
       gnome.gnome-themes-extra
       gnome.gnome-tweaks
-      gnome.nautilus-python
       gnome.zenity
     ] ++ defaultExtensions ++ cfg.extensions
       ++ optional config.arclight.security.yubikey.enable pkgs.arclight.gnome-lock-all-sessions;
@@ -573,11 +571,6 @@ in
 
           "ca/desrt/dconf-editor" = {
             show-warning = false;
-          };
-
-          "com/github/stunkymonkey/nautilus-open-any-terminal" = {
-            inherit terminal;
-            new-tab = true;
           };
 
         };

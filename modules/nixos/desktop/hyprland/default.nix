@@ -152,7 +152,7 @@ in
             "$mod, 8, workspace, 8"
             "$mod, 9, workspace, 9"
             "$mod, 0, workspace, 10"
-            "$mod, bracketleft, workspace, -1"
+            "$mod, bracketleft,  workspace, -1"
             "$mod, bracketright, workspace, +1"
 
             "$mod SHIFT, 1, movetoworkspace, 1"
@@ -165,7 +165,7 @@ in
             "$mod SHIFT, 8, movetoworkspace, 8"
             "$mod SHIFT, 9, movetoworkspace, 9"
             "$mod SHIFT, 0, movetoworkspace, 10"
-            "$mod SHIFT, bracketleft, movetoworkspace, -1"
+            "$mod SHIFT, bracketleft,  movetoworkspace, -1"
             "$mod SHIFT, bracketright, movetoworkspace, +1"
           ];
 
