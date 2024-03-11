@@ -22,9 +22,9 @@ in
         };
       };
 
-      apps = {
-        slack = enabled;
-      };
+      #apps = {
+      #  slack = enabled;
+      #};
 
       cli-apps = {
         openvpn = enabled;

@@ -42,6 +42,7 @@ in
       hyprland-ipc
       pkgs.socat
       pkgs.hyprkeys
+      pkgs.pyprland
     ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
 
     arclight.desktop.utils = {
@@ -89,6 +90,7 @@ in
           exec-once = [
             "fcitx5"
             "swaync"
+            "pypr"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
@@ -123,6 +125,7 @@ in
             "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"
             "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'btop' -e btop\""
             "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
+            "$mod SHIFT, b, exec, raise --class 'bluetuith' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'bluetuith' -e bluetuith\""
 
             # GUI apps
             "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""

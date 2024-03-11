@@ -30,9 +30,8 @@ in
         pkgs.arclight.rofi-wifi-menu
 
         # GTK utilities
-        networkmanagerapplet
+        powersupply
         swaynotificationcenter
-        ulauncher
 
         # Apps
         gnome.gnome-calendar

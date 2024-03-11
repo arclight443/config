@@ -3,17 +3,17 @@
 with lib;
 with lib.arclight;
 let
-  cfg = config.arclight.apps.mpdevil;
+  cfg = config.arclight.apps.ymuse;
 
 in
 {
-  options.arclight.apps.mpdevil = with types; {
-    enable = mkBoolOpt false "Whether or not to enable mpdevil.";
+  options.arclight.apps.ymuse = with types; {
+    enable = mkBoolOpt false "Whether or not to enable ymuse.";
   };
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      mpdevil
+      ymuse
     ];
   };
 }

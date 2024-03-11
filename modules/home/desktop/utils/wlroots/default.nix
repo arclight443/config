@@ -28,6 +28,9 @@ in
         rofi-bluetooth
         pkgs.arclight.rofi-wifi-menu
 
+        # GTK utilities
+        powersupply
+
         # Apps
         gnome.gnome-calendar
         gnome.eog

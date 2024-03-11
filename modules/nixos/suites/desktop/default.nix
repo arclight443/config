@@ -50,7 +50,7 @@ in
         onlyoffice = enabled;
         mpv = enabled;
         vlc = enabled;
-        mpdevil = enabled;
+        ymuse = enabled;
         mullvad = enabled;
         remmina = enabled;
         picard = enabled;
