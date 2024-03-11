@@ -41,6 +41,7 @@ in
       hyprland-ipc
       pkgs.hyprkeys
       pkgs.socat
+      pkgs.pyprland
     ];
 
     arclight.desktop.utils = {
@@ -75,6 +76,7 @@ in
         exec-once = [
           "fcitx5"
           "hyprland-ipc"
+          "pypr"
           "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
           "sleep 1; swww init"
         ];
