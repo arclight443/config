@@ -69,11 +69,15 @@
     waybar = {
       url = "github:Alexays/Waybar/601af3de81acc0dbe5aa967d7f10f8a69d10bd02";
     };
-
+  
     #FIX: touch gesture broke. Pin latest working commit
     hyprgrass = {
       url = "github:horriblename/hyprgrass/360bc1c2b590423d91ee7ee21049b55c5c7a1eaa";
       inputs.hyprland.follows = "hyprland";
+    };
+
+    pyprland = {
+      url = "github:hyprland-community/pyprland";
     };
 
     raise = {

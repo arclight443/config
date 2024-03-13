@@ -13,7 +13,7 @@ in
     console.useXkbConfig = true;
     services.xserver.xkb = {
       layout = "us,th,jp";
-      options = "caps:escape";
+      options = "caps:none";
     };
   };
 }

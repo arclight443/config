@@ -38,10 +38,10 @@ in
     
     home.packages = [
       inputs.raise.defaultPackage.${pkgs.system}
+      inputs.pyprland.packages.${pkgs.system}.default
       hyprland-ipc
       pkgs.hyprkeys
       pkgs.socat
-      pkgs.pyprland
     ];
 
     arclight.desktop.utils = {
@@ -114,7 +114,7 @@ in
           # GUI apps
           "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
           "$mod, s, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
-          "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'keepassxc'"
+          "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'hyprctl dispatch workspace empty; keepassxc'"
           "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
           "$mod, y, exec, raise --class 'FreeTube' --launch 'Freetube'"
 
@@ -179,6 +179,7 @@ in
 
     xdg.configFile = {
       "hypr/test.conf".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr/test.conf";
+      "hypr/pyprland.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}hypr/pyprland.toml";
     };
 
   };
