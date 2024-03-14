@@ -80,8 +80,12 @@
       url = "github:hyprland-community/pyprland";
     };
 
+    #raise = {
+    #  url = "github:knarkzel/raise";
+    #};
+
     raise = {
-      url = "github:knarkzel/raise";
+      url = "github:arclight443/raise/feature/move-to-current";
     };
 
     iio-hyprland = {

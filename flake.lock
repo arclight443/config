@@ -2869,11 +2869,11 @@
         "systems": "systems_16"
       },
       "locked": {
-        "lastModified": 1709930168,
-        "narHash": "sha256-eLBIatut+kFYE1q/mFodEOmB19ZE3K22BnTQ8gNuacc=",
+        "lastModified": 1710361587,
+        "narHash": "sha256-qc3mNVmxlenFKHYwnCq+xt+KiSv4o7ezx8vonA1CuUo=",
         "owner": "hyprland-community",
         "repo": "pyprland",
-        "rev": "a85401cc404bf557b3275f02cab22b49b673349b",
+        "rev": "2aa37168ab8ba2a8e70b52eac1a59a329eb9f70b",
         "type": "github"
       },
       "original": {
@@ -2889,15 +2889,16 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1693324073,
-        "narHash": "sha256-qmE1Hf5rjDEzNfChSDy1c8ryaalpmz97yXkSkpkYffg=",
-        "owner": "knarkzel",
+        "lastModified": 1710404542,
+        "narHash": "sha256-wt1wUi1dFhz69taca8rE0iBpk74Vf+YwPCFt+UZKqKI=",
+        "owner": "arclight443",
         "repo": "raise",
-        "rev": "6f4379e309e7da3f417e0ae6363bedf722bace25",
+        "rev": "0c1b81c255ce45c2f1ccd289326b3bebfadaa999",
         "type": "github"
       },
       "original": {
-        "owner": "knarkzel",
+        "owner": "arclight443",
+        "ref": "feature/move-to-current",
         "repo": "raise",
         "type": "github"
       }

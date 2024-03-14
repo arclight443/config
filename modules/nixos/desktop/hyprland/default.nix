@@ -120,16 +120,19 @@ in
             "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
 
             # CLI apps
-            "$mod, return, exec, ${terminal}"
+            #"$mod, return, exec, ${terminal}"
+            "$mod, return, exec, hyprctl keyword master:new_is_master false && ${terminal} & sleep 0.15; hyprctl keyword master:new_is_master true"
             "$mod, d, exec, rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
             "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
             "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"
             "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'btop' -e btop\""
-            "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
-            "$mod SHIFT, b, exec, raise --class 'bluetuith' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'bluetuith' -e bluetuith\""
+            "$mod, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
+            "$mod SHIFT, v, exec, raise --move-to-current --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
+            "$mod SHIFT, n, exec, raise --class 'bluetuith' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'bluetuith' -e bluetuith\""
 
             # GUI apps
             "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
+            "$mod SHIFT, b, exec, raise --move-to-current --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
             "$mod, s, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
             "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'hyprctl dispatch workspace empty; keepassxc'"
             "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
