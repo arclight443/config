@@ -120,8 +120,7 @@ in
             "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
 
             # CLI apps
-            #"$mod, return, exec, ${terminal}"
-            "$mod, return, exec, hyprctl keyword master:new_is_master false && ${terminal} & sleep 0.15; hyprctl keyword master:new_is_master true"
+            "$mod, return, exec, ${terminal}"
             "$mod, d, exec, rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
             "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
             "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"

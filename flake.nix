@@ -64,15 +64,14 @@
 
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
 
-    hyprland.url = "github:hyprwm/Hyprland/2a3429d4cfdc01794b9d6fc1b49be1da019b5606";
+    hyprland.url = "github:hyprwm/Hyprland/19c90048d65a5660384d2fb865926a366696d6be";
 
     waybar = {
       url = "github:Alexays/Waybar/601af3de81acc0dbe5aa967d7f10f8a69d10bd02";
     };
-  
-    #FIX: touch gesture broke. Pin latest working commit
+
     hyprgrass = {
-      url = "github:horriblename/hyprgrass/360bc1c2b590423d91ee7ee21049b55c5c7a1eaa";
+      url = "github:horriblename/hyprgrass/";
       inputs.hyprland.follows = "hyprland";
     };
 

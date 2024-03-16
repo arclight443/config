@@ -25,10 +25,8 @@ in
         cat = "bat";
       };
 
-      # eza - Deprecated. Switch to Eza in 23.11
       programs.eza = {
         enable = true;
-        enableAliases = true;
         git = true;
         icons = true;
         extraOptions = [
