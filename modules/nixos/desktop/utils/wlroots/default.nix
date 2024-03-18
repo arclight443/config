@@ -23,6 +23,7 @@ in
         slurp
         wl-clipboard
         wvkbd
+        swayosd
 
         # Rofi
         rofi-wayland
@@ -48,7 +49,7 @@ in
           enable = true;
           package = inputs.waybar.packages.${pkgs.system}.waybar;
         };
-        
+
         programs.swaylock = {
           enable = true;
           package = pkgs.swaylock-effects;

@@ -91,6 +91,7 @@ in
           exec-once = [
             "fcitx5"
             "swaync"
+            "swayosd-server"
             "pypr"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "sleep 1; swww init"
