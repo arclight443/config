@@ -1,4 +1,4 @@
-{ options, config, lib, pkgs, ... }:
+{ options, inputs, config, lib, pkgs, ... }:
 
 with lib;
 with lib.arclight;
@@ -40,6 +40,7 @@ in
 
       programs.waybar = {
         enable = true;
+        package = inputs.waybar.packages.${pkgs.system}.waybar;
       };
 
       xdg.configFile = {
