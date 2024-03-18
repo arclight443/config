@@ -25,7 +25,7 @@ in
         wvkbd
 
         # Rofi
-        rofi
+        rofi-wayland
         rofi-bluetooth
         pkgs.arclight.rofi-wifi-menu
 
@@ -46,7 +46,7 @@ in
 
         programs.waybar = {
           enable = true;
-          package = inputs.waybar.packages.${pkgs.system}.waybar;
+          #package = inputs.waybar.packages.${pkgs.system}.waybar;
         };
         
         programs.swaylock = {

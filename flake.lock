@@ -691,22 +691,6 @@
         "type": "github"
       }
     },
-    "flake-compat_29": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1696426674,
-        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
-        "type": "github"
-      },
-      "original": {
-        "owner": "edolstra",
-        "repo": "flake-compat",
-        "type": "github"
-      }
-    },
     "flake-compat_3": {
       "flake": false,
       "locked": {
@@ -1981,11 +1965,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1707363303,
-        "narHash": "sha256-shObb1QZSfIyh+6OVOR9qWU1NOTDi1AMirlLLbJstLw=",
+        "lastModified": 1710725412,
+        "narHash": "sha256-hI+vFSg3cQTlrMHZ4rt4Qm9o9ggzLIVR1Nep53MNvjo=",
         "owner": "arclight443",
         "repo": "iio-hyprland",
-        "rev": "ca11a92370b6eb926ee1f78f2fbf1be42035e3e7",
+        "rev": "63c3788494d55778527cdb3c6cf88ed5830142d1",
         "type": "github"
       },
       "original": {
@@ -2502,22 +2486,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_14": {
-      "locked": {
-        "lastModified": 1704538339,
-        "narHash": "sha256-1734d3mQuux9ySvwf6axRWZRBhtcZA9Q8eftD6EZg6U=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "46ae0210ce163b3cba6c7da08840c1d63de9c701",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1704842529,
@@ -2599,11 +2567,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1710451336,
-        "narHash": "sha256-pP86Pcfu3BrAvRO7R64x7hs+GaQrjFes+mEPowCfkxY=",
+        "lastModified": 1710631334,
+        "narHash": "sha256-rL5LSYd85kplL5othxK5lmAtjyMOBg390sGBTb3LRMM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d691274a972b3165335d261cc4671335f5c67de9",
+        "rev": "c75037bbf9093a2acb617804ee46320d6d1fea5a",
         "type": "github"
       },
       "original": {
@@ -3043,7 +3011,6 @@
         "snowfall-lib": "snowfall-lib_17",
         "sops-nix": "sops-nix",
         "stable": "stable",
-        "waybar": "waybar",
         "yubikey-guide": "yubikey-guide_2"
       }
     },
@@ -4124,26 +4091,6 @@
         "owner": "snowfallorg",
         "ref": "v1.0.0",
         "repo": "vhs",
-        "type": "github"
-      }
-    },
-    "waybar": {
-      "inputs": {
-        "flake-compat": "flake-compat_29",
-        "nixpkgs": "nixpkgs_14"
-      },
-      "locked": {
-        "lastModified": 1708729563,
-        "narHash": "sha256-G+lsZDrAVHwPekD9GoZKupfGVVPmtK9KaiuQzi4Tzds=",
-        "owner": "Alexays",
-        "repo": "Waybar",
-        "rev": "601af3de81acc0dbe5aa967d7f10f8a69d10bd02",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Alexays",
-        "repo": "Waybar",
-        "rev": "601af3de81acc0dbe5aa967d7f10f8a69d10bd02",
         "type": "github"
       }
     },

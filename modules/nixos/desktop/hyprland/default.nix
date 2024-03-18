@@ -86,7 +86,7 @@ in
           exec = [
             "pypr reload"
             "pgrep waybar && pkill -9 waybar; waybar"
-          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep waybar && pkill -9 iio-hyprland; iio-hyprland";
+          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep iio-hyprland && pkill -9 iio-hyprland; iio-hyprland";
 
           exec-once = [
             "fcitx5"
