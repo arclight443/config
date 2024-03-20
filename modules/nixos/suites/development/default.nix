@@ -7,6 +7,7 @@ let
   apps = {
     insomnia = enabled;
     dbeaver = enabled;
+    drawio = enabled;
   };
   cli-apps = {
     tmux = enabled;

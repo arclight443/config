@@ -2941,11 +2941,11 @@
         "nixpkgs": "nixpkgs_13"
       },
       "locked": {
-        "lastModified": 1710404542,
-        "narHash": "sha256-wt1wUi1dFhz69taca8rE0iBpk74Vf+YwPCFt+UZKqKI=",
+        "lastModified": 1710821188,
+        "narHash": "sha256-6/KbaURG5rLEaReIaK8BkyJoDVd3Sd5QjveglcDwtog=",
         "owner": "arclight443",
         "repo": "raise",
-        "rev": "0c1b81c255ce45c2f1ccd289326b3bebfadaa999",
+        "rev": "909ed6cdfce41755f3bdba1a90e9da7a553a25dc",
         "type": "github"
       },
       "original": {

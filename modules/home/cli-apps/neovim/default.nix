@@ -19,6 +19,7 @@ let
     p.gowork
     p.gosum
     p.hcl
+    p.hyprlang
     p.javascript
     p.jq
     p.json5
