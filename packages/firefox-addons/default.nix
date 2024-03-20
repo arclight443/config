@@ -16,10 +16,10 @@
           "https://*/*"
           "notifications"
           "<all_urls>"
-          ];
+        ];
         platforms = platforms.all;
-        };
       };
+    };
     "pipewire-screenaudio" = buildFirefoxXpiAddon {
       pname = "pipewire-screenaudio";
       version = "0.3.4";
@@ -33,21 +33,21 @@
         license = licenses.gpl3;
         mozPermissions = [ "nativeMessaging" "<all_urls>" ];
         platforms = platforms.all;
-        };
       };
+    };
     "ultrawideo" = buildFirefoxXpiAddon {
       pname = "ultrawideo";
-      version = "2.5.6";
+      version = "3.1.0";
       addonId = "{2339288d-f701-45d0-a57f-a847e9adc6cc}";
-      url = "https://addons.mozilla.org/firefox/downloads/file/4070649/ultrawideo-2.5.6.xpi";
-      sha256 = "1347ee548daeb6f8005e8bb1c65fdbf00c75a710b86db1c35bd99afe1860f384";
+      url = "https://addons.mozilla.org/firefox/downloads/file/4249134/ultrawideo-3.1.0.xpi";
+      sha256 = "f0d234c64cf39d81f1022a45f8a0f8e81931db1bfad0849b47fb98dc8b5c589d";
       meta = with lib;
       {
-        homepage = "https://github.com/dvlden/ultrawideo";
-        description = "The cross-browser extension that manipulates video aspect ratio to fit your entire screen.\nNetflix | Prime Video | Disney+ | Hulu | ESPN | + Many others... 🚀";
+        homepage = "http://uw.wtf";
+        description = "The cross-browser extension that manipulates video aspect ratio to fit your entire screen. Take control over cinematic black bars.\nNetflix | Prime Video | Disney+ | Hulu | ESPN | + Many others...";
         license = licenses.mit;
-        mozPermissions = [ "storage" "*://*/*" ];
+        mozPermissions = [ "storage" "https://*/*" "http://*/*" ];
         platforms = platforms.all;
-        };
       };
-    }
+    };
+  }
