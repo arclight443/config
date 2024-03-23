@@ -63,6 +63,15 @@ in
       "https://hyprland.cachix.org".key = "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=";
     };
 
+    xdg.portal.enable = true;
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    xdg.portal.config = {
+      hyprland = {
+        default = [ "hyprland" "gtk" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      };
+    };
+
     programs.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
@@ -84,7 +93,7 @@ in
 
           # Auto-start
           exec = [
-            "pypr reload"
+            #"pypr reload"
             "pgrep waybar && pkill -9 waybar; waybar"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep iio-hyprland && pkill -9 iio-hyprland; iio-hyprland";
 
@@ -94,7 +103,7 @@ in
             "swayosd-server"
             "pypr"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
-            "sleep 1; swww init"
+            #"sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
             ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 150 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";
 
@@ -122,7 +131,7 @@ in
 
             # CLI apps
             "$mod, return, exec, ${terminal}"
-            "$mod, d, exec, rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+            "$mod, d, exec, rofi -normal-window -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi' -file-browser '~'"
             "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
             "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"
             "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'btop' -e btop\""

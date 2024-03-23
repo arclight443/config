@@ -6,37 +6,38 @@ let
   cfg = config.arclight.cli-apps.neovim;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
-  treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
-    p.bash
-    p.comment
-    p.css
-    p.dockerfile
-    p.fish
-    p.gitattributes
-    p.gitignore
-    p.go
-    p.gomod
-    p.gowork
-    p.gosum
-    p.hcl
-    p.hyprlang
-    p.javascript
-    p.jq
-    p.json5
-    p.json
-    p.lua
-    p.make
-    p.markdown
-    p.markdown-inline
-    p.nix
-    p.python
-    p.ron
-    p.rust
-    p.toml
-    p.typescript
-    p.vue
-    p.yaml
+  treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+    bash
+    comment
+    css
+    dockerfile
+    fish
+    gitattributes
+    gitignore
+    go
+    gomod
+    gowork
+    gosum
+    hcl
+    hyprlang
+    javascript
+    jq
+    json5
+    json
+    lua
+    make
+    markdown
+    markdown-inline
+    nix
+    python
+    ron
+    rust
+    toml
+    typescript
+    vue
+    yaml
   ]));
+
 
 in
 {

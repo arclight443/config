@@ -69,6 +69,7 @@ with lib.arclight;
       ytdlp = enabled;
       chatblade = enabled;
       pulsemixer = enabled;
+      streamlink = enabled;
     };
 
     tools = {

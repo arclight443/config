@@ -51,7 +51,7 @@ in
         };
 
         font = {
-          name = "Inter Nerd Font";
+          name = "Inter";
           size = 12;
         };
 

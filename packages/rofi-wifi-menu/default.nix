@@ -17,6 +17,8 @@ in
     name = "rofi-wifi-menu";
     checkPhase = "";
     runtimeInputs = [];
-    text = builtins.readFile (builtins.toPath "${rofi-wifi-menu}/rofi-wifi-menu.sh") ;
+    text = builtins.replaceStrings [ "rofi" ] [ "rofi -normal-window" ] ''
+      ${ builtins.readFile ( builtins.toPath "${rofi-wifi-menu}/rofi-wifi-menu.sh" ) };
+    '';
   }
 

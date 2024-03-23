@@ -25,6 +25,7 @@ in
         chatblade = enabled;
         bluetuith = enabled;
         pulsemixer = enabled;
+        streamlink = enabled;
       };
 
       browsers = {

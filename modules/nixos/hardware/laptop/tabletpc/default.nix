@@ -12,7 +12,6 @@ in
   config = mkIf cfg.enable {
 
     hardware.sensor.iio.enable = true;
-    hardware.opentabletdriver.enable = config.arclight.desktop.utils.wlroots.enable;
 
     services.acpid.enable = true;
     services.gnome.at-spi2-core.enable = config.arclight.desktop.gnome.enable;

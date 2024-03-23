@@ -26,7 +26,7 @@ in
         swayosd
 
         # Rofi
-        rofi-wayland
+        rofi
         rofi-bluetooth
         pkgs.arclight.rofi-wifi-menu
 
@@ -37,6 +37,7 @@ in
         # Apps
         gnome.gnome-calendar
         gnome.eog
+        gnome.file-roller
         pavucontrol
 
       ];

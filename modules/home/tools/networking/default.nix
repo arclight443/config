@@ -20,6 +20,7 @@ in
         inetutils
         nmap
         netcat
+        wavemon
         ookla-speedtest
       ];
     };

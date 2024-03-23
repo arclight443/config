@@ -34,6 +34,7 @@ in
         # Apps
         gnome.gnome-calendar
         gnome.eog
+        gnome.filer-roller
         pavucontrol
 
       ];
