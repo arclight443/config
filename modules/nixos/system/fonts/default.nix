@@ -33,7 +33,6 @@ in
           nerdfonts
           cantarell-fonts
           font-awesome
-          arclight.london-between
         ] ++ cfg.fonts;
       fontconfig = {
         defaultFonts = {

@@ -36,13 +36,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    
-    environment.systemPackages = [
+
+    environment.systemPackages = with pkgs; [
       inputs.raise.defaultPackage.${pkgs.system}
-      inputs.pyprland.packages.${pkgs.system}.default
-      hyprland-ipc
-      pkgs.socat
-      pkgs.hyprkeys
+      pyprland
+      socat
+      hyprkeys
     ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
 
     arclight.desktop.utils = {
@@ -101,8 +100,8 @@ in
             "fcitx5"
             "swaync"
             "swayosd-server"
-            "pypr"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
+            "pypr"
             #"sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
             ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 150 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";

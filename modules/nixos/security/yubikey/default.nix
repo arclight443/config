@@ -59,9 +59,9 @@ in
     services.pcscd.enable = true;
     services.udev.packages = with pkgs; [ yubikey-personalization ];
     #u2f login is broken for now
-    security.pam.services = {
-      login.u2fAuth = true;
-    };
+    #security.pam.services = {
+    #  login.u2fAuth = true;
+    #};
 
     environment.shellInit = ''
       export GPG_TTY="$(tty)"

@@ -64,21 +64,20 @@
 
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
 
-    hyprland.url = "github:hyprwm/Hyprland/";
+    hyprland.url = "github:hyprwm/Hyprland/c5e28ebcfe00a510922779b2c568cfa52a317445";
 
-    waybar = {
-      url = "github:Alexays/Waybar/";
-    };
+    #waybar = {
+    #  url = "github:Alexays/Waybar/";
+    #};
 
     hyprgrass = {
-      #url = "github:horriblename/hyprgrass/360bc1c2b590423d91ee7ee21049b55c5c7a1eaa";
-      url = "github:horriblename/hyprgrass/";
+      url = "github:horriblename/hyprgrass/65eb25c156800d62d20d0565f5e0948b9352b63a";
       inputs.hyprland.follows = "hyprland";
     };
 
-    pyprland = {
-      url = "github:hyprland-community/pyprland/cdb62ade9cc5c0c961b80f3bf05c69d28189beb9";
-    };
+    #pyprland = {
+    #  #url = "github:hyprland-community/pyprland/cdb62ade9cc5c0c961b80f3bf05c69d28189beb9";
+    #};
 
     #raise = {
     #  url = "github:knarkzel/raise";

@@ -7,6 +7,7 @@ let
   terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
              else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
              else "";
+  colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   hyprland-ipc = pkgs.writeShellApplication {
@@ -36,12 +37,11 @@ in
 
   config = mkIf cfg.enable {
     
-    home.packages = [
+    home.packages = with pkgs; [
       inputs.raise.defaultPackage.${pkgs.system}
-      inputs.pyprland.packages.${pkgs.system}.default
-      hyprland-ipc
-      pkgs.hyprkeys
-      pkgs.socat
+      pyprland
+      hyprkeys
+      socat
     ];
 
     arclight.desktop.utils = {
@@ -75,9 +75,9 @@ in
 
         exec-once = [
           "fcitx5"
-          "hyprland-ipc"
           "pypr"
           "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
+          "pypr"
           "sleep 1; swww init"
         ];
 
@@ -109,7 +109,9 @@ in
           "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
           "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'LC_ALL=en_US.UTF-8 ${terminal} --class 'pulsemixer' -e pulsemixer'"
           "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class 'btop' -e btop\""
-          "$mod SHIFT, v, exec, raise --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
+
+          "$mod, v, exec, raise --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
+          "$mod SHIFT, v, exec, raise --move-to-current --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
 
           # GUI apps
           "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""

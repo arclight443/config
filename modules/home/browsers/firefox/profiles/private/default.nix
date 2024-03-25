@@ -45,7 +45,7 @@ in
       "firefox-${lib.strings.toLower profileName}" = {
         inherit icon;
         name = "Firefox - ${profileName}";
-        genericName = "Firefox (${profileName} profile)";
+        genericName = "Firefox profile for ${profileName}";
         exec = ''
           ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
         '';

@@ -45,7 +45,6 @@ with lib.arclight;
     apps = {
       insomnia = enabled;
       dbeaver = enabled;
-      ymuse = enabled;
       qpwgraph = enabled;
       youtube-music = enabled;
       junction = enabled;

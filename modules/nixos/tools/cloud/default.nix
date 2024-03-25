@@ -13,7 +13,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       azure-cli
-      awscli2
+      #awscli2
       terraform
       ansible
     ];

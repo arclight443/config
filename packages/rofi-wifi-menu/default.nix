@@ -17,7 +17,7 @@ in
     name = "rofi-wifi-menu";
     checkPhase = "";
     runtimeInputs = [];
-    text = builtins.replaceStrings [ "rofi" ] [ "rofi -normal-window" ] ''
+    text = builtins.replaceStrings [ "rofi" "Wi-Fi SSID:" ] [ "rofi -normal-window -theme '~/.config/rofi/wifi.rasi'" "SSID" ] ''
       ${ builtins.readFile ( builtins.toPath "${rofi-wifi-menu}/rofi-wifi-menu.sh" ) };
     '';
   }

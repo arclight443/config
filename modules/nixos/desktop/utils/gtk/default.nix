@@ -21,6 +21,8 @@ in
       gtk4
     ];
 
+    services.xserver.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];
+
     home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
 
       xdg.configFile = {
@@ -42,7 +44,7 @@ in
 
         iconTheme = {
           name = "Gruvbox-Plus-Dark";
-          package = pkgs.arclight.gruvbox-plus;
+          package = pkgs.gruvbox-plus-icons;
         };
 
         cursorTheme = {

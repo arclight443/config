@@ -51,7 +51,6 @@ in
         onlyoffice = enabled;
         mpv = enabled;
         vlc = enabled;
-        ymuse = enabled;
         mullvad = enabled;
         remmina = enabled;
         picard = enabled;

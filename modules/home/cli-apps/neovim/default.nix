@@ -7,6 +7,7 @@ let
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
+    c
     bash
     comment
     css
@@ -111,6 +112,15 @@ in
       recursive = true;
       source = treesitterWithGrammars;
     };
+
+    home.file."./.local/share/nvim/nix/nvim-treesitter/parser".source =
+      let
+        parsers = pkgs.symlinkJoin {
+          name = "treesitter-parsers";
+          paths = treesitterWithGrammars.dependencies;
+        };
+      in 
+        "${parsers}/parser";
 
     xdg.configFile.nvim.source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
 
