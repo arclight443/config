@@ -53,6 +53,7 @@ in
       nautilus = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
+      #ags = enabled;
       sddm = enabled;
     };
 

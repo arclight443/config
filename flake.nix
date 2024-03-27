@@ -66,6 +66,8 @@
 
     hyprland.url = "github:hyprwm/Hyprland/c5e28ebcfe00a510922779b2c568cfa52a317445";
 
+    ags.url = "github:Aylur/ags";
+
     #waybar = {
     #  url = "github:Alexays/Waybar/";
     #};

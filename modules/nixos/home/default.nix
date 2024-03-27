@@ -15,7 +15,7 @@ in
   };
 
   config = {
-    
+
     arclight.home.mutableFile = {
       "/home/${config.arclight.user.name}/Arclight/dotfiles" = {
         url = "https://github.com/arclight443/dotfiles.git";
@@ -28,6 +28,7 @@ in
       imports = with inputs; [
         arkenfox.hmModules.default
         nur.hmModules.nur
+        ags.homeManagerModules.default
         hyprland.homeManagerModules.default
         sops-nix.homeManagerModules.sops
         nix-colors.homeManagerModules.default
