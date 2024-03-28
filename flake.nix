@@ -77,10 +77,6 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    #pyprland = {
-    #  #url = "github:hyprland-community/pyprland/cdb62ade9cc5c0c961b80f3bf05c69d28189beb9";
-    #};
-
     #raise = {
     #  url = "github:knarkzel/raise";
     #};

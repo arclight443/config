@@ -40,6 +40,9 @@ in
         gnome.file-roller
         pavucontrol
 
+        # Misc
+        arclight.waybar-battery
+
       ];
 
       security.pam.services.swaylock = {};

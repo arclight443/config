@@ -14,9 +14,15 @@ in
     virtualisation = {
       podman = {
         enable = true;
-        dockerCompat = true;
         defaultNetwork.settings.dns_enabled = true;
       };
+    };
+    
+    arclight.home.extraOptions = {
+      programs.zsh.initExtra = ''
+        source '${pkgs.podman}/share/zsh/site-functions/_podman'
+        source '${pkgs.podman}/share/zsh/site-functions/_podman-remote'
+      '';
     };
 
     #virtualisation = {

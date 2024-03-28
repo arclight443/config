@@ -65,6 +65,7 @@ in
         bluetooth = enabled;
         #flatpak = enabled;
         printing = enabled;
+        upower = enabled;
       };
 
     };

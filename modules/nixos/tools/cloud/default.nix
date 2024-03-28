@@ -14,6 +14,8 @@ in
     environment.systemPackages = with pkgs; [
       azure-cli
       #awscli2
+      python3
+      python3Packages.pip
       terraform
       ansible
     ];
