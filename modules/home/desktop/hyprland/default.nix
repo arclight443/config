@@ -10,25 +10,6 @@ let
   colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
-  hyprland-ipc = pkgs.writeShellApplication {
-    name = "hyprland-ipc";
-    checkPhase = "";
-    runtimeInputs = [];
-    text = ''
-      handle() {
-      	case $1 in
-        #closewindow*)
-		    #  [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
-        #  ;;
-        focusedmon*)
-          pkill -SIGUSR2 waybar
-          ;;
-      	esac
-      }
-      ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
-    '';
-  };
-
 in
 {
   options.arclight.desktop.hyprland = with types; {
@@ -36,12 +17,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    
+
     home.packages = with pkgs; [
       inputs.raise.defaultPackage.${pkgs.system}
-      pyprland
-      hyprkeys
+      inputs.pypr.packages.${pkgs.system}.default
       socat
+      hyprkeys
     ];
 
     arclight.desktop.utils = {
@@ -67,10 +48,9 @@ in
         source = "~/.config/hypr/test.conf";
 
         # Auto-start
-        exec = [ 
+        exec = [
+          "pypr reload"
           "pgrep waybar && pkill -9 waybar; waybar"
-          #"pgrep hyprland-ipc && pkill -9 hyprland-ipc; hyprland-ipc"
-          #"sleep 2; pkill -SIGUSR1 waybar"
         ];
 
         exec-once = [
@@ -101,7 +81,10 @@ in
           "$mod, f, fullscreen"
           "$mod, Q, killactive"
           "CTRL SHIFT, q, exit"
-          "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
+
+          # Screenshots
+          ",Print, exec, grim"
+          "$mod, Print, exec, grim -g \"$(slurp)\""
 
           # CLI apps
           "$mod, return, exec, ${terminal}"

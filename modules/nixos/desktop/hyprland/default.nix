@@ -10,24 +10,14 @@ let
   colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
-  hyprland-ipc = pkgs.writeShellApplication {
-    name = "hyprland-ipc";
-    checkPhase = "";
+  laptop-docked = pkgs.writeShellApplication {
+    name = "laptop-undocked";
     runtimeInputs = [];
     text = ''
-      handle() {
-      	case $1 in
-      	#closewindow*)
-		    #  [[ $(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq '.windows') -eq 0 ]] && hyprctl dispatch workspace previous
-        #  ;;
-        focusedmon*)
-          pkill -SIGUSR2 waybar
-          ;;
-      	esac
-      }
-      ${pkgs.socat}/bin/socat -U - UNIX-CONNECT:/tmp/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+      ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq 'map(select(.name == "eDP-1")) | if length > 0 then true else false end'
     '';
   };
+
 
 in
 {
@@ -39,10 +29,11 @@ in
 
     environment.systemPackages = with pkgs; [
       inputs.raise.defaultPackage.${pkgs.system}
-      pyprland
+      inputs.pypr.packages.${pkgs.system}.default
       socat
       hyprkeys
-    ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system};
+    ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system}
+      ++ optional config.arclight.hardware.laptop.tabletpc.enable laptop-docked;
 
     arclight.desktop.utils = {
       gtk = enabled;
@@ -53,13 +44,16 @@ in
       nautilus = enabled;
       fcitx5 = enabled;
       wlroots = enabled;
-      #ags = enabled;
       sddm = enabled;
+      kanshi = {
+        enable = true;
+        systemdTarget = "hyprland-session.target";
+      };
     };
 
     arclight.system.xkb.enable = true;
 
-    arclight.nix.extra-substituters = { 
+    arclight.nix.extra-substituters = {
       "https://hyprland.cachix.org".key = "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=";
     };
 
@@ -93,7 +87,6 @@ in
 
           # Auto-start
           exec = [
-            #"pypr reload"
             "pgrep waybar && pkill -9 waybar; waybar"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep iio-hyprland && pkill -9 iio-hyprland; iio-hyprland";
 
@@ -105,7 +98,7 @@ in
             "pypr"
             #"sleep 1; swww init"
           ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
-            ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 150 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";
+            ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 200 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";
 
           # Env
           env = [
@@ -125,64 +118,85 @@ in
             # General
             "$mod, r, exec, hyprctl reload"
             "$mod, f, fullscreen"
-            "$mod, Q, killactive"
+            "$mod, q, killactive"
             "CTRL SHIFT, q, exit"
             "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
+            #", switch:Lid Switch, exec, pypr toggle_dpms"
+            #", switch:off:Lid Switch, exec, systemctl suspend"
+            ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+
+            # Screenshots
+            ",Print, exec, grim"
+            "$mod, Print, exec, grim -g \"$(slurp)\""
 
             # CLI apps
-            "$mod, return, exec, ${terminal}"
-            "$mod, d, exec, rofi -normal-window -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi' -file-browser '~'"
-            "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
-            "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch '${terminal} --class 'pulsemixer' -e pulsemixer'"
-            "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'btop' -e btop\""
+            "$mod, return, exec, ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
+            "$mod CTRL, return, exec, hyprctl dispatch workspace empty && ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
+
             "$mod, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
             "$mod SHIFT, v, exec, raise --move-to-current --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
-            "$mod SHIFT, n, exec, raise --class 'bluetuith' --launch \"hyprctl dispatch workspace empty && ${terminal} --class 'bluetuith' -e bluetuith\""
+            "$mod CTRL, v, exec, raise --move-to-nearest-empty --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
+
+            # Scratchpads
+            "$mod, backslash, exec, pypr toggle terminal-float"
+            "$mod, minus, exec, pypr toggle logs"
+            "$mod, equal, exec, pypr toggle socket"
+            "$mod, apostrophe, exec, swaync-client -t"
+            "$mod, d, exec, rofi -normal-window -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+            "$mod, m, exec, pypr toggle ncmpcpp"
+            "$mod, s, exec, pypr toggle pulsemixer"
+            "$mod, t, exec, pypr toggle btop"
+            "$mod, i, exec, pypr toggle bluetuith"
+            "$mod, p, exec, pypr toggle password"
 
             # GUI apps
             "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
             "$mod SHIFT, b, exec, raise --move-to-current --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
-            "$mod, s, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
-            "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'hyprctl dispatch workspace empty; keepassxc'"
+            "$mod CTRL, b, exec, raise --move-to-nearest-empty --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
+
+            "$mod, n, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
+            "$mod SHIFT, n, exec, raise --move-to-current --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
+            "$mod CTRL, n, exec, raise --move-to-nearest-empty --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
+
+            "$mod, c, exec, raise --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
+            "$mod SHIFT, c, exec, raise --move-to-current --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
+            "$mod CTRL, c, exec, raise --move-to-nearest-empty --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
+
             "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
-            "$mod, y, exec, raise --class 'FreeTube' --launch 'Freetube'"
 
             # Focus
             "$mod, h, movefocus, l"
             "$mod, j, movefocus, d"
             "$mod, k, movefocus, u"
             "$mod, l, movefocus, r"
+            "$mod CTRL, h, workspace, empty"
+            "$mod CTRL, l, workspace, empty"
             "$mod SHIFT, h, movewindow, l"
             "$mod SHIFT, j, movewindow, d"
             "$mod SHIFT, k, movewindow, u"
             "$mod SHIFT, l, movewindow, r"
 
             # Switch workspaces
-            "$mod, 1, workspace, 1"
-            "$mod, 2, workspace, 2"
-            "$mod, 3, workspace, 3"
-            "$mod, 4, workspace, 4"
-            "$mod, 5, workspace, 5"
-            "$mod, 6, workspace, 6"
-            "$mod, 7, workspace, 7"
-            "$mod, 8, workspace, 8"
-            "$mod, 9, workspace, 9"
-            "$mod, 0, workspace, 10"
-            "$mod, bracketleft,  workspace, -1"
-            "$mod, bracketright, workspace, +1"
+            "$mod, bracketleft,  workspace, m-1"
+            "$mod, bracketright, workspace, m+1"
 
-            "$mod SHIFT, 1, movetoworkspace, 1"
-            "$mod SHIFT, 2, movetoworkspace, 2"
-            "$mod SHIFT, 3, movetoworkspace, 3"
-            "$mod SHIFT, 4, movetoworkspace, 4"
-            "$mod SHIFT, 5, movetoworkspace, 5"
-            "$mod SHIFT, 6, movetoworkspace, 6"
-            "$mod SHIFT, 7, movetoworkspace, 7"
-            "$mod SHIFT, 8, movetoworkspace, 8"
-            "$mod SHIFT, 9, movetoworkspace, 9"
-            "$mod SHIFT, 0, movetoworkspace, 10"
-            "$mod SHIFT, bracketleft,  movetoworkspace, -1"
-            "$mod SHIFT, bracketright, movetoworkspace, +1"
+            # Move windows across workspaces
+            "$mod SHIFT, bracketleft,  movetoworkspace, m-1"
+            "$mod SHIFT, bracketright, movetoworkspace, m+1"
+            "$mod CTRL, bracketleft, movetoworkspace, empty"
+            "$mod CTRL, bracketright, movetoworkspace, empty"
+          ];
+
+          bindm = [
+            "$mod, mouse:272, movewindow"
+            "$mod CTRL, mouse:272, resizewindow"
+          ];
+
+          bindel = [
+            ", XF86AudioRaiseVolume, exec, swayosd-client --output-volume raise"
+            ", XF86AudioLowerVolume, exec, swayosd-client --output-volume lower"
+            ", XF86MonBrightnessUp, exec, swayosd-client --brightness raise"
+            ", XF86MonBrightnessDown, exec, swayosd-client --brightness lower"
           ];
 
         };

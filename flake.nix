@@ -35,14 +35,8 @@
     };
 
     nur.url = "github:nix-community/NUR";
-
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-    };
-
-    arkenfox = {
-      url = "github:dwarfmaster/arkenfox-nixos";
-    };
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+    arkenfox.url = "github:dwarfmaster/arkenfox-nixos";
 
 		plusultra = {
 			url = "github:jakehamilton/config";
@@ -61,35 +55,23 @@
     };
 
     nix-colors.url = "github:misterio77/nix-colors";
-
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
+    nixgl.url = "github:guibou/nixGL";
 
-    hyprland.url = "github:hyprwm/Hyprland/c5e28ebcfe00a510922779b2c568cfa52a317445";
-
-    ags.url = "github:Aylur/ags";
-
-    #waybar = {
-    #  url = "github:Alexays/Waybar/";
+    #hyprland.url = "github:hyprwm/Hyprland/c5e28ebcfe00a510922779b2c568cfa52a317445";
+    hyprland.url = "github:hyprwm/Hyprland/3875679755014997776e091ff8903acfb311dd2f";
+    raise.url = "github:arclight443/raise/feature/move-to-current";
+    pypr.url = "github:hyprland-community/pyprland";
+    iio-hyprland.url = "github:arclight443/iio-hyprland";
+    #hyprgrass = {
+    #  url = "github:horriblename/hyprgrass/65eb25c156800d62d20d0565f5e0948b9352b63a";
+    #  inputs.hyprland.follows = "hyprland";
     #};
 
     hyprgrass = {
-      url = "github:horriblename/hyprgrass/65eb25c156800d62d20d0565f5e0948b9352b63a";
+      url = "github:horriblename/hyprgrass/";
       inputs.hyprland.follows = "hyprland";
     };
-
-    #raise = {
-    #  url = "github:knarkzel/raise";
-    #};
-
-    raise = {
-      url = "github:arclight443/raise/feature/move-to-current";
-    };
-
-    iio-hyprland = {
-      url = "github:arclight443/iio-hyprland";
-    };
-
-    nixgl.url = "github:guibou/nixGL";
 
   };
 

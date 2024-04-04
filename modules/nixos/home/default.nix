@@ -28,7 +28,6 @@ in
       imports = with inputs; [
         arkenfox.hmModules.default
         nur.hmModules.nur
-        ags.homeManagerModules.default
         hyprland.homeManagerModules.default
         sops-nix.homeManagerModules.sops
         nix-colors.homeManagerModules.default

@@ -21,6 +21,41 @@ with lib.arclight;
       theme = "gruvbox-material-dark-medium";
     };
 
+    desktop.utils.kanshi = {
+      profiles = {
+
+        undocked = {
+          outputs = [
+            {
+              criteria = "eDP-1";
+              status = "enable";
+              mode = "1920x1080@60Hz";
+              scale = 1.5;
+              adaptiveSync = false;
+            }
+          ];
+        };
+
+        docked-office = {
+          outputs = [
+            {
+              criteria = "LG Electronics LG IPS FULLHD 709NTVS8C951";
+              status = "enable";
+              mode = "1920x1080@60Hz";
+              scale = 1.25;
+              adaptiveSync = false;
+            }
+
+            {
+              criteria = "eDP-1";
+              status = "disable";
+            }
+          ];
+        };
+
+      };
+    };
+
     # 2-in-1 laptop features
     hardware.laptop.common = enabled;
     hardware.laptop.tabletpc = enabled;
