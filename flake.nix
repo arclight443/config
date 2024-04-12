@@ -55,6 +55,7 @@
     };
 
     nix-colors.url = "github:misterio77/nix-colors";
+    nix-wallpaper.url = "github:lunik1/nix-wallpaper";
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     nixgl.url = "github:guibou/nixGL";
 

@@ -7,36 +7,61 @@ let
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   treesitterWithGrammars = (pkgs.vimPlugins.nvim-treesitter.withPlugins (plugins: with plugins; [
-    c
+    awk
     bash
+    bicep
+    c
+    cpp
     comment
     css
+    csv
+    diff
     dockerfile
-    fish
+    gitcommit
     gitattributes
     gitignore
+    git_config
+    git_rebase
     go
     gomod
     gowork
     gosum
+    gpg
     hcl
+    html
+    http
     hyprlang
+    java
     javascript
     jq
     json5
     json
+    kusto
+    latex
     lua
     make
     markdown
-    markdown-inline
+    markdown_inline
+    meson
     nix
+    ninja
     python
+    rasi
+    regex
     ron
     rust
     toml
+    terraform
     typescript
+    scss
+    ssh_config
+    sql
+    udev
+    vim
+    vimdoc
     vue
     yaml
+    xml
   ]));
 
 in
@@ -54,7 +79,7 @@ in
       alejandra
       black
       nodePackages.prettier
-      nixpkgs-fmt
+      nixfmt-rfc-style
 
       gotools
       gofumpt

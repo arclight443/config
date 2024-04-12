@@ -78,6 +78,8 @@ in
     '';
 
     environment.systemPackages = with pkgs; [
+      yubikey-manager
+      yubikey-manager-qt
       cryptsetup
       paperkey
       gnupg

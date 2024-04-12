@@ -4,7 +4,7 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.colorscheme;
-  colorSchemes = inputs.nix-colors.colorSchemes;
+  colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
 
 in
 {

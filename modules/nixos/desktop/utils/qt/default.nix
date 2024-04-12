@@ -19,23 +19,23 @@ in
 
     arclight.home.extraOptions = {
       qt.enable = true;
-      #qt.platformTheme = "gnome";
-      #qt.style.name = "adwaita-dark";
-      qt.platformTheme = "qtct";
-      qt.style.name = "kvantum";
+      qt.platformTheme = "gnome";
+      qt.style.name = "adwaita-dark";
+      #qt.platformTheme = "qtct";
+      #qt.style.name = "kvantum";
       #qt.style.package = pkgs.adwaita-qt;
     };
 
-    environment.systemPackages = with pkgs; [
-      libsForQt5.qtstyleplugin-kvantum
-    ];
+    #environment.systemPackages = with pkgs; [
+    #  libsForQt5.qtstyleplugin-kvantum
+    #];
 
     
-    arclight.home.configFile."Kvantum/" =
-      {
-        source = ./config;
-        recursive = true;
-      };
+    #arclight.home.configFile."Kvantum/" =
+    #  {
+    #    source = ./config;
+    #    recursive = true;
+    #  };
 
     #environment.variables = lib.mkForce env;
   };

@@ -15,7 +15,8 @@ in
     arclight = {
       desktop = {
         #gnome = enabled;
-        hyprland = enabled;
+        #hyprland = enabled;
+        plasma = enabled;
       };
 
       cli-apps = {

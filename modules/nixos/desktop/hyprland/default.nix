@@ -11,10 +11,15 @@ let
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
   laptop-docked = pkgs.writeShellApplication {
-    name = "laptop-undocked";
+    name = "laptop-mode-switch";
     runtimeInputs = [];
     text = ''
-      ${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq 'map(select(.name == "eDP-1")) | if length > 0 then true else false end'
+      docked=$(${pkgs.hyprland}/bin/hyprctl monitors -j | ${pkgs.jq}/bin/jq 'map(select(.name == "eDP-1")) | if length > 0 then true else false end')
+      if [[ $docked == "true" ]]; then
+        $1
+      else
+        $2
+      fi
     '';
   };
 
@@ -119,6 +124,7 @@ in
             "$mod, r, exec, hyprctl reload"
             "$mod, f, fullscreen"
             "$mod, q, killactive"
+            "ALT, Tab, cyclenext"
             "CTRL SHIFT, q, exit"
             "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
             #", switch:Lid Switch, exec, pypr toggle_dpms"

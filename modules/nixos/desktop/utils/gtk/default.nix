@@ -44,7 +44,7 @@ in
 
         iconTheme = {
           name = "Gruvbox-Plus-Dark";
-          package = pkgs.gruvbox-plus-icons;
+          package = pkgs.arclight.gruvbox-plus-icons;
         };
 
         cursorTheme = {

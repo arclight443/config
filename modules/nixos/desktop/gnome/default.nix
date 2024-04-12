@@ -44,7 +44,7 @@ in
       gtk = enabled;
       qt = enabled;
       electron-support = enabled;
-      kitty = enabled;
+      alacritty = enabled;
       ibus = enabled;
       nautilus = enabled;
     };
@@ -395,8 +395,8 @@ in
           };
 
           "org/gnome/shell/extensions/azwallpaper" = {
-            slideshow-directory = "/home/${config.arclight.user.name}/Arclight/dotfiles/wallpaper";
-            slideshow-slide-duration = mkTuple [ 24 0 0 ];
+            slideshow-directory = "/home/${config.arclight.user.name}/Arclight/dotfiles/wallpaper/birb";
+            slideshow-slide-duration = mkTuple [ 1 0 0 ];
           };
 
           "org/gnome/shell/extensions/blur-my-shell" = {
