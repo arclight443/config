@@ -12,6 +12,7 @@ let
   settings = import ../settings.nix { inherit config; };
 
   profileName = "Private";
+  profileNameLower = lib.strings.toLower profileName;
   icon = "firefox-nightly";
 
 in
@@ -43,24 +44,25 @@ in
       };
 
       xdg.desktopEntries = {
-        "firefox-${lib.strings.toLower profileName}" = {
+        "firefox-${profileNameLower}" = {
           inherit icon;
-          name = "Firefox - ${profileName}";
-          genericName = "Firefox profile for ${profileName}";
-          exec = ''
-            ${pkgs.firefox}/bin/firefox --name "Firefox - ${profileName}" -P ${lib.strings.toLower profileName} %U
+          name = "Firefox (${profileName})";
+          genericName = "${profileName} profile for Firefox";
+          exec = if config.arclight.apps.mullvad.enable then ''
+            mullvad-exclude ${pkgs.firefox}/bin/firefox --name "firefox-${profileNameLower}" -P ${profileNameLower} %U
+          '' else ''
+            ${pkgs.firefox}/bin/firefox --name "firefox-${profileNameLower}" -P ${profileNameLower} %U
           '';
           type = "Application";
           terminal = false;
           mimeType = [ "x-scheme-handler/http" "x-scheme-handler/https" ];
           settings = {
-            StartupWMClass = "Firefox - ${profileName}";
+            StartupWMClass = "firefox-${profileName}";
           };
         };
       };
 
     };
-
 
   };
 }

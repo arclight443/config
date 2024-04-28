@@ -15,7 +15,7 @@
   
 </p>
 
-> ⚠️ WARNING: This NixOS flake contains excessive amount of birbs 🐦.
+> ⚠️ WARNING: I no longer use Nix as of 28/10/24 nor do I endorse anyone to use it anymore due to NixOS Foundation's decision to support defense industry over its community members. I will still keep this flake up as a reference for anyone still interested in the project. But until the leadership is changed, consider this flake abandoned.
 
 - [Screenshots](#screenshots)
 - [Disclaimer](#disclaimer)

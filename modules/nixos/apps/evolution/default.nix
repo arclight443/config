@@ -4,10 +4,6 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.apps.evolution;
-  patchDesktop = pkg: appName: from: to: lib.hiPrio (pkgs.runCommand "$patched-desktop-entry-for-${appName}" {} ''
-    ${pkgs.coreutils}/bin/mkdir -p $out/share/applications
-    ${pkgs.gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
-  '');
 in
 {
   options.arclight.apps.evolution = with types; {
@@ -24,10 +20,9 @@ in
     #services.gnome.evolution-data-server.enable = lib.mkForce config.arclight.desktop.gnome.enable;
     services.gnome.evolution-data-server.enable = lib.mkForce true;
 
-    environment.systemPackages =  with pkgs;[
+    environment.systemPackages =  with pkgs; [
       evolution
-    ] ++ optional config.arclight.apps.mullvad.enable
-    (patchDesktop evolution "org.gnome.Evolution" "^Exec=" "Exec=mullvad-exclude ") ;
+    ];
 
   };
 }

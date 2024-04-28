@@ -15,12 +15,13 @@ in
   config = mkIf cfg.enable {
 
       home.packages = with pkgs;[
+        # common
+        pamixer
+        playerctl
 
         # Wlroots-specific
         swww
         brightnessctl
-        grim
-        slurp
         wl-clipboard
 
         # Rofi
@@ -39,14 +40,10 @@ in
 
       ];
 
-      programs.waybar = {
-        enable = true;
-        #package = inputs.waybar.packages.${pkgs.system}.waybar;
-      };
-
-      xdg.configFile = {
-        "waybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
-        "rofi".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/rofi";
+      arclight.desktop.utils.wlroots = {
+        waybar = enabled;
+        rofi = enabled;
+        swappy = enabled;
       };
 
   };

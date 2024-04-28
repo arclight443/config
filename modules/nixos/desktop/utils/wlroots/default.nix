@@ -14,63 +14,55 @@ in
 
   config = mkIf cfg.enable {
 
-      environment.systemPackages = with pkgs;[
+    environment.systemPackages = with pkgs;[
+      # common
+      playerctl
 
-        # Wlroots-specific
-        swww
-        brightnessctl
-        grim
-        slurp
-        wl-clipboard
-        wvkbd
-        swayosd
+      # Wlroots-specific
+      swww
+      brightnessctl
+      grim
+      slurp
+      swappy
+      wl-clipboard
+      wvkbd
+      swayosd
 
-        # Rofi
-        rofi
-        rofi-bluetooth
-        pkgs.arclight.rofi-wifi-menu
+      # Rofi
+      rofi
+      rofi-bluetooth
+      pkgs.arclight.rofi-wifi-menu
 
-        # GTK utilities
-        powersupply
-        swaynotificationcenter
+      # GTK utilities
+      powersupply
+      swaynotificationcenter
 
-        # Apps
-        gnome.gnome-calendar
-        gnome.eog
-        gnome.file-roller
-        pavucontrol
+      # Apps
+      gnome.gnome-calendar
+      gnome.eog
+      gnome.file-roller
+      pavucontrol
 
-        # Misc
-        arclight.waybar-battery
+    ];
 
-      ];
+    arclight.desktop.utils.wlroots = {
+      waybar = enabled;
+      swaylock = enabled;
+    };
 
-      security.pam.services.swaylock = {};
+    home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
 
-      arclight.home.extraOptions = {
-
-        programs.waybar = {
-          enable = true;
-          #package = inputs.waybar.packages.${pkgs.system}.waybar;
-        };
-
-        programs.swaylock = {
-          enable = true;
-          package = pkgs.swaylock-effects;
-        };
-
+      xdg.configFile = {
+        "swaync".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/swaync";
+        "rofi".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/rofi";
+        "swappy/config".text = ''
+          [Default]
+          save_dir=$HOME/Pictures/Screenshots
+          save_filename_format=%Y-%m-%d_%H.%M.%S.png
+        '';
       };
 
-      home-manager.users.${config.arclight.user.name} = { config, pkgs, ... }: {
-
-        xdg.configFile = {
-          "waybar".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/waybar";
-          "swaync".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/swaync";
-          "rofi".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/rofi";
-          "swaylock".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/swaylock";
-        };
-
-      };
+    };
 
   };
 }

@@ -50,6 +50,16 @@ with lib.arclight;
               criteria = "eDP-1";
               status = "disable";
             }
+
+            #{
+            #  criteria = "eDP-1";
+            #  status = "enable";
+            #  mode = "1920x1080@60Hz";
+            #  #position = "0,0";
+            #  scale = 1.5;
+            #  adaptiveSync = false;
+            #}
+
           ];
         };
 

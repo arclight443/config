@@ -18,7 +18,7 @@ in
       enable = true;
       extraRules = [{
         users = [ config.arclight.user.name ];
-        noPass = true;
+        noPass = false;
         keepEnv = true;
       }];
     };

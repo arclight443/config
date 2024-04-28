@@ -5,6 +5,7 @@ with lib.arclight;
 let
   cfg = config.arclight.apps.mullvad;
 in
+
 {
   options.arclight.apps.mullvad = with types; {
     enable = mkBoolOpt false "Whether or not to enable Mullvad VPN.";

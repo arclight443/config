@@ -15,6 +15,11 @@ let
     neovim = enabled;
     pandoc = enabled;
   };
+  tools = {
+    azure-cli = enabled;
+    direnv = enabled;
+    kubernetes = enabled;
+  };
   virtualisation = {
     podman = enabled;
   };
@@ -35,12 +40,7 @@ in
     ];
 
     arclight = {
-      inherit apps cli-apps virtualisation;
-
-      tools = {
-        direnv = enabled;
-        kubernetes = enabled;
-      };
+      inherit apps cli-apps virtualisation tools;
 
     };
   };

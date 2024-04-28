@@ -4,10 +4,6 @@ with lib;
 with lib.arclight;
 let
   cfg = config.arclight.apps.steam;
-  patchDesktop = pkg: appName: from: to: lib.hiPrio (pkgs.runCommand "$patched-desktop-entry-for-${appName}" {} ''
-    ${pkgs.coreutils}/bin/mkdir -p $out/share/applications
-    ${pkgs.gnused}/bin/sed 's#${from}#${to}#g' < ${pkg}/share/applications/${appName}.desktop > $out/share/applications/${appName}.desktop
-  '');
 in
 {
   options.arclight.apps.steam = with types; {
@@ -15,20 +11,55 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.steam.enable = true;
+
+    programs.steam = {
+      enable = true;
+
+      package = pkgs.steam.override {
+        extraEnv = {};
+        extraPkgs = pkgs: with pkgs; [
+          xorg.libXcursor
+          xorg.libXi
+          xorg.libXinerama
+          xorg.libXScrnSaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib
+          libkrb5
+          keyutils
+        ];
+      };
+
+      gamescopeSession = {
+        enable = true;
+        args = [
+          "--rt"
+          "-f"
+          "-o 10"
+        ];
+      };
+
+    };
+
+    programs.gamescope = {
+      enable = true;
+      args = [
+        "--rt"
+        "-f"
+        "-o 10"
+      ];
+    };
+
     hardware.steam-hardware.enable = true;
 
     environment.systemPackages = with pkgs; [
       steam
       pkgs.plusultra.nix-get-protonup
-    ] ++ optional config.arclight.apps.mullvad.enable
-    (patchDesktop steam "steam" "^Exec=" "Exec=mullvad-exclude ");
+    ];
 
     environment.sessionVariables = {
       STEAM_EXTRA_COMPAT_TOOLS_PATHS = "$HOME/.steam/root/compatibilitytools.d";
-      
-      # Scaling borked big picture. Disable for now
-      #STEAM_FORCE_DESKTOPUI_SCALING = "1.5";
     };
 
   };

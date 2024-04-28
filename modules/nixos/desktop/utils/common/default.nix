@@ -5,6 +5,7 @@ with lib.arclight;
 let
   cfg = config.arclight.desktop.utils.common;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
+  nix-wallpaper = import ./wallpaper.nix { inherit config pkgs lib inputs; };
 
 in
 {
@@ -30,6 +31,14 @@ in
           color-scheme = "prefer-dark";
         };
       };
+
+      home.file = lib.mapAttrs' (name: pkg: {
+        name = "Pictures/wallpaper/wallpaper-${name}.png";
+        value = {
+          source = "${pkg}/share/wallpapers/nixos-wallpaper.png";
+          target = "Pictures/Wallpapers/nixos-wallpaper-${name}.png";
+        };
+      }) nix-wallpaper;
 
     };
 

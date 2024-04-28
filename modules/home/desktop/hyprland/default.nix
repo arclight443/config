@@ -4,10 +4,14 @@ with lib;
 with lib.arclight;
 let 
   cfg = config.arclight.desktop.hyprland; 
-  terminal = if       config.arclight.desktop.utils.kitty.enable then "kitty"
-             else if  config.arclight.desktop.utils.alacritty.enable then "alacritty"
-             else "";
+  terminal = "LC_ALL=en_US.UTF-8" + ( if config.arclight.desktop.utils.kitty.enable then "${pkgs.kitty}/bin/kitty"
+                                      else if  config.arclight.desktop.utils.alacritty.enable then "${pkgs.alacritty}/bin/alacritty"
+                                      else "");
   colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
+
+  raise = inputs.raise.defaultPackage.${pkgs.system};
+  pypr = inputs.pypr.packages.${pkgs.system}.default;
+
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
 in
@@ -18,11 +22,10 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages = with pkgs; [
-      inputs.raise.defaultPackage.${pkgs.system}
-      inputs.pypr.packages.${pkgs.system}.default
-      socat
-      hyprkeys
+    home.packages = [
+      raise
+      pypr
+      pkgs.socat
     ];
 
     arclight.desktop.utils = {
@@ -57,16 +60,25 @@ in
           "fcitx5"
           "pypr"
           "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
-          "pypr"
-          "sleep 1; swww init"
+          "sleep 1; swww-daemon; swww img /home/${config.arclight.user.name}/Pictures/nixos-wallpaper-fhd.png"
         ];
 
         # Env
         env = [
-          #"GDK_SCALE,2"
+          # common
           "XCURSOR_SIZE,24"
           "WLR_NO_HARDWARE_CURSORS,1"
           "HYPRLAND_LOG_WLR,1"
+
+          # qt
+          "QT_QPA_PLATFORM,wayland;xcb"
+          "QT_AUTO_SCREEN_SCALE_FACTOR,0"
+          "QT_ENABLE_HIGHDPI_SCALING,0"
+
+          # swww
+          "SWWW_TRANSITION_FPS,60"
+          "SWWW_TRANSITION,center"
+          "SWWW_TRANSITION_DURATION,1"
         ];
 
         #monitor = [
@@ -77,31 +89,59 @@ in
         "$mod" = "SUPER";
         bind = [
           # General
-          "$mod, r, exec, hyprctl reload"
+          "$mod, r, exec, ${pkgs.hyprland}/bin/hyprctl reload"
           "$mod, f, fullscreen"
           "$mod, Q, killactive"
+          "ALT, Tab, cyclenext"
           "CTRL SHIFT, q, exit"
 
+
+          ", XF86AudioMicMute, exec, ${pkgs.pamixer}/bin/pamixer --default-source -m"
+          ", XF86AudioMute, exec, ${pkgs.pamixer}/bin/pamixer -t"
+          ", XF86AudioPlay, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+          ", XF86AudioPause, exec, ${pkgs.playerctl}/bin/playerctl play-pause"
+          ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
+          ", XF86AudioPrev, exec, ${pkgs.playerctl}/bin/playerctl previous"
+
           # Screenshots
-          ",Print, exec, grim"
-          "$mod, Print, exec, grim -g \"$(slurp)\""
+          ",Print, exec, ${pkgs.grim}/bin/grim - | tee \"~/Pictures/Screenshots/Screenshot from $(date +'%Y-%m-%d %H-%M-%S').png\" | ${pkgs.wl-clipboard}/bin/wl-copy"
+          "SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.swappy}/bin/swappy -f - "
+          "CTRL, Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp)\" - | ${pkgs.swappy}/bin/swappy -f - "
 
           # CLI apps
-          "$mod, return, exec, ${terminal}"
-          "$mod, d, exec, XDG_DATA_DIRS='/home/${config.arclight.user.name}/.nix-profile/share/:/var/lib/flatpak/exports/share' rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
-          "$mod SHIFT, m, exec, raise --class 'ncmpcpp' --launch 'hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class ncmpcpp -e ncmpcpp --screen playlist --slave-screen visualizer'"
-          "$mod SHIFT, s, exec, raise --class 'pulsemixer' --launch 'LC_ALL=en_US.UTF-8 ${terminal} --class 'pulsemixer' -e pulsemixer'"
-          "$mod SHIFT, t, exec, raise --class 'btop' --launch \"hyprctl dispatch workspace empty && LC_ALL=en_US.UTF-8 ${terminal} --class 'btop' -e btop\""
+          "$mod, return, exec, ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
+          "$mod CTRL, return, exec, ${pkgs.hyprland}/bin/hyprctl dispatch workspace empty && ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
 
-          "$mod, v, exec, raise --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
-          "$mod SHIFT, v, exec, raise --move-to-current --class 'neovim' --launch \"LC_ALL=en_US.UTF-8 ${terminal} --class 'neovim' -e nvim\""
+          "$mod SHIFT, v, exec, ${raise}/bin/raise --move-to-current --class 'neovim' --launch \"${terminal} --class 'neovim' -e ${pkgs.nvim}/bin/nvim\""
+          "$mod CTRL, v, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'neovim' --launch \"${terminal} --class 'neovim' -e ${pkgs.nvim}/bin/nvim\""
+
+          # Scratchpads
+          "$mod, backslash, exec, ${pypr}/bin/pypr toggle terminal-float"
+          "$mod, minus, exec, ${pypr}/bin/pypr toggle logs"
+          "$mod, equal, exec, ${pypr}/bin/pypr toggle socket"
+          "$mod, d, exec, XDG_DATA_DIRS='/home/${config.arclight.user.name}/.nix-profile/share/:/var/lib/flatpak/exports/share' ${pkgs.rofi}/bin/rofi -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+          "$mod, m, exec, ${pypr}/bin/pypr toggle ncmpcpp"
+          "$mod, s, exec, ${pypr}/bin/pypr toggle pulsemixer"
+          "$mod, t, exec, ${pypr}/bin/pypr toggle btop"
+          "$mod, y, exec, ${pypr}/bin/pypr toggle bluetuith"
 
           # GUI apps
-          "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
-          "$mod, s, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
-          "$mod SHIFT, p, exec, raise --class 'org.keepassxc.KeePassXC' --launch 'hyprctl dispatch workspace empty; keepassxc'"
-          "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
-          "$mod, y, exec, raise --class 'FreeTube' --launch 'Freetube'"
+          "$mod, b, exec, ${raise}/bin/raise --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
+          "$mod SHIFT, b, exec, ${raise}/bin/raise --move-to-current --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
+          "$mod CTRL, b, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
+
+          "$mod, n, exec, ${raise}/bin/raise --class 'firefox-services' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
+          "$mod SHIFT, n, exec, ${raise}/bin/raise --move-to-current --class 'firefox-services' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
+          "$mod CTRL, n, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'firefox-services' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
+
+          "$mod, c, exec, ${raise}/bin/raise --class 'Chromium-browser' --launch \"${pkgs.ungoogled-chromium}/bin/chromium-browser\""
+          "$mod SHIFT, c, exec, ${raise}/bin/raise --move-to-current --class 'Chromium-browser' --launch \"${pkgs.ungoogled-chromium}/bin/chromium-browser\""
+          "$mod CTRL, c, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'Chromium-browser' --launch \"${pkgs.ungoogled-chromium}/bin/chromium-browser\""
+
+          "$mod SHIFT, p, exec, ${raise}/bin/raise --move-to-current --class 'org.keepassxc.KeePassXC' --launch \"${pkgs.keepassxc}/bin/keepassxc\""
+          "$mod CTRL, p, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'org.keepassxc.KeePassXC' --launch \"${pkgs.keepassxc}/bin/keepassxc\""
+
+          "$mod, e, exec, ${raise}/bin/raise --class 'evolution' --launch evolution"
 
           # Focus
           "$mod, h, movefocus, l"
@@ -114,31 +154,23 @@ in
           "$mod SHIFT, l, movewindow, r"
 
           # Switch workspaces
-          "$mod, 1, workspace, 1"
-          "$mod, 2, workspace, 2"
-          "$mod, 3, workspace, 3"
-          "$mod, 4, workspace, 4"
-          "$mod, 5, workspace, 5"
-          "$mod, 6, workspace, 6"
-          "$mod, 7, workspace, 7"
-          "$mod, 8, workspace, 8"
-          "$mod, 9, workspace, 9"
-          "$mod, 0, workspace, 10"
-          "$mod, bracketleft,  workspace, -1"
-          "$mod, bracketright, workspace, +1"
+          "$mod, bracketleft,  workspace, m-1"
+          "$mod, bracketright, workspace, m+1"
 
-          "$mod SHIFT, 1, movetoworkspace, 1"
-          "$mod SHIFT, 2, movetoworkspace, 2"
-          "$mod SHIFT, 3, movetoworkspace, 3"
-          "$mod SHIFT, 4, movetoworkspace, 4"
-          "$mod SHIFT, 5, movetoworkspace, 5"
-          "$mod SHIFT, 6, movetoworkspace, 6"
-          "$mod SHIFT, 7, movetoworkspace, 7"
-          "$mod SHIFT, 8, movetoworkspace, 8"
-          "$mod SHIFT, 9, movetoworkspace, 9"
-          "$mod SHIFT, 0, movetoworkspace, 10"
-          "$mod SHIFT, bracketleft,  movetoworkspace, -1"
-          "$mod SHIFT, bracketright, movetoworkspace, +1"
+          "$mod SHIFT, bracketleft,  movetoworkspace, m-1"
+          "$mod SHIFT, bracketright, movetoworkspace, m+1"
+          "$mod CTRL, bracketleft, movetoworkspace, empty"
+          "$mod CTRL, bracketright, movetoworkspace, empty"
+        ];
+
+        bindm = [
+          "$mod, mouse:272, movewindow"
+          "$mod CTRL, mouse:272, resizewindow"
+        ];
+
+        bindel = [
+          ", XF86AudioRaiseVolume, exec, ${pkgs.pamixer}/bin/pamixer -i 1"
+          ", XF86AudioLowerVolume, exec, ${pkgs.pamixer}/bin/pamixer -d 1"
         ];
 
         # Inputs
@@ -154,13 +186,6 @@ in
 
       };
     };
-
-    #home.pointerCursor = {
-    #  gtk.enable = true;
-    #  package = pkgs.capitaine-cursors;
-    #  name = "capitaine-cursors";
-    #  size = 24;
-    #};
 
     xdg.configFile = {
       "hypr/test.conf".source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/hypr/test.conf";

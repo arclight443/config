@@ -56,6 +56,7 @@
 
     nix-colors.url = "github:misterio77/nix-colors";
     nix-wallpaper.url = "github:lunik1/nix-wallpaper";
+    nix-alien.url = "github:thiagokokada/nix-alien";
     pipewire-screenaudio.url = "github:IceDBorn/pipewire-screenaudio";
     nixgl.url = "github:guibou/nixGL";
 
@@ -70,7 +71,7 @@
     #};
 
     hyprgrass = {
-      url = "github:horriblename/hyprgrass/";
+      url = "github:horriblename/hyprgrass/65eb25c156800d62d20d0565f5e0948b9352b63a";
       inputs.hyprland.follows = "hyprland";
     };
 

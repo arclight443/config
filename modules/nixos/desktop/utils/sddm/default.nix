@@ -19,13 +19,12 @@ in
       libsForQt5.qt5.qtgraphicaleffects
       pkgs.arclight.sddm-theme
     ];
-
-    services.xserver = {
+    
+    services.xserver.enable = true;
+    services.displayManager.sddm = {
       enable = true;
-      displayManager = {
-        sddm.enable = true;
-        sddm.theme = "${pkgs.arclight.sddm-theme}";
-      };
+      #wayland.enable = true;
+      theme = "${pkgs.arclight.sddm-theme}";
     };
 
   };

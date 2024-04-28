@@ -62,6 +62,12 @@ in
     #security.pam.services = {
     #  login.u2fAuth = true;
     #};
+    security.pam.yubico = {
+      enable = true;
+      control = "sufficient";
+      mode = "challenge-response";
+      id = [ "25737757" ];
+    };
 
     environment.shellInit = ''
       export GPG_TTY="$(tty)"

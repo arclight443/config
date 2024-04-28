@@ -12,9 +12,6 @@ in
   config = mkIf cfg.enable {
 
     home.packages = with pkgs; [
-      # Performance monitoring
-      bottom
-
       # Formatter/Fuzzy Finder
       fzf
       jq
@@ -30,6 +27,7 @@ in
 
       # Other
       clac
+      usbutils
     ];
   };
 }

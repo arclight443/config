@@ -19,6 +19,7 @@ in
 
     environment.systemPackages = with pkgs; [
       gtk4
+      gradience
     ];
 
     services.xserver.gdk-pixbuf.modulePackages = [ pkgs.librsvg ];

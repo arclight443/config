@@ -23,8 +23,23 @@ let
     gsconnect
     paperwm
     vitals
-  ] ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.touch-x
-    ++ optional config.arclight.hardware.laptop.tabletpc.enable pkgs.gnomeExtensions.screen-rotate;
+  ] 
+    ++ optionals config.arclight.hardware.laptop.tabletpc.enable
+  [ 
+    pkgs.gnomeExtensions.touch-x 
+    pkgs.gnomeExtensions.screen-rotate 
+  ];
+
+  reloadRaise = pkgs.writeShellApplication {
+    name = "reload-raise";
+    checkPhase = "";
+    runtimeInputs = [];
+    text = ''
+      ${pkgs.gnome.gnome-shell}/bin/gnome-extensions disable run-or-raise@edvard.cz;
+      ${pkgs.gnome.gnome-shell}/bin/gnome-extensions enable run-or-raise@edvard.cz;
+      ${pkgs.libnotify}/bin/notify-send "Run-or-raise" "Reloaded";
+    '';
+  };
 
   default-attrs = mapAttrs (key: mkDefault);
   nested-default-attrs = mapAttrs (key: default-attrs);
@@ -57,7 +72,7 @@ in
       gnome.gnome-themes-extra
       gnome.gnome-tweaks
       gnome.zenity
-    ] ++ defaultExtensions ++ cfg.extensions
+    ] ++ defaultExtensions ++ cfg.extensions ++ [ reloadRaise ]
       ++ optional config.arclight.security.yubikey.enable pkgs.arclight.gnome-lock-all-sessions;
 
     environment.gnome.excludePackages = with pkgs.gnome; [
@@ -170,6 +185,7 @@ in
         let
           user = config.users.users.${config.arclight.user.name};
           mkTuple = lib.hm.gvariant.mkTuple;
+          mkUint32 = lib.hm.gvariant.mkUint32;
         in
         nested-default-attrs {
           "org/gnome/shell" = {
@@ -188,8 +204,8 @@ in
               ++ optional config.arclight.browsers.firefox.profiles.personal.enable "firefox.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.services.enable "firefox-services.desktop"
               ++ optional config.arclight.browsers.firefox.profiles.discord.enable "firefox-discord.desktop"
-              ++ optional config.arclight.apps.telegram.enable "telegram.desktop"
-              ++ optional config.arclight.apps.element.enable "element.desktop"
+              ++ optional config.arclight.apps.telegram.enable "org.telegram.desktop.desktop"
+              ++ optional config.arclight.apps.fractal.enable "org.gnome.Fractal.desktop"
               ++ optional config.arclight.apps.steam.enable "steam.desktop";
           };
 
@@ -224,8 +240,14 @@ in
             disable-while-typing = false;
           };
 
+          "org/gnome/desktop/peripherals/keyboard" = {
+            delay = mkUint32 220;
+            repeat = true;
+            repeat-interval = mkUint32 20;
+          };
+
           "org/gnome/desktop/wm/preferences" = {
-            num-workspaces = "10";
+            #num-workspaces = 10;
             focus-mode = "click";
             button-layout = "appmenu:close";
             titlebar-font = "Source Sans 3 Regular 12";
@@ -237,78 +259,105 @@ in
             minimize = [ ];
             #toggle-maximized = [ "<Super>f" ];
 
-            switch-group = [ "" ];
-            switch-group-backward = [ "" ];
-            #switch-applications = [ "<Super>Tab" ];
-            #switch-applications-backward = [ "<Super><Shift>Tab" ];
-            switch-panels = [ ];
-            switch-panels-backward = [ ];
+            switch-group                  = [ ];
+            switch-group-backward         = [ ];
+            #switch-applications           = [ "<Super>Tab" ];
+            #switch-applications-backward  = [ "<Super><Shift>Tab" ];
+            switch-panels                 = [ ];
+            switch-panels-backward        = [ ];
 
-            switch-to-workspace-1 = [ "<Super>1" ];
-            switch-to-workspace-2 = [ "<Super>2" ];
-            switch-to-workspace-3 = [ "<Super>3" ];
-            switch-to-workspace-4 = [ "<Super>4" ];
-            switch-to-workspace-5 = [ "<Super>5" ];
-            switch-to-workspace-6 = [ "<Super>6" ];
-            switch-to-workspace-7 = [ "<Super>7" ];
-            switch-to-workspace-8 = [ "<Super>8" ];
-            switch-to-workspace-9 = [ "<Super>9" ];
-            switch-to-workspace-10 = [ "<Super>0" ];
-            #switch-to-workspace-left = [ "<Super>braceleft" ];
-            #switch-to-workspace-right = [ "<Super>braceright" ];
+            switch-to-workspace-1         = [ ];
+            switch-to-workspace-2         = [ ];
+            switch-to-workspace-3         = [ ];
+            switch-to-workspace-4         = [ ];
+            switch-to-workspace-5         = [ ];
+            switch-to-workspace-6         = [ ];
+            switch-to-workspace-7         = [ ];
+            switch-to-workspace-8         = [ ];
+            switch-to-workspace-9         = [ ];
+            switch-to-workspace-10        = [ ];
+            switch-to-workspace-left      = [ ];
+            switch-to-workspace-right     = [ ];
 
-            move-to-workspace-1 = [ "<Shift><Super>1" ];
-            move-to-workspace-2 = [ "<Shift><Super>2" ];
-            move-to-workspace-3 = [ "<Shift><Super>3" ];
-            move-to-workspace-4 = [ "<Shift><Super>4" ];
-            move-to-workspace-5 = [ "<Shift><Super>5" ];
-            move-to-workspace-6 = [ "<Shift><Super>6" ];
-            move-to-workspace-7 = [ "<Shift><Super>7" ];
-            move-to-workspace-8 = [ "<Shift><Super>8" ];
-            move-to-workspace-9 = [ "<Shift><Super>9" ];
-            move-to-workspace-10 = [ "<Shift><Super>0" ];
-            #move-to-workspace-left = [ "<Shift><Super>braceleft" ];
-            #move-to-workspace-right = [ "<Shift><Super>braceright" ];
+            move-to-workspace-1           = [ ];
+            move-to-workspace-2           = [ ];
+            move-to-workspace-3           = [ ];
+            move-to-workspace-4           = [ ];
+            move-to-workspace-5           = [ ];
+            move-to-workspace-6           = [ ];
+            move-to-workspace-7           = [ ];
+            move-to-workspace-8           = [ ];
+            move-to-workspace-9           = [ ];
+            move-to-workspace-10          = [ ];
+            move-to-workspace-left        = [ ];
+            move-to-workspace-right       = [ ];
 
-            #move-to-monitor-down = [ "<Super><Alt>j" ];
-            #move-to-monitor-left = [ "<Super><Alt>h" ];
-            #move-to-monitor-right = [ "<Super><Alt>l" ];
-            #move-to-monitor-up = [ "<Super><Alt>k" ];
+            #switch-to-workspace-1         = [ "<Super>1" ];
+            #switch-to-workspace-2         = [ "<Super>2" ];
+            #switch-to-workspace-3         = [ "<Super>3" ];
+            #switch-to-workspace-4         = [ "<Super>4" ];
+            #switch-to-workspace-5         = [ "<Super>5" ];
+            #switch-to-workspace-6         = [ "<Super>6" ];
+            #switch-to-workspace-7         = [ "<Super>7" ];
+            #switch-to-workspace-8         = [ "<Super>8" ];
+            #switch-to-workspace-9         = [ "<Super>9" ];
+            #switch-to-workspace-10        = [ "<Super>0" ];
+            #switch-to-workspace-left      = [ "<Super>braceleft" ];
+            #switch-to-workspace-right     = [ "<Super>braceright" ];
 
-            switch-input-source = [ "<Super>space" ];
+            #move-to-workspace-1           = [ "<Shift><Super>1" ];
+            #move-to-workspace-2           = [ "<Shift><Super>2" ];
+            #move-to-workspace-3           = [ "<Shift><Super>3" ];
+            #move-to-workspace-4           = [ "<Shift><Super>4" ];
+            #move-to-workspace-5           = [ "<Shift><Super>5" ];
+            #move-to-workspace-6           = [ "<Shift><Super>6" ];
+            #move-to-workspace-7           = [ "<Shift><Super>7" ];
+            #move-to-workspace-8           = [ "<Shift><Super>8" ];
+            #move-to-workspace-9           = [ "<Shift><Super>9" ];
+            #move-to-workspace-10          = [ "<Shift><Super>0" ];
+            #move-to-workspace-left        = [ "<Shift><Super>braceleft" ];
+            #move-to-workspace-right       = [ "<Shift><Super>braceright" ];
+
+            #move-to-monitor-down          = [ "<Super><Alt>j" ];
+            #move-to-monitor-left          = [ "<Super><Alt>h" ];
+            #move-to-monitor-right         = [ "<Super><Alt>l" ];
+            #move-to-monitor-up            = [ "<Super><Alt>k" ];
+
+            switch-input-source          = [ "<Super>space" ];
             switch-input-source-backward = [ "<Shift><Super>space" ];
           };
 
           "org/gnome/shell/keybindings" = {
-            switch-to-application-1 = [ ];
-            switch-to-application-2 = [ ];
-            switch-to-application-3 = [ ];
-            switch-to-application-4 = [ ];
-            switch-to-application-5 = [ ];
-            switch-to-application-6 = [ ];
-            switch-to-application-7 = [ ];
-            switch-to-application-8 = [ ];
-            switch-to-application-9 = [ ];
-            switch-to-application-10 = [ ];
+            switch-to-application-1       = [ ];
+            switch-to-application-2       = [ ];
+            switch-to-application-3       = [ ];
+            switch-to-application-4       = [ ];
+            switch-to-application-5       = [ ];
+            switch-to-application-6       = [ ];
+            switch-to-application-7       = [ ];
+            switch-to-application-8       = [ ];
+            switch-to-application-9       = [ ];
+            switch-to-application-10      = [ ];
 
-            shift-overview-down = [ ];
-            shift-overview-up = [ ];
-            open-application-menu = [ ];
+            shift-overview-down           = [ ];
+            shift-overview-up             = [ ];
+            open-application-menu         = [ ];
 
-            toggle-overview = [ "<Super>d" ];
-            toggle-application-view = [ "<Super>a" ];
-            toggle-message-tray = [ "<Super>n" ];
-            focus-active-notification = [ "<Super><Shift>n" ];
+            toggle-overview               = [ "<Super>d" ];
+            toggle-application-view       = [ ];
+            toggle-quick-settings         = [ "<Super>apostrophe" ];
+            toggle-message-tray           = [ "<Super><Shift>apostrophe" ];
+            focus-active-notification     = [ "<Super>escape" ];
 
-            show-screenshot-ui = [ "Print" ];
-            show-screen-recording-ui = [ "<Ctrl><Shift><Super>R" ];
-            screenshot = [ "<Shift>Print" ];
-            screenshot-window = [ "<Super>Print" ];
+            show-screenshot-ui            = [ "Print" ];
+            show-screen-recording-ui      = [ "<Ctrl><Shift><Super>R" ];
+            screenshot                    = [ "<Shift>Print" ];
+            screenshot-window             = [ "<Super>Print" ];
           };
 
           "org/gnome/mutter" = {
             edge-tiling = false;
-            dynamic-workspaces = false;
+            dynamic-workspaces = true;
             workspaces-only-on-primary = false;
             attach-modal-dialogs = false;
             overlay-key = "";
@@ -340,9 +389,8 @@ in
             extend-height = false;
             height-fraction = 0.9;
             hot-keys = false;
-            intellihide = if config.arclight.hardware.laptop.tabletpc.enable then true else false;
-            intellihide-mode = "ALL_WINDOWS";
-            isolate-monitors = true;
+            intellihide = false;
+            isolate-monitors = false;
             isolate-workspaces = false;
             min-alpha = 0.6;
             max-alpha = 0.9;
@@ -386,7 +434,9 @@ in
             ripple-box = true;
             quick-settings = true;
             power-icon = true;
-
+            
+            looking-glass-height = 8;
+            looking-glass-width = 8;
             #panel-button-padding-size = 6;
             #panel-corner-size = 0;
             #panel-icon-size = 15;
@@ -413,7 +463,6 @@ in
             customize = true;
             opacity = 255;
             sigma = 10;
-            #whitelist = [ "kitty" ];
           };
 
           "org/gnome/shell/extensions/blur-my-shell/overview" = {
@@ -450,64 +499,74 @@ in
               "{\"wm_class\":\"org.gnome.Calculator\", \"title\":\"\", \"scratch_layer\":true}"
               "{\"wm_class\":\"evolution\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
               "{\"wm_class\":\"KeePassXC\", \"title\":\"\", \"preferredWidth\":\"80%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Ncmpcpp\", \"preferredWidth\":\"80%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Neovim\", \"preferredWidth\":\"60%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Pulsemixer\", \"preferredWidth\":\"60%\"}"
-              "{\"wm_class\":\"\", \"title\":\"Btop\", \"preferredWidth\":\"100%\"}"
+              "{\"wm_class\":\"\", \"title\":\"terminal-ncmpcpp\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"\", \"title\":\"terminal-bluetuith\", \"preferredWidth\":\"80%\"}"
+              "{\"wm_class\":\"\", \"title\":\"terminal-neovim\", \"preferredWidth\":\"60%\"}"
+              "{\"wm_class\":\"\", \"title\":\"terminal-pulsemixer\", \"preferredWidth\":\"60%\"}"
+              "{\"wm_class\":\"\", \"title\":\"terminal-btop\", \"preferredWidth\":\"100%\"}"
             ];
 
           };
 
           "org/gnome/shell/extensions/paperwm/keybindings" = {
 
-            close-window = [ "<Super>q" ];
-            new-window = [ "" ];
+            close-window                            = [ "<Super>q" ];
+            new-window                              = [ "" ];
 
-            switch-left = [ "<Super>h" ];
-            switch-down = [ "<Super>j" ];
-            switch-up = [ "<Super>k" ];
-            switch-right = [ "<Super>l" ];
-            switch-down-workspace = [ "<Super>braceright" ];
-            switch-up-workspace = [ "<Super>braceleft" ];
-            switch-next = [ "" ];
-            switch-previous = [ "" ];
-            switch-first = [ "" ];
-            switch-last = [ "" ];
+            switch-left                             = [ "" ];
+            switch-down                             = [ "" ];
+            switch-up                               = [ "" ];
+            switch-right                            = [ "" ];
+            switch-global-left                      = [ "<Super>h" ];
+            switch-global-down                      = [ "<Super>j" ];
+            switch-global-up                        = [ "<Super>k" ];
+            switch-global-right                     = [ "<Super>l" ];
+            switch-down-workspace                   = [ "" ];
+            switch-up-workspace                     = [ "" ];
+            switch-down-workspace-from-all-monitors = [ "<Super>braceright" ];
+            switch-up-workspace-from-all-monitors   = [ "<Super>braceleft"  ];
+            switch-next                             = [ "" ];
+            switch-previous                         = [ "" ];
+            switch-first                            = [ "" ];
+            switch-last                             = [ "" ];
 
-            switch-monitor-below = [ "<Control><Super>j" ];
-            switch-monitor-left = [ "<Control><Super>h" ];
-            switch-monitor-right = [ "<Control><Super>l" ];
-            switch-monitor-above = [ "<Control><Super>k" ];
-            switch-monitor-up = [ "" ];
-            switch-monitor-down = [ "" ];
+            switch-monitor-below                    = [ "<Control><Super>j" ];
+            switch-monitor-left                     = [ "<Control><Super>h" ];
+            switch-monitor-right                    = [ "<Control><Super>l" ];
+            switch-monitor-above                    = [ "<Control><Super>k" ];
+            switch-monitor-up                       = [ "" ];
+            switch-monitor-down                     = [ "" ];
+            switch-focus-mode                       = [ "<Shift><Super>c" ];
+            center-horizontal                       = [ "<Super>c" ];
 
-            move-left = [ "<Shift><Super>h" ];
-            move-down = [ "<Shift><Super>j" ];
-            move-up = [ "<Shift><Super>k" ];
-            move-right = [ "<Shift><Super>l" ];
-            move-down-workspace = [ "<Shift><Super>braceright" ];
-            move-up-workspace = [ "<Shift><Super>braceleft" ];
+            move-left                               = [ "<Shift><Super>h" ];
+            move-down                               = [ "<Shift><Super>j" ];
+            move-up                                 = [ "<Shift><Super>k" ];
+            move-right                              = [ "<Shift><Super>l" ];
+            move-down-workspace                     = [ "<Shift><Super>braceright" ];
+            move-up-workspace                       = [ "<Shift><Super>braceleft" ];
 
-            move-monitor-above = [ "<Shift><Control><Super>k" ];
-            move-monitor-below = [ "<Shift><Control><Super>j" ];
-            move-monitor-down = [ "<Shift><Control><Super>j" ];
-            move-monitor-left = [ "<Shift><Control><Super>h" ];
-            move-monitor-right = [ "<Shift><Control><Super>l" ];
-            move-monitor-up = [ "<Shift><Control><Super>k" ];
-            move-next = [ "" ];
-            move-previous = [ "" ];
+            move-monitor-above                      = [ "<Shift><Control><Super>k" ];
+            move-monitor-below                      = [ "<Shift><Control><Super>j" ];
+            move-monitor-down                       = [ "<Shift><Control><Super>j" ];
+            move-monitor-left                       = [ "<Shift><Control><Super>h" ];
+            move-monitor-right                      = [ "<Shift><Control><Super>l" ];
+            move-monitor-up                         = [ "<Shift><Control><Super>k" ];
+            move-next                               = [ "" ];
+            move-previous                           = [ "" ];
 
-            swap-monitor-down = [ "<Alt><Super>j" ];
-            swap-monitor-left = [ "<Alt><Super>h" ];
-            swap-monitor-right = [ "<Alt><Super>l" ];
-            swap-monitor-up = [ "<Alt><Super>k" ];
-            swap-monitor-above = [ "" ];
-            swap-monitor-below = [ "" ];
+            swap-monitor-down                       = [ "" ];
+            swap-monitor-left                       = [ "<Alt><Super>h" ];
+            swap-monitor-right                      = [ "<Alt><Super>l" ];
+            swap-monitor-up                         = [ "" ];
+            swap-monitor-above                      = [ "<Alt><Super>k" ];
+            swap-monitor-below                      = [ "<Alt><Super>j" ];
 
-            toggle-scratch = [ "<Shift><Super><Ctrl>f" ];
+            toggle-scratch                          = [ "<Shift><Super><Ctrl>f" ];
+            toggle-scratch-layer                    = [ "" ];
+            toggle-scratch-window                   = [ "" ];
 
-            toggle-scratch-layer = [ "" ];
-            toggle-scratch-window = [ "" ];
+            take-window                             = [ "" ];
 
           };
 

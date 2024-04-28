@@ -66,8 +66,8 @@ in
           };
 
           package = with pkgs; wrapFirefox firefox-unwrapped {
-            desktopName = "Firefox - Personal";
-            wmClass = "\"Firefox - Personal\"";
+            desktopName = "Firefox (Personal)";
+            wmClass = "firefox-personal";
             nativeMessagingHosts = [
               inputs.pipewire-screenaudio.packages.${pkgs.system}.default
             ];

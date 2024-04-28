@@ -10,6 +10,9 @@ let
   colors = inputs.nix-colors.colorSchemes."${config.arclight.colorscheme.theme}".palette;
   dotfiles = "/home/${config.arclight.user.name}/Arclight/dotfiles";
 
+  raise = inputs.raise.defaultPackage.${pkgs.system};
+  pypr = inputs.pypr.packages.${pkgs.system}.default;
+
   laptop-docked = pkgs.writeShellApplication {
     name = "laptop-mode-switch";
     runtimeInputs = [];
@@ -23,6 +26,13 @@ let
     '';
   };
 
+  iio-process = ''
+    iio-hyprland "eDP-1" "swww clear ${colors.base00}; swww img ~/Pictures/Wallpapers/nixos-wallpaper-fhd.png" "swww clear ${colors.base00}; swww img ~/Pictures/Wallpapers/nixos-wallpaper-fhd-vertical.png"
+  '';
+
+  wvkbd-process = ''
+    wvkbd-mobintl --hidden -L 200 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}
+  '';
 
 in
 {
@@ -32,13 +42,15 @@ in
 
   config = mkIf cfg.enable {
 
-    environment.systemPackages = with pkgs; [
-      inputs.raise.defaultPackage.${pkgs.system}
-      inputs.pypr.packages.${pkgs.system}.default
-      socat
-      hyprkeys
-    ] ++ optional config.arclight.hardware.laptop.tabletpc.enable inputs.iio-hyprland.defaultPackage.${pkgs.system}
-      ++ optional config.arclight.hardware.laptop.tabletpc.enable laptop-docked;
+    environment.systemPackages = [
+      raise
+      pypr
+      pkgs.socat
+    ]
+    ++ optionals config.arclight.hardware.laptop.tabletpc.enable [ 
+      inputs.iio-hyprland.defaultPackage.${pkgs.system}
+      laptop-docked
+    ];
 
     arclight.desktop.utils = {
       gtk = enabled;
@@ -92,8 +104,11 @@ in
 
           # Auto-start
           exec = [
+            "pypr reload"
             "pgrep waybar && pkill -9 waybar; waybar"
-          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep iio-hyprland && pkill -9 iio-hyprland; iio-hyprland";
+            "systemctl restart --user kanshi"
+            "sleep 1; swww restore"
+          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "pgrep iio-hyprland && pkill -9 iio-hyprland; ${iio-process}";
 
           exec-once = [
             "fcitx5"
@@ -101,74 +116,85 @@ in
             "swayosd-server"
             "gnome-keyring-daemon --start --components=pkcs11,secrets,ssh"
             "pypr"
-            #"sleep 1; swww init"
-          ] ++ optional config.arclight.hardware.laptop.tabletpc.enable "iio-hyprland"
-            ++ optional config.arclight.hardware.laptop.tabletpc.enable "wvkbd-mobintl --hidden -L 200 --bg ${colors.base00} --fg ${colors.base01} --press ${colors.base03} --text ${colors.base05}";
+            "sleep 1; swww-daemon"
+          ] ++ optionals config.arclight.hardware.laptop.tabletpc.enable [ 
+            "${iio-process}"
+            "${wvkbd-process}"
+          ];
 
           # Env
           env = [
-            #"GDK_SCALE,2"
+            # common
             "XCURSOR_SIZE,24"
             "WLR_NO_HARDWARE_CURSORS,1"
             "HYPRLAND_LOG_WLR,1"
-          ];
 
-          #monitor = [
-          #  "eDP-1, 1920x1080@60, auto, auto, transform, 0"
-          #];
+            # qt
+            "QT_QPA_PLATFORM,wayland;xcb"
+            "QT_AUTO_SCREEN_SCALE_FACTOR,0"
+            "QT_ENABLE_HIGHDPI_SCALING,0"
+
+            # swww
+            "SWWW_TRANSITION_FPS,60"
+            "SWWW_TRANSITION,center"
+            "SWWW_TRANSITION_DURATION,1"
+          ];
 
           # Keybinds
           "$mod" = "SUPER";
           bind = [
             # General
-            "$mod, r, exec, hyprctl reload"
+            "$mod, r, exec, ${pkgs.hyprland}/bin/hyprctl reload"
             "$mod, f, fullscreen"
             "$mod, q, killactive"
             "ALT, Tab, cyclenext"
             "CTRL SHIFT, q, exit"
-            "CTRL SHIFT, l, exec, swaylock --config ~/.config/swaylock/config"
+            "CTRL SHIFT, l, exec, ${pkgs.swaylock}/bin/swaylock --config ~/.config/swaylock/config"
             #", switch:Lid Switch, exec, pypr toggle_dpms"
             #", switch:off:Lid Switch, exec, systemctl suspend"
-            ", XF86AudioMute, exec, swayosd-client --output-volume mute-toggle"
+            ", XF86AudioMute, exec, ${pkgs.swayosd}/bin/swayosd-client --output-volume mute-toggle"
 
             # Screenshots
-            ",Print, exec, grim"
-            "$mod, Print, exec, grim -g \"$(slurp)\""
+            ",Print, exec, ${pkgs.grim}/bin/grim - | tee \"~/Pictures/Screenshots/Screenshot from $(date +'%Y-%m-%d %H-%M-%S').png\" | ${pkgs.wl-clipboard}/bin/wl-copy"
+            "SHIFT, Print, exec, ${pkgs.grim}/bin/grim - | ${pkgs.swappy}/bin/swappy -f - "
+            "CTRL, Print, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp)\" - | ${pkgs.swappy}/bin/swappy -f - "
 
             # CLI apps
             "$mod, return, exec, ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
-            "$mod CTRL, return, exec, hyprctl dispatch workspace empty && ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
+            "$mod CTRL, return, exec, ${pkgs.hyprland}/bin/hyprctl dispatch workspace empty && ${terminal} --class 'terminal' -e ${pkgs.zsh}/bin/zsh"
 
-            "$mod, v, exec, raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
-            "$mod SHIFT, v, exec, raise --move-to-current --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
-            "$mod CTRL, v, exec, raise --move-to-nearest-empty --class 'neovim' --launch \"${terminal} --class 'neovim' -e nvim\""
+            "$mod, v, exec, ${raise}/bin/raise --class 'neovim' --launch \"${terminal} --class 'neovim' -e ${pkgs.nvim}/bin/nvim\""
+            "$mod SHIFT, v, exec, ${raise}/bin/raise --move-to-current --class 'neovim' --launch \"${terminal} --class 'neovim' -e ${pkgs.nvim}/bin/nvim\""
+            "$mod CTRL, v, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'neovim' --launch \"${terminal} --class 'neovim' -e ${pkgs.nvim}/bin/nvim\""
 
             # Scratchpads
-            "$mod, backslash, exec, pypr toggle terminal-float"
-            "$mod, minus, exec, pypr toggle logs"
-            "$mod, equal, exec, pypr toggle socket"
+            "$mod, backslash, exec, ${pypr}/bin/pypr toggle terminal-float"
+            "$mod, minus, exec, ${pypr}/bin/pypr toggle logs"
+            "$mod, equal, exec, ${pypr}/bin/pypr toggle socket"
             "$mod, apostrophe, exec, swaync-client -t"
-            "$mod, d, exec, rofi -normal-window -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
-            "$mod, m, exec, pypr toggle ncmpcpp"
-            "$mod, s, exec, pypr toggle pulsemixer"
-            "$mod, t, exec, pypr toggle btop"
-            "$mod, i, exec, pypr toggle bluetuith"
-            "$mod, p, exec, pypr toggle password"
+            "$mod, d, exec, ${pkgs.rofi}/bin/rofi -normal-window -show drun -sort true -sorting-method fzf -theme '~/.config/rofi/launcher.rasi'"
+            "$mod, m, exec, ${pypr}/bin/pypr toggle ncmpcpp"
+            "$mod, s, exec, ${pypr}/bin/pypr toggle pulsemixer"
+            "$mod, t, exec, ${pypr}/bin/pypr toggle btop"
+            "$mod, y, exec, ${pypr}/bin/pypr toggle bluetuith"
 
             # GUI apps
-            "$mod, b, exec, raise --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
-            "$mod SHIFT, b, exec, raise --move-to-current --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
-            "$mod CTRL, b, exec, raise --move-to-nearest-empty --class 'Firefox - Personal' --launch \"firefox --name 'Firefox - Personal'\""
+            "$mod, b, exec, ${raise}/bin/raise --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
+            "$mod SHIFT, b, exec, ${raise}/bin/raise --move-to-current --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
+            "$mod CTRL, b, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'firefox-personal' --launch \"${pkgs.firefox}/bin/firefox --name 'firefox-personal'\""
 
-            "$mod, n, exec, raise --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
-            "$mod SHIFT, n, exec, raise --move-to-current --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
-            "$mod CTRL, n, exec, raise --move-to-nearest-empty --class 'Firefox - Services' --launch \"firefox --name 'Firefox - Services' -P 'services'\""
+            "$mod, n, exec, ${raise}/bin/raise --class 'firefox-services' --launch \"mullvad-exclude ${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
+            "$mod SHIFT, n, exec, ${raise}/bin/raise --move-to-current --class 'firefox-services' --launch \"mullvad-exclude ${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
+            "$mod CTRL, n, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'firefox-services' --launch \"mullvad-exclude ${pkgs.firefox}/bin/firefox --name 'firefox-services' -P 'services'\""
 
-            "$mod, c, exec, raise --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
-            "$mod SHIFT, c, exec, raise --move-to-current --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
-            "$mod CTRL, c, exec, raise --move-to-nearest-empty --class 'Chromium-browser' --launch \"mullvad-exclude chromium\""
+            "$mod, c, exec, ${raise}/bin/raise --class 'Chromium-browser' --launch \"mullvad-exclude ${pkgs.ungoogled-chromium}/bin/chromium-browser\""
+            "$mod SHIFT, c, exec, ${raise}/bin/raise --move-to-current --class 'Chromium-browser' --launch \"mullvad-exclude ${pkgs.ungoogled-chromium}/bin/chromium-browser\""
+            "$mod CTRL, c, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'Chromium-browser' --launch \"mullvad-exclude ${pkgs.ungoogled-chromium}/bin/chromium-browser\""
 
-            "$mod, e, exec, raise --class 'evolution' --launch 'evolution'"
+            "$mod SHIFT, p, exec, ${raise}/bin/raise --move-to-current --class 'org.keepassxc.KeePassXC' --launch \"${pkgs.keepassxc}/bin/keepassxc\""
+            "$mod CTRL, p, exec, ${raise}/bin/raise --move-to-nearest-empty --class 'org.keepassxc.KeePassXC' --launch \"${pkgs.keepassxc}/bin/keepassxc\""
+
+            "$mod, e, exec, ${raise}/bin/raise --class 'evolution' --launch \"mullvad-exclude evolution\""
 
             # Focus
             "$mod, h, movefocus, l"

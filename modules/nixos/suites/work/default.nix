@@ -18,7 +18,6 @@ in
         ungoogled-chromium.enable = true;
         ungoogled-chromium.apps = {
           line = enabled;
-          #gather = enabled;
         };
       };
 
@@ -28,7 +27,7 @@ in
 
       cli-apps = {
         openvpn = enabled;
-        openfortivpn = enabled;
+        #openfortivpn = enabled;
       };
 
     };

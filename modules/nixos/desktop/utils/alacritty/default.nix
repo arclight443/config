@@ -22,10 +22,11 @@ in
       programs.alacritty = {
         enable = true;
         settings = {
-          #Fix cursor theme on Gnome
-          env."XCURSOR_THEME" = if config.arclight.desktop.gnome.enable 
-                                then "Adwaita"
-                                else config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name;
+          ##Fix cursor theme on Gnome
+          #env."XCURSOR_THEME" = if config.arclight.desktop.gnome.enable 
+          #                      then "Adwaita"
+          #                      else config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name;
+          env."XCURSOR_THEME" = config.home-manager.users.${config.arclight.user.name}.gtk.cursorTheme.name;
 
           font = {
             normal.family = "MesloLGS NF";
@@ -34,7 +35,7 @@ in
                    else 11.5;
           };
 
-          window.opacity = if config.arclight.colorscheme.oled then 1 else 0.8;
+          window.opacity = if config.arclight.colorscheme.oled then 1 else 0.85;
           window.padding = {
             x = 4;
             y = 4;

@@ -14,9 +14,6 @@ in
     programs.ssh.askPassword = "";
 
     environment.systemPackages = with pkgs; [
-      # Performance monitoring
-      bottom
-
       # Formatter/Fuzzy Finder
       fzf
       jq
@@ -32,6 +29,7 @@ in
 
       # Other
       clac
+      usbutils
     ];
   };
 }

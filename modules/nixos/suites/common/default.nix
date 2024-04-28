@@ -14,6 +14,7 @@ in
 
     arclight = {
       nix = enabled;
+      nix-ld = enabled;
 
       cli-apps = {
         btop = enabled;
@@ -24,7 +25,6 @@ in
         networking = enabled;
         event = enabled;
         git = enabled;
-        cloud = enabled;
         misc = enabled;
       };
 
